@@ -14,7 +14,7 @@ const RightNavigation = styled.div`
     & > a,
     & > button,
     & > .navigation-link {
-        ${tw`relative flex items-center h-full no-underline text-neutral-300 px-6 cursor-pointer transition-colors duration-250`};
+        ${tw`relative flex items-center h-full no-underline text-neutral-300 px-6 cursor-pointer transition-colors duration-250 whitespace-nowrap`};
 
         &:active,
         &:hover {
