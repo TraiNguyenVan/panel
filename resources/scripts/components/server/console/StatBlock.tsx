@@ -20,15 +20,15 @@ export default ({ title, copyOnClick, icon, color, className, children }: StatBl
 
     return (
         <CopyOnClick text={copyOnClick}>
-            <div className={classNames('flex items-center py-2 bg-gradient-to-r from-transparent to-transparent border-b border-neutral-600 transition-all hover:from-neutral-800/60 cursor-pointer', className)}>
-                <div className={'flex items-center text-neutral-400 mr-3 font-mono text-sm'}>
-                    [ <Icon icon={icon} className="w-4 h-4 mx-2" /> ]
+            <div className={classNames('flex items-center p-3 bg-neutral-900/50 border border-neutral-700 transition-all hover:bg-neutral-800/60 cursor-pointer', className)}>
+                <div className={'flex items-center text-neutral-500 mr-3 font-mono text-sm'}>
+                    <Icon icon={icon} className="w-5 h-5" />
                 </div>
                 <div className={'flex flex-col justify-center overflow-hidden w-full'}>
-                    <p className={'font-mono text-xs text-neutral-400 uppercase'}>{title}</p>
+                    <p className={'font-mono text-[10px] text-neutral-400 uppercase tracking-wider'}>{title}</p>
                     <div
                         ref={ref}
-                        className={'font-mono text-sm text-neutral-200 truncate'}
+                        className={'font-mono text-sm text-neutral-200 truncate mt-0.5'}
                         style={{ fontSize }}
                     >
                         {children}
