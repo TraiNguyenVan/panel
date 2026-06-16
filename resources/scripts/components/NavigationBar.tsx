@@ -37,39 +37,16 @@ const RightNavigation = styled.div`
     }
 `;
 
-const ServerRamMonitor = () => {
-    const [memory, setMemory] = useState(0);
-    const connected = ServerContext.useStoreState((state) => state.socket.connected);
-    const instance = ServerContext.useStoreState((state) => state.socket.instance);
-    const limits = ServerContext.useStoreState((state) => state.server.data?.limits);
-
-    useEffect(() => {
-        if (!connected || !instance) return;
-        const listener = (data: string) => {
-            try {
-                const stats = JSON.parse(data);
-                setMemory(stats.memory_bytes);
-            } catch (e) {}
-        };
-        instance.addListener(SocketEvent.STATS, listener);
-        return () => {
-            instance.removeListener(SocketEvent.STATS, listener);
-        };
-    }, [connected, instance]);
-
+const HostRamMonitor = () => {
+    const hostRam = (window as any).SiteConfiguration?.host_ram;
+    if (!hostRam || !hostRam.total) {
+        return <span className="text-neutral-200 ml-1">N/A</span>;
+    }
     return (
         <span className="text-neutral-200 ml-1">
-            {bytesToString(memory)} / {limits?.memory ? bytesToString(limits.memory * 1024 * 1024) : '∞'}
+            {bytesToString(hostRam.used)} / {bytesToString(hostRam.total)}
         </span>
     );
-};
-
-const RamMonitorWrapper = () => {
-    const location = useLocation();
-    if (!location.pathname.startsWith('/server/')) {
-        return <span className="text-neutral-200 ml-1">N/A (Select Server)</span>;
-    }
-    return <ServerRamMonitor />;
 };
 
 export default () => {
@@ -124,7 +101,7 @@ export default () => {
                         [ Account ]
                     </NavLink>
                     <div className={'flex items-center px-6 text-neutral-400 font-mono text-sm whitespace-nowrap'}>
-                        [ RAM: <RamMonitorWrapper /> ]
+                        [ RAM: <HostRamMonitor /> ]
                     </div>
                     <button onClick={toggleTheme}>
                         [ Theme ]
