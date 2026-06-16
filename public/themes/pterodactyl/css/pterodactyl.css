@@ -516,6 +516,7 @@ body {
     background-color: transparent !important;
     color: #e4e4e7 !important;
     font-weight: normal !important;
+    font-family: inherit !important;
     border-bottom: 1px solid #3f3f46 !important;
 }
 
