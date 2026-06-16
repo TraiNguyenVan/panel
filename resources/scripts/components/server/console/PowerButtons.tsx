@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import classNames from 'classnames';
 import { Button } from '@/components/elements/button/index';
 import Can from '@/components/elements/Can';
 import { ServerContext } from '@/state/server';
@@ -49,27 +50,37 @@ export default ({ className }: PowerButtonProps) => {
                 Forcibly stopping a server can lead to data corruption.
             </Dialog.Confirm>
             <Can action={'control.start'}>
-                <Button
-                    className={'flex-1'}
+                <button
+                    className={classNames('flex-1 px-4 py-2 bg-transparent text-neutral-300 hover:text-neutral-100 transition-colors border-b border-neutral-600 font-mono text-sm uppercase', {
+                        'opacity-50 cursor-not-allowed': status !== 'offline'
+                    })}
                     disabled={status !== 'offline'}
                     onClick={onButtonClick.bind(this, 'start')}
                 >
-                    Start
-                </Button>
+                    [ Start ]
+                </button>
             </Can>
             <Can action={'control.restart'}>
-                <Button.Text className={'flex-1'} disabled={!status} onClick={onButtonClick.bind(this, 'restart')}>
-                    Restart
-                </Button.Text>
+                <button 
+                    className={classNames('flex-1 px-4 py-2 bg-transparent text-neutral-300 hover:text-neutral-100 transition-colors border-b border-neutral-600 font-mono text-sm uppercase', {
+                        'opacity-50 cursor-not-allowed': !status
+                    })}
+                    disabled={!status} 
+                    onClick={onButtonClick.bind(this, 'restart')}
+                >
+                    [ Restart ]
+                </button>
             </Can>
             <Can action={'control.stop'}>
-                <Button.Danger
-                    className={'flex-1'}
+                <button
+                    className={classNames('flex-1 px-4 py-2 bg-transparent text-neutral-300 hover:text-red-400 transition-colors border-b border-neutral-600 font-mono text-sm uppercase', {
+                        'opacity-50 cursor-not-allowed': status === 'offline'
+                    })}
                     disabled={status === 'offline'}
                     onClick={onButtonClick.bind(this, killable ? 'kill' : 'stop')}
                 >
-                    {killable ? 'Kill' : 'Stop'}
-                </Button.Danger>
+                    [ {killable ? 'Kill' : 'Stop'} ]
+                </button>
             </Can>
         </div>
     );
