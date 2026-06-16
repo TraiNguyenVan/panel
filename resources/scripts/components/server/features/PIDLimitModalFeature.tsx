@@ -1,3 +1,4 @@
+import Icon from '@/components/elements/Icon';
 import React, { useEffect, useState } from 'react';
 import { ServerContext } from '@/state/server';
 import Modal from '@/components/elements/Modal';
@@ -59,7 +60,7 @@ const PIDLimitModalFeature = () => {
             {isAdmin ? (
                 <>
                     <div css={tw`mt-4 sm:flex items-center`}>
-                        <FontAwesomeIcon css={tw`pr-4`} icon={faExclamationTriangle} color={'orange'} size={'4x'} />
+                        <Icon css={tw`pr-4`} icon={faExclamationTriangle} color={'orange'} size={'4x'} />
                         <h2 css={tw`text-2xl mb-4 text-neutral-100 `}>Memory or process limit reached...</h2>
                     </div>
                     <p css={tw`mt-4`}>This server has reached the maximum process or memory limit.</p>
@@ -80,7 +81,7 @@ const PIDLimitModalFeature = () => {
             ) : (
                 <>
                     <div css={tw`mt-4 sm:flex items-center`}>
-                        <FontAwesomeIcon css={tw`pr-4`} icon={faExclamationTriangle} color={'orange'} size={'4x'} />
+                        <Icon css={tw`pr-4`} icon={faExclamationTriangle} color={'orange'} size={'4x'} />
                         <h2 css={tw`text-2xl mb-4 text-neutral-100`}>Possible resource limit reached...</h2>
                     </div>
                     <p css={tw`mt-4`}>

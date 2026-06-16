@@ -21,9 +21,9 @@ export default ({ type, className, children }: AlertProps) => {
             )}
         >
             {type === 'danger' ? (
-                <ShieldExclamationIcon className={'w-6 h-6 text-red-400 mr-2'} />
+                <span className="font-mono border border-transparent">[+]</span>
             ) : (
-                <ExclamationIcon className={'w-6 h-6 text-yellow-500 mr-2'} />
+                <span className="font-mono border border-transparent">[+]</span>
             )}
             {children}
         </div>

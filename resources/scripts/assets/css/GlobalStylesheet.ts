@@ -1,21 +1,40 @@
 import tw from 'twin.macro';
 import { createGlobalStyle } from 'styled-components/macro';
-// @ts-expect-error untyped font file
-import font from '@fontsource-variable/ibm-plex-sans/files/ibm-plex-sans-latin-wght-normal.woff2';
 
 export default createGlobalStyle`
-    @font-face {
-        font-family: 'IBM Plex Sans';
-        font-style: normal;
-        font-display: swap;
-        font-weight: 100 700;
-        src: url(${font}) format('woff2-variations');
-        unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+    :root {
+        --bg-gradient: radial-gradient(circle at 50% -20%, #ffffff 0%, #e5e3e3 100%);
+        --color-neutral-50: #201d1d;
+        --color-neutral-100: #201d1d;
+        --color-neutral-200: #201d1d;
+        --color-neutral-300: #424245;
+        --color-neutral-400: #9a9898;
+        --color-neutral-500: #646262;
+        --color-neutral-600: #f1eeee;
+        --color-neutral-700: #f8f7f7;
+        --color-neutral-800: #fdfcfc;
+        --color-neutral-900: #fdfcfc;
+    }
+
+    body.dark {
+        --bg-gradient: radial-gradient(circle at 50% -20%, #222225 0%, #050505 100%);
+        --color-neutral-50: #fdfcfc;
+        --color-neutral-100: #fdfcfc;
+        --color-neutral-200: #fdfcfc;
+        --color-neutral-300: #d4d4d8;
+        --color-neutral-400: #a1a1aa;
+        --color-neutral-500: #71717a;
+        --color-neutral-600: #3f3f46;
+        --color-neutral-700: #27272a;
+        --color-neutral-800: #18181b;
+        --color-neutral-900: #0f0000;
     }
 
     body {
-        ${tw`font-sans bg-neutral-800 text-neutral-200`};
-        letter-spacing: 0.015em;
+        ${tw`font-sans text-neutral-200`};
+        background: var(--bg-gradient);
+        background-attachment: fixed;
+        letter-spacing: 0;
     }
 
     h1, h2, h3, h4, h5, h6 {
@@ -55,8 +74,8 @@ export default createGlobalStyle`
         border: solid 0 rgb(0 0 0 / 0%);
         border-right-width: 4px;
         border-left-width: 4px;
-        -webkit-border-radius: 9px 4px;
-        -webkit-box-shadow: inset 0 0 0 1px hsl(211, 10%, 53%), inset 0 0 0 4px hsl(209deg 18% 30%);
+        -webkit-border-radius: 4px 4px;
+        -webkit-box-shadow: inset 0 0 0 1px rgba(15,0,0,0.12), inset 0 0 0 4px #646262;
     }
 
     ::-webkit-scrollbar-track-piece {
@@ -68,7 +87,7 @@ export default createGlobalStyle`
         border-left-width: 0;
         border-top-width: 4px;
         border-bottom-width: 4px;
-        -webkit-border-radius: 4px 9px;
+        -webkit-border-radius: 4px 4px;
     }
 
     ::-webkit-scrollbar-corner {

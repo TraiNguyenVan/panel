@@ -1,3 +1,4 @@
+import Icon from '@/components/elements/Icon';
 import React, { useState } from 'react';
 import {
     faBoxOpen,
@@ -169,27 +170,27 @@ export default ({ backup }: Props) => {
                             onClick={onClick}
                             css={tw`text-gray-200 transition-colors duration-150 hover:text-gray-100 p-2`}
                         >
-                            <FontAwesomeIcon icon={faEllipsisH} />
+                            <Icon icon={faEllipsisH} />
                         </button>
                     )}
                 >
                     <div css={tw`text-sm`}>
                         <Can action={'backup.download'}>
                             <DropdownButtonRow onClick={doDownload}>
-                                <FontAwesomeIcon fixedWidth icon={faCloudDownloadAlt} css={tw`text-xs`} />
+                                <Icon fixedWidth icon={faCloudDownloadAlt} css={tw`text-xs`} />
                                 <span css={tw`ml-2`}>Download</span>
                             </DropdownButtonRow>
                         </Can>
                         <Can action={'backup.restore'}>
                             <DropdownButtonRow onClick={() => setModal('restore')}>
-                                <FontAwesomeIcon fixedWidth icon={faBoxOpen} css={tw`text-xs`} />
+                                <Icon fixedWidth icon={faBoxOpen} css={tw`text-xs`} />
                                 <span css={tw`ml-2`}>Restore</span>
                             </DropdownButtonRow>
                         </Can>
                         <Can action={'backup.delete'}>
                             <>
                                 <DropdownButtonRow onClick={onLockToggle}>
-                                    <FontAwesomeIcon
+                                    <Icon
                                         fixedWidth
                                         icon={backup.isLocked ? faUnlock : faLock}
                                         css={tw`text-xs mr-2`}
@@ -198,7 +199,7 @@ export default ({ backup }: Props) => {
                                 </DropdownButtonRow>
                                 {!backup.isLocked && (
                                     <DropdownButtonRow danger onClick={() => setModal('delete')}>
-                                        <FontAwesomeIcon fixedWidth icon={faTrashAlt} css={tw`text-xs`} />
+                                        <Icon fixedWidth icon={faTrashAlt} css={tw`text-xs`} />
                                         <span css={tw`ml-2`}>Delete</span>
                                     </DropdownButtonRow>
                                 )}
@@ -211,7 +212,7 @@ export default ({ backup }: Props) => {
                     onClick={() => setModal('delete')}
                     css={tw`text-gray-200 transition-colors duration-150 hover:text-gray-100 p-2`}
                 >
-                    <FontAwesomeIcon icon={faTrashAlt} />
+                    <Icon icon={faTrashAlt} />
                 </button>
             )}
         </>

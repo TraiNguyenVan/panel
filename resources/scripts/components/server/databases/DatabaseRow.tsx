@@ -1,3 +1,4 @@
+import Icon from '@/components/elements/Icon';
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDatabase, faEye, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
@@ -141,7 +142,7 @@ export default ({ database, className }: Props) => {
             </Modal>
             <GreyRowBox $hoverable={false} className={className} css={tw`mb-2`}>
                 <div css={tw`hidden md:block`}>
-                    <FontAwesomeIcon icon={faDatabase} fixedWidth />
+                    <Icon icon={faDatabase} fixedWidth />
                 </div>
                 <div css={tw`flex-1 ml-4`}>
                     <CopyOnClick text={database.name}>
@@ -166,11 +167,11 @@ export default ({ database, className }: Props) => {
                 </div>
                 <div css={tw`ml-8`}>
                     <Button isSecondary css={tw`mr-2`} onClick={() => setConnectionVisible(true)}>
-                        <FontAwesomeIcon icon={faEye} fixedWidth />
+                        <Icon icon={faEye} fixedWidth />
                     </Button>
                     <Can action={'database.delete'}>
                         <Button color={'red'} isSecondary onClick={() => setVisible(true)}>
-                            <FontAwesomeIcon icon={faTrashAlt} fixedWidth />
+                            <Icon icon={faTrashAlt} fixedWidth />
                         </Button>
                     </Can>
                 </div>

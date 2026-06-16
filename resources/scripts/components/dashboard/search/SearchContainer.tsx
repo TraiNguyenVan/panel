@@ -1,3 +1,4 @@
+import Icon from '@/components/elements/Icon';
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
@@ -21,7 +22,7 @@ export default () => {
             {visible && <SearchModal appear visible={visible} onDismissed={() => setVisible(false)} />}
             <Tooltip placement={'bottom'} content={'Search'}>
                 <div className={'navigation-link'} onClick={() => setVisible(true)}>
-                    <FontAwesomeIcon icon={faSearch} />
+                    <Icon icon={faSearch} />
                 </div>
             </Tooltip>
         </>

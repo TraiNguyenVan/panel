@@ -1,3 +1,4 @@
+import Icon from '@/components/elements/Icon';
 import TransferListener from '@/components/server/TransferListener';
 import React, { useEffect, useState } from 'react';
 import { NavLink, Route, Switch, useRouteMatch } from 'react-router-dom';
@@ -94,7 +95,7 @@ export default () => {
                                 {rootAdmin && (
                                     // eslint-disable-next-line react/jsx-no-target-blank
                                     <a href={`/admin/servers/view/${serverId}`} target={'_blank'}>
-                                        <FontAwesomeIcon icon={faExternalLinkAlt} />
+                                        <Icon icon={faExternalLinkAlt} />
                                     </a>
                                 )}
                             </div>

@@ -66,12 +66,12 @@ export default ({ activity, children }: Props) => {
                         <div className={classNames(style.icons, 'group-hover:text-gray-300')}>
                             {activity.isApi && (
                                 <Tooltip placement={'top'} content={'Using API Key'}>
-                                    <TerminalIcon />
+                                    <span className="font-mono border border-transparent">[+]</span>
                                 </Tooltip>
                             )}
                             {activity.event.startsWith('server:sftp.') && (
                                 <Tooltip placement={'top'} content={'Using SFTP'}>
-                                    <FolderOpenIcon />
+                                    <span className="font-mono border border-transparent">[+]</span>
                                 </Tooltip>
                             )}
                             {children}

@@ -84,7 +84,7 @@ export default ({ schedule, task }: Props) => {
             >
                 Are you sure you want to delete this task? This action cannot be undone.
             </ConfirmationModal>
-            <FontAwesomeIcon icon={icon} css={tw`text-lg text-white hidden md:block`} />
+            <Icon icon={icon} css={tw`text-lg text-white hidden md:block`} />
             <div css={tw`flex-none sm:flex-1 w-full sm:w-auto overflow-x-auto`}>
                 <p css={tw`md:ml-6 text-neutral-200 uppercase text-sm`}>{title}</p>
                 {task.payload && (
@@ -124,7 +124,7 @@ export default ({ schedule, task }: Props) => {
                         css={tw`block text-sm p-2 text-neutral-500 hover:text-neutral-100 transition-colors duration-150 mr-4 ml-auto sm:ml-0`}
                         onClick={() => setIsEditing(true)}
                     >
-                        <FontAwesomeIcon icon={faPencilAlt} />
+                        <Icon icon={faPencilAlt} />
                     </button>
                 </Can>
                 <Can action={'schedule.update'}>
@@ -134,7 +134,7 @@ export default ({ schedule, task }: Props) => {
                         css={tw`block text-sm p-2 text-neutral-500 hover:text-red-600 transition-colors duration-150`}
                         onClick={() => setVisible(true)}
                     >
-                        <FontAwesomeIcon icon={faTrashAlt} />
+                        <Icon icon={faTrashAlt} />
                     </button>
                 </Can>
             </div>

@@ -41,7 +41,7 @@ export default () => {
                         className={classNames(btnStyles.button, btnStyles.text, 'w-full sm:w-auto')}
                         onClick={() => setFilters((value) => ({ ...value, filters: {} }))}
                     >
-                        Clear Filters <XCircleIcon className={'w-4 h-4 ml-2'} />
+                        Clear Filters <span className="font-mono border border-transparent">[+]</span>
                     </Link>
                 </div>
             )}

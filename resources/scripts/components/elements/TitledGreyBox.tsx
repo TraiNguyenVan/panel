@@ -1,3 +1,4 @@
+import Icon from '@/components/elements/Icon';
 import React, { memo } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
@@ -12,18 +13,18 @@ interface Props {
 }
 
 const TitledGreyBox = ({ icon, title, children, className }: Props) => (
-    <div css={tw`rounded shadow-md bg-neutral-700`} className={className}>
-        <div css={tw`bg-neutral-900 rounded-t p-3 border-b border-black`}>
+    <div css={tw`bg-transparent`} className={className}>
+        <div css={tw`py-2 mb-2`}>
             {typeof title === 'string' ? (
-                <p css={tw`text-sm uppercase`}>
-                    {icon && <FontAwesomeIcon icon={icon} css={tw`mr-2 text-neutral-300`} />}
+                <p css={tw`text-sm font-mono uppercase`}>
+                    {icon && <Icon icon={icon} css={tw`mr-2 text-neutral-300`} />}
                     {title}
                 </p>
             ) : (
                 title
             )}
         </div>
-        <div css={tw`p-3`}>{children}</div>
+        <div css={tw`py-3`}>{children}</div>
     </div>
 );
 

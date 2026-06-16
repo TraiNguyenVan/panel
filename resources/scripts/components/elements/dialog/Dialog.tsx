@@ -116,7 +116,7 @@ export default ({
                                                 onClick={onClose}
                                                 className={'group'}
                                             >
-                                                <XIcon className={styles.close_icon} />
+                                                <span className="font-mono border border-transparent">[+]</span>
                                             </Button.Text>
                                         </div>
                                     )}

@@ -1,16 +1,42 @@
 const colors = require('tailwindcss/colors');
 
 const gray = {
-    50: 'hsl(216, 33%, 97%)',
-    100: 'hsl(214, 15%, 91%)',
-    200: 'hsl(210, 16%, 82%)',
-    300: 'hsl(211, 13%, 65%)',
-    400: 'hsl(211, 10%, 53%)',
-    500: 'hsl(211, 12%, 43%)',
-    600: 'hsl(209, 14%, 37%)',
-    700: 'hsl(209, 18%, 30%)',
-    800: 'hsl(209, 20%, 25%)',
-    900: 'hsl(210, 24%, 16%)',
+    50: '#201d1d', // ink
+    100: '#201d1d', // ink
+    200: '#201d1d', // ink
+    300: '#424245', // body
+    400: '#9a9898', // ash
+    500: '#646262', // mute
+    600: '#f1eeee', // surface-card
+    700: '#f8f7f7', // surface-soft
+    800: '#fdfcfc', // canvas
+    900: '#fdfcfc', // canvas
+};
+
+const brand = {
+    50: '#fdfcfc',
+    100: '#fdfcfc',
+    200: '#fdfcfc',
+    300: '#fdfcfc',
+    400: '#0f0000',
+    500: '#201d1d',
+    600: '#201d1d',
+    700: '#201d1d',
+    800: '#201d1d',
+    900: '#201d1d',
+};
+
+const red = {
+    50: '#fdfcfc',
+    100: '#fdfcfc',
+    200: '#fdfcfc',
+    300: '#fdfcfc',
+    400: '#d70015',
+    500: '#ff3b30',
+    600: '#ff3b30',
+    700: '#a50011',
+    800: '#a50011',
+    900: '#a50011',
 };
 
 module.exports = {
@@ -20,16 +46,29 @@ module.exports = {
     theme: {
         extend: {
             fontFamily: {
-                header: ['"IBM Plex Sans"', '"Roboto"', 'system-ui', 'sans-serif'],
+                header: ['"Berkeley Mono"', '"JetBrains Mono"', '"IBM Plex Mono"', 'monospace'],
+                sans: ['"Berkeley Mono"', '"JetBrains Mono"', '"IBM Plex Mono"', 'monospace'],
+                mono: ['"Berkeley Mono"', '"JetBrains Mono"', '"IBM Plex Mono"', 'monospace'],
             },
             colors: {
-                black: '#131a20',
-                // "primary" and "neutral" are deprecated, prefer the use of "blue" and "gray"
-                // in new code.
-                primary: colors.blue,
+                black: '#201d1d',
+                primary: brand,
+                blue: brand,
                 gray: gray,
                 neutral: gray,
+                red: red,
                 cyan: colors.cyan,
+            },
+            borderRadius: {
+                none: '0px',
+                sm: '4px',
+                DEFAULT: '4px',
+                md: '4px',
+                lg: '0px',
+                xl: '0px',
+                '2xl': '0px',
+                '3xl': '0px',
+                full: '9999px',
             },
             fontSize: {
                 '2xs': '0.625rem',
@@ -38,7 +77,7 @@ module.exports = {
                 250: '250ms',
             },
             borderColor: theme => ({
-                default: theme('colors.neutral.400', 'currentColor'),
+                default: 'rgba(15,0,0,0.12)',
             }),
         },
     },

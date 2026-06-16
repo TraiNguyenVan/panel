@@ -27,7 +27,7 @@ export default ({ meta }: { meta: Record<string, unknown> }) => {
                 }
                 onClick={() => setOpen(true)}
             >
-                <ClipboardListIcon className={'w-5 h-5'} />
+                <span className="font-mono border border-transparent">[+]</span>
             </button>
         </div>
     );

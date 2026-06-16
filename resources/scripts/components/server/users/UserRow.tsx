@@ -1,3 +1,4 @@
+import Icon from '@/components/elements/Icon';
 import React, { useState } from 'react';
 import { Subuser } from '@/state/server/subusers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -29,7 +30,7 @@ export default ({ subuser }: Props) => {
             <div css={tw`ml-4`}>
                 <p css={tw`font-medium text-center`}>
                     &nbsp;
-                    <FontAwesomeIcon
+                    <Icon
                         icon={subuser.twoFactorEnabled ? faUserLock : faUnlockAlt}
                         fixedWidth
                         css={!subuser.twoFactorEnabled ? tw`text-red-400` : undefined}
@@ -53,7 +54,7 @@ export default ({ subuser }: Props) => {
                             css={tw`block text-sm p-1 md:p-2 text-neutral-500 hover:text-neutral-100 transition-colors duration-150 mx-4`}
                             onClick={() => setVisible(true)}
                         >
-                            <FontAwesomeIcon icon={faPencilAlt} />
+                            <Icon icon={faPencilAlt} />
                         </button>
                     </Can>
                     <Can action={'user.delete'}>

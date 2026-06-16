@@ -1,3 +1,4 @@
+import Icon from '@/components/elements/Icon';
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArchive, faEllipsisH, faLock } from '@fortawesome/free-solid-svg-icons';
@@ -53,9 +54,9 @@ export default ({ backup, className }: Props) => {
                 <div css={tw`mr-4`}>
                     {backup.completedAt !== null ? (
                         backup.isLocked ? (
-                            <FontAwesomeIcon icon={faLock} css={tw`text-yellow-500`} />
+                            <Icon icon={faLock} css={tw`text-yellow-500`} />
                         ) : (
-                            <FontAwesomeIcon icon={faArchive} css={tw`text-neutral-300`} />
+                            <Icon icon={faArchive} css={tw`text-neutral-300`} />
                         )
                     ) : (
                         <Spinner size={'small'} />
@@ -90,7 +91,7 @@ export default ({ backup, className }: Props) => {
                 <div css={tw`mt-4 md:mt-0 ml-6`} style={{ marginRight: '-0.5rem' }}>
                     {!backup.completedAt ? (
                         <div css={tw`p-2 invisible`}>
-                            <FontAwesomeIcon icon={faEllipsisH} />
+                            <Icon icon={faEllipsisH} />
                         </div>
                     ) : (
                         <BackupContextMenu backup={backup} />

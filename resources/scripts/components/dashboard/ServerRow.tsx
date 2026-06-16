@@ -1,6 +1,4 @@
 import React, { memo, useEffect, useRef, useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEthernet, faHdd, faMemory, faMicrochip, faServer } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 import { Server } from '@/api/server/getServer';
 import getServerResourceUsage, { ServerPowerState, ServerStats } from '@/api/server/getServerResourceUsage';
@@ -16,7 +14,7 @@ import isEqual from 'react-fast-compare';
 const isAlarmState = (current: number, limit: number): boolean => limit > 0 && current / (limit * 1024 * 1024) >= 0.9;
 
 const Icon = memo(
-    styled(FontAwesomeIcon)<{ $alarm: boolean }>`
+    styled.span<{ $alarm: boolean }>`
         ${(props) => (props.$alarm ? tw`text-red-400` : tw`text-neutral-500`)};
     `,
     isEqual
@@ -91,8 +89,8 @@ export default ({ server, className }: { server: Server; className?: string }) =
     return (
         <StatusIndicatorBox as={Link} to={`/server/${server.id}`} className={className} $status={stats?.status}>
             <div css={tw`flex items-center col-span-12 sm:col-span-5 lg:col-span-6`}>
-                <div className={'icon mr-4'}>
-                    <FontAwesomeIcon icon={faServer} />
+                <div className={'icon mr-4 font-mono'}>
+                    [+]
                 </div>
                 <div>
                     <p css={tw`text-lg break-words`}>{server.name}</p>
@@ -103,7 +101,7 @@ export default ({ server, className }: { server: Server; className?: string }) =
             </div>
             <div css={tw`flex-1 ml-4 lg:block lg:col-span-2 hidden`}>
                 <div css={tw`flex justify-center`}>
-                    <FontAwesomeIcon icon={faEthernet} css={tw`text-neutral-500`} />
+                    <span css={tw`text-neutral-500 font-mono`}>[NET]</span>
                     <p css={tw`text-sm text-neutral-400 ml-2`}>
                         {server.allocations
                             .filter((alloc) => alloc.isDefault)
@@ -141,8 +139,8 @@ export default ({ server, className }: { server: Server; className?: string }) =
                 ) : (
                     <React.Fragment>
                         <div css={tw`flex-1 ml-4 sm:block hidden`}>
-                            <div css={tw`flex justify-center`}>
-                                <Icon icon={faMicrochip} $alarm={alarms.cpu} />
+                            <div css={tw`flex justify-center font-mono`}>
+                                <Icon $alarm={alarms.cpu}>[CPU]</Icon>
                                 <IconDescription $alarm={alarms.cpu}>
                                     {stats.cpuUsagePercent.toFixed(2)} %
                                 </IconDescription>
@@ -150,8 +148,8 @@ export default ({ server, className }: { server: Server; className?: string }) =
                             <p css={tw`text-xs text-neutral-600 text-center mt-1`}>of {cpuLimit}</p>
                         </div>
                         <div css={tw`flex-1 ml-4 sm:block hidden`}>
-                            <div css={tw`flex justify-center`}>
-                                <Icon icon={faMemory} $alarm={alarms.memory} />
+                            <div css={tw`flex justify-center font-mono`}>
+                                <Icon $alarm={alarms.memory}>[RAM]</Icon>
                                 <IconDescription $alarm={alarms.memory}>
                                     {bytesToString(stats.memoryUsageInBytes)}
                                 </IconDescription>
@@ -159,8 +157,8 @@ export default ({ server, className }: { server: Server; className?: string }) =
                             <p css={tw`text-xs text-neutral-600 text-center mt-1`}>of {memoryLimit}</p>
                         </div>
                         <div css={tw`flex-1 ml-4 sm:block hidden`}>
-                            <div css={tw`flex justify-center`}>
-                                <Icon icon={faHdd} $alarm={alarms.disk} />
+                            <div css={tw`flex justify-center font-mono`}>
+                                <Icon $alarm={alarms.disk}>[DSK]</Icon>
                                 <IconDescription $alarm={alarms.disk}>
                                     {bytesToString(stats.diskUsageInBytes)}
                                 </IconDescription>

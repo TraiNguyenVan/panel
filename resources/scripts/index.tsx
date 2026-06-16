@@ -13,4 +13,8 @@ import './i18n';
 // @see https://github.com/gaearon/react-hot-loader#hook-support
 setConfig({ reloadHooks: false });
 
+if (localStorage.getItem('theme') === 'dark') {
+    document.body.classList.add('dark');
+}
+
 ReactDOM.render(<App />, document.getElementById('app'));

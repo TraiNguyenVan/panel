@@ -1,3 +1,4 @@
+import Icon from '@/components/elements/Icon';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFileAlt, faFileArchive, faFileImport, faFolder } from '@fortawesome/free-solid-svg-icons';
 import { encodePathSegments } from '@/helpers';
@@ -47,11 +48,11 @@ const FileObjectRow = ({ file }: { file: FileObject }) => (
         <Clickable file={file}>
             <div css={tw`flex-none text-neutral-400 ml-6 mr-4 text-lg pl-3`}>
                 {file.isFile ? (
-                    <FontAwesomeIcon
+                    <Icon
                         icon={file.isSymlink ? faFileImport : file.isArchiveType() ? faFileArchive : faFileAlt}
                     />
                 ) : (
-                    <FontAwesomeIcon icon={faFolder} />
+                    <Icon icon={faFolder} />
                 )}
             </div>
             <div css={tw`flex-1 truncate`}>{file.name}</div>

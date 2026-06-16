@@ -1,8 +1,6 @@
 import * as React from 'react';
 import { useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCogs, faLayerGroup, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 import { useStoreState } from 'easy-peasy';
 import { ApplicationStore } from '@/state';
 import SearchContainer from '@/components/dashboard/search/SearchContainer';
@@ -11,23 +9,28 @@ import styled from 'styled-components/macro';
 import http from '@/api/http';
 import SpinnerOverlay from '@/components/elements/SpinnerOverlay';
 import Tooltip from '@/components/elements/tooltip/Tooltip';
-import Avatar from '@/components/Avatar';
 
 const RightNavigation = styled.div`
     & > a,
     & > button,
     & > .navigation-link {
-        ${tw`flex items-center h-full no-underline text-neutral-300 px-6 cursor-pointer transition-all duration-150`};
+        ${tw`relative flex items-center h-full no-underline text-neutral-300 px-6 cursor-pointer transition-colors duration-250`};
 
         &:active,
         &:hover {
-            ${tw`text-neutral-100 bg-black`};
+            ${tw`text-neutral-50 bg-neutral-700`};
         }
 
-        &:active,
-        &:hover,
-        &.active {
-            box-shadow: inset 0 -2px ${theme`colors.cyan.600`.toString()};
+        &::after {
+            content: '';
+            ${tw`absolute bottom-0 left-0 w-full h-[2px] bg-neutral-50 origin-center transition-transform duration-250 ease-out`};
+            transform: scaleX(0);
+        }
+
+        &:hover::after,
+        &:active::after,
+        &.active::after {
+            transform: scaleX(1);
         }
     }
 `;
@@ -45,10 +48,21 @@ export default () => {
         });
     };
 
+    const toggleTheme = () => {
+        const isDark = document.body.classList.contains('dark');
+        if (isDark) {
+            document.body.classList.remove('dark');
+            localStorage.setItem('theme', 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem('theme', 'dark');
+        }
+    };
+
     return (
-        <div className={'w-full bg-neutral-900 shadow-md overflow-x-auto'}>
+        <div className={'w-full bg-transparent border-b border-neutral-600 overflow-x-auto'}>
             <SpinnerOverlay visible={isLoggingOut} />
-            <div className={'mx-auto w-full flex items-center h-[3.5rem] max-w-[1200px]'}>
+            <div css={tw`mx-auto w-full flex items-center h-[3.5rem] max-w-[1200px]`}>
                 <div id={'logo'} className={'flex-1'}>
                     <Link
                         to={'/'}
@@ -61,30 +75,23 @@ export default () => {
                 </div>
                 <RightNavigation className={'flex h-full items-center justify-center'}>
                     <SearchContainer />
-                    <Tooltip placement={'bottom'} content={'Dashboard'}>
-                        <NavLink to={'/'} exact>
-                            <FontAwesomeIcon icon={faLayerGroup} />
-                        </NavLink>
-                    </Tooltip>
+                    <NavLink to={'/'} exact>
+                        [ Dashboard ]
+                    </NavLink>
                     {rootAdmin && (
-                        <Tooltip placement={'bottom'} content={'Admin'}>
-                            <a href={'/admin'} rel={'noreferrer'}>
-                                <FontAwesomeIcon icon={faCogs} />
-                            </a>
-                        </Tooltip>
+                        <a href={'/admin'} rel={'noreferrer'}>
+                            [ Admin ]
+                        </a>
                     )}
-                    <Tooltip placement={'bottom'} content={'Account Settings'}>
-                        <NavLink to={'/account'}>
-                            <span className={'flex items-center w-5 h-5'}>
-                                <Avatar.User />
-                            </span>
-                        </NavLink>
-                    </Tooltip>
-                    <Tooltip placement={'bottom'} content={'Sign Out'}>
-                        <button onClick={onTriggerLogout}>
-                            <FontAwesomeIcon icon={faSignOutAlt} />
-                        </button>
-                    </Tooltip>
+                    <NavLink to={'/account'}>
+                        [ Account ]
+                    </NavLink>
+                    <button onClick={toggleTheme}>
+                        [ Theme ]
+                    </button>
+                    <button onClick={onTriggerLogout}>
+                        [ Logout ]
+                    </button>
                 </RightNavigation>
             </div>
         </div>

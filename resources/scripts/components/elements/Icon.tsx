@@ -1,6 +1,5 @@
 import React, { CSSProperties } from 'react';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
-import tw from 'twin.macro';
 
 interface Props {
     icon: IconDefinition;
@@ -8,21 +7,71 @@ interface Props {
     style?: CSSProperties;
 }
 
+const asciiMap: Record<string, string> = {
+    trash: '[x]',
+    'trash-alt': '[x]',
+    'pencil-alt': '[*]',
+    pen: '[*]',
+    server: '[#]',
+    copy: '[=]',
+    clone: '[=]',
+    play: '[>]',
+    'play-circle': '[>]',
+    stop: '[ ]',
+    'stop-circle': '[ ]',
+    redo: '[R]',
+    sync: '[R]',
+    'sync-alt': '[R]',
+    folder: '[/]',
+    'folder-open': '[/]',
+    file: '[_]',
+    'file-alt': '[_]',
+    'file-code': '[_]',
+    'file-archive': '[_]',
+    'box-open': '[^]',
+    archive: '[^]',
+    'level-up-alt': '[^]',
+    'arrow-up': '[^]',
+    'arrow-down': '[v]',
+    'file-download': '[v]',
+    'cloud-download-alt': '[v]',
+    'cloud-upload-alt': '[^]',
+    lock: '[!]',
+    unlock: '[!]',
+    key: '[k]',
+    user: '[@]',
+    users: '[@]',
+    clock: '[t]',
+    history: '[t]',
+    'exclamation-triangle': '[!]',
+    'exclamation-circle': '[!]',
+    check: '[ok]',
+    'check-circle': '[ok]',
+    search: '[?]',
+    cog: '[&]',
+    cogs: '[&]',
+    wrench: '[&]',
+    'ellipsis-h': '[...]',
+    'ellipsis-v': '[...]',
+    wifi: '[~]',
+    'network-wired': '[~]',
+    microchip: '[#]',
+    memory: '[#]',
+    hdd: '[#]',
+    terminal: '[_>]',
+    'sign-in-alt': '[->]',
+    'sign-out-alt': '[<-]',
+    'external-link-alt': '[->]'
+};
+
 const Icon = ({ icon, className, style }: Props) => {
-    const [width, height, , , paths] = icon.icon;
+    const name = icon ? icon.iconName : '';
+    const ascii = asciiMap[name] || '[+]';
 
     return (
-        <svg
-            xmlns={'http://www.w3.org/2000/svg'}
-            viewBox={`0 0 ${width} ${height}`}
-            css={tw`fill-current inline-block`}
-            className={className}
-            style={style}
-        >
-            {(Array.isArray(paths) ? paths : [paths]).map((path, index) => (
-                <path key={`svg_path_${index}`} d={path} />
-            ))}
-        </svg>
+        <span className={`font-mono border border-transparent ${className || ''}`} style={style}>
+            {ascii}
+        </span>
     );
 };
 

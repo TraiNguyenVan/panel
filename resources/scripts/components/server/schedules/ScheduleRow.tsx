@@ -1,3 +1,4 @@
+import Icon from '@/components/elements/Icon';
 import React from 'react';
 import { Schedule } from '@/api/server/schedules/getServerSchedules';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -9,7 +10,7 @@ import ScheduleCronRow from '@/components/server/schedules/ScheduleCronRow';
 export default ({ schedule }: { schedule: Schedule }) => (
     <>
         <div css={tw`hidden md:block`}>
-            <FontAwesomeIcon icon={faCalendarAlt} fixedWidth />
+            <Icon icon={faCalendarAlt} fixedWidth />
         </div>
         <div css={tw`flex-1 md:ml-4`}>
             <p>{schedule.name}</p>

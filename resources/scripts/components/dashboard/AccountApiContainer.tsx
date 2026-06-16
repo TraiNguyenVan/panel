@@ -1,3 +1,4 @@
+import Icon from '@/components/elements/Icon';
 import React, { useEffect, useState } from 'react';
 import ContentBox from '@/components/elements/ContentBox';
 import CreateApiKeyForm from '@/components/dashboard/forms/CreateApiKeyForm';
@@ -69,7 +70,7 @@ export default () => {
                                 key={key.identifier}
                                 css={[tw`bg-neutral-600 flex items-center`, index > 0 && tw`mt-2`]}
                             >
-                                <FontAwesomeIcon icon={faKey} css={tw`text-neutral-300`} />
+                                <Icon icon={faKey} css={tw`text-neutral-300`} />
                                 <div css={tw`ml-4 flex-1 overflow-hidden`}>
                                     <p css={tw`text-sm break-words`}>{key.description}</p>
                                     <p css={tw`text-2xs text-neutral-300 uppercase`}>
@@ -81,7 +82,7 @@ export default () => {
                                     <code css={tw`font-mono py-1 px-2 bg-neutral-900 rounded`}>{key.identifier}</code>
                                 </p>
                                 <button css={tw`ml-4 p-2 text-sm`} onClick={() => setDeleteIdentifier(key.identifier)}>
-                                    <FontAwesomeIcon
+                                    <Icon
                                         icon={faTrashAlt}
                                         css={tw`text-neutral-400 hover:text-red-400 transition-colors duration-150`}
                                     />

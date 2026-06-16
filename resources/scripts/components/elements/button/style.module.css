@@ -42,7 +42,7 @@
     }
 
     &:disabled {
-        @apply bg-blue-500/75 text-blue-200/75;
+        @apply bg-blue-500 text-blue-200;
     }
 }
 
@@ -55,7 +55,7 @@
     }
 
     &:disabled {
-        @apply bg-gray-500/75 text-gray-200/75;
+        @apply bg-gray-500 text-gray-200;
     }
 }
 
@@ -68,6 +68,6 @@
     }
 
     &:disabled {
-        @apply bg-red-600/75 text-red-50/75;
+        @apply bg-red-600 text-red-50;
     }
 }

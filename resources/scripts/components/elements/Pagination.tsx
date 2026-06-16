@@ -1,3 +1,4 @@
+import Icon from '@/components/elements/Icon';
 import React from 'react';
 import { PaginatedResult } from '@/api/http';
 import tw from 'twin.macro';
@@ -50,7 +51,7 @@ function Pagination<T>({ data: { items, pagination }, onPageSelect, children }: 
                 <div css={tw`mt-4 flex justify-center`}>
                     {pages[0] > 1 && !isFirstPage && (
                         <Block isSecondary color={'primary'} onClick={() => onPageSelect(1)}>
-                            <FontAwesomeIcon icon={faAngleDoubleLeft} />
+                            <Icon icon={faAngleDoubleLeft} />
                         </Block>
                     )}
                     {pages.map((i) => (
@@ -65,7 +66,7 @@ function Pagination<T>({ data: { items, pagination }, onPageSelect, children }: 
                     ))}
                     {pages[4] < pagination.totalPages && !isLastPage && (
                         <Block isSecondary color={'primary'} onClick={() => onPageSelect(pagination.totalPages)}>
-                            <FontAwesomeIcon icon={faAngleDoubleRight} />
+                            <Icon icon={faAngleDoubleRight} />
                         </Block>
                     )}
                 </div>

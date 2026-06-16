@@ -226,7 +226,7 @@ export default () => {
                             styles.command_icon
                         )}
                     >
-                        <ChevronDoubleRightIcon className={'w-4 h-4'} />
+                        <span className="font-mono border border-transparent">[+]</span>
                     </div>
                 </div>
             )}

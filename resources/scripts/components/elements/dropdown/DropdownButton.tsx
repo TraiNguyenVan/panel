@@ -15,7 +15,7 @@ export default ({ className, animate = true, children }: Props) => (
         {typeof children === 'string' ? (
             <>
                 <span className={'mr-2'}>{children}</span>
-                <ChevronDownIcon aria-hidden={'true'} data-animated={animate.toString()} />
+                <span className="font-mono border border-transparent">[+]</span>
             </>
         ) : (
             children

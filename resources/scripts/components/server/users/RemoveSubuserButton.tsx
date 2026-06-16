@@ -1,3 +1,4 @@
+import Icon from '@/components/elements/Icon';
 import React, { useState } from 'react';
 import ConfirmationModal from '@/components/elements/ConfirmationModal';
 import { ServerContext } from '@/state/server';
@@ -52,7 +53,7 @@ export default ({ subuser }: { subuser: Subuser }) => {
                 css={tw`block text-sm p-2 text-neutral-500 hover:text-red-600 transition-colors duration-150`}
                 onClick={() => setShowConfirmation(true)}
             >
-                <FontAwesomeIcon icon={faTrashAlt} />
+                <Icon icon={faTrashAlt} />
             </button>
         </>
     );

@@ -79,10 +79,10 @@ export default () => {
                 legend={
                     <>
                         <Tooltip arrow content={'Inbound'}>
-                            <CloudDownloadIcon className={'mr-2 w-4 h-4 text-yellow-400'} />
+                            <span className="font-mono border border-transparent">[+]</span>
                         </Tooltip>
                         <Tooltip arrow content={'Outbound'}>
-                            <CloudUploadIcon className={'w-4 h-4 text-cyan-400'} />
+                            <span className="font-mono border border-transparent">[+]</span>
                         </Tooltip>
                     </>
                 }
