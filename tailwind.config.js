@@ -1,16 +1,16 @@
 const colors = require('tailwindcss/colors');
 
 const gray = {
-    50: '#201d1d', // ink
-    100: '#201d1d', // ink
-    200: '#201d1d', // ink
-    300: '#424245', // body
-    400: '#9a9898', // ash
-    500: '#646262', // mute
-    600: '#f1eeee', // surface-card
-    700: '#f8f7f7', // surface-soft
-    800: '#fdfcfc', // canvas
-    900: '#fdfcfc', // canvas
+    50: 'var(--color-neutral-50)',
+    100: 'var(--color-neutral-100)',
+    200: 'var(--color-neutral-200)',
+    300: 'var(--color-neutral-300)',
+    400: 'var(--color-neutral-400)',
+    500: 'var(--color-neutral-500)',
+    600: 'var(--color-neutral-600)',
+    700: 'var(--color-neutral-700)',
+    800: 'var(--color-neutral-800)',
+    900: 'var(--color-neutral-900)',
 };
 
 const brand = {
