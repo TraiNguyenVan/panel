@@ -35,8 +35,8 @@ export default () => {
             return {
                 ...opts,
                 label: !index ? 'Network In' : 'Network Out',
-                borderColor: !index ? theme('colors.neutral.400') : theme('colors.neutral.600'),
-                backgroundColor: hexToRgba(!index ? theme('colors.neutral.600') : theme('colors.neutral.800'), 0.5),
+                borderColor: !index ? theme('colors.neutral.300') : theme('colors.neutral.500'),
+                backgroundColor: hexToRgba(!index ? theme('colors.neutral.300') : theme('colors.neutral.500'), 0.2),
             };
         },
     });
@@ -79,10 +79,10 @@ export default () => {
                 legend={
                     <>
                         <Tooltip arrow content={'Inbound'}>
-                            <span className="font-mono border border-transparent">[+]</span>
+                            <span className="font-mono border border-transparent">[IN]</span>
                         </Tooltip>
                         <Tooltip arrow content={'Outbound'}>
-                            <span className="font-mono border border-transparent">[+]</span>
+                            <span className="font-mono border border-transparent">[OUT]</span>
                         </Tooltip>
                     </>
                 }
