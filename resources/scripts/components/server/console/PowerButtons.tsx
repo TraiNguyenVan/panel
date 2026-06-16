@@ -51,8 +51,9 @@ export default ({ className }: PowerButtonProps) => {
             </Dialog.Confirm>
             <Can action={'control.start'}>
                 <button
-                    className={classNames('flex-1 px-4 py-2 bg-transparent text-neutral-300 hover:text-neutral-100 transition-colors border-b border-neutral-600 font-mono text-sm uppercase', {
-                        'opacity-50 cursor-not-allowed': status !== 'offline'
+                    className={classNames('flex-1 px-4 py-2 bg-gradient-to-r from-transparent to-transparent text-neutral-300 transition-all border-b border-neutral-600 font-mono text-sm uppercase', {
+                        'opacity-50 cursor-not-allowed': status !== 'offline',
+                        'hover:from-green-900/30 hover:text-green-400 hover:border-green-600/50': status === 'offline'
                     })}
                     disabled={status !== 'offline'}
                     onClick={onButtonClick.bind(this, 'start')}
@@ -62,8 +63,9 @@ export default ({ className }: PowerButtonProps) => {
             </Can>
             <Can action={'control.restart'}>
                 <button 
-                    className={classNames('flex-1 px-4 py-2 bg-transparent text-neutral-300 hover:text-neutral-100 transition-colors border-b border-neutral-600 font-mono text-sm uppercase', {
-                        'opacity-50 cursor-not-allowed': !status
+                    className={classNames('flex-1 px-4 py-2 bg-gradient-to-r from-transparent to-transparent text-neutral-300 transition-all border-b border-neutral-600 font-mono text-sm uppercase', {
+                        'opacity-50 cursor-not-allowed': !status,
+                        'hover:from-blue-900/30 hover:text-blue-400 hover:border-blue-600/50': status
                     })}
                     disabled={!status} 
                     onClick={onButtonClick.bind(this, 'restart')}
@@ -73,8 +75,9 @@ export default ({ className }: PowerButtonProps) => {
             </Can>
             <Can action={'control.stop'}>
                 <button
-                    className={classNames('flex-1 px-4 py-2 bg-transparent text-neutral-300 hover:text-red-400 transition-colors border-b border-neutral-600 font-mono text-sm uppercase', {
-                        'opacity-50 cursor-not-allowed': status === 'offline'
+                    className={classNames('flex-1 px-4 py-2 bg-gradient-to-r from-transparent to-transparent text-neutral-300 transition-all border-b border-neutral-600 font-mono text-sm uppercase', {
+                        'opacity-50 cursor-not-allowed': status === 'offline',
+                        'hover:from-red-900/30 hover:text-red-400 hover:border-red-600/50': status !== 'offline'
                     })}
                     disabled={status === 'offline'}
                     onClick={onButtonClick.bind(this, killable ? 'kill' : 'stop')}
