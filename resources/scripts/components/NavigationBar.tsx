@@ -1,14 +1,16 @@
 import * as React from 'react';
-import { useState } from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Link, NavLink, useLocation } from 'react-router-dom';
 import { useStoreState } from 'easy-peasy';
 import { ApplicationStore } from '@/state';
 import SearchContainer from '@/components/dashboard/search/SearchContainer';
-import tw, { theme } from 'twin.macro';
+import tw from 'twin.macro';
 import styled from 'styled-components/macro';
 import http from '@/api/http';
 import SpinnerOverlay from '@/components/elements/SpinnerOverlay';
-import Tooltip from '@/components/elements/tooltip/Tooltip';
+import { ServerContext } from '@/state/server';
+import { SocketEvent } from '@/components/server/events';
+import { bytesToString } from '@/lib/formatters';
 
 const RightNavigation = styled.div`
     & > a,
@@ -34,6 +36,41 @@ const RightNavigation = styled.div`
         }
     }
 `;
+
+const ServerRamMonitor = () => {
+    const [memory, setMemory] = useState(0);
+    const connected = ServerContext.useStoreState((state) => state.socket.connected);
+    const instance = ServerContext.useStoreState((state) => state.socket.instance);
+    const limits = ServerContext.useStoreState((state) => state.server.data?.limits);
+
+    useEffect(() => {
+        if (!connected || !instance) return;
+        const listener = (data: string) => {
+            try {
+                const stats = JSON.parse(data);
+                setMemory(stats.memory_bytes);
+            } catch (e) {}
+        };
+        instance.addListener(SocketEvent.STATS, listener);
+        return () => {
+            instance.removeListener(SocketEvent.STATS, listener);
+        };
+    }, [connected, instance]);
+
+    return (
+        <span className="text-neutral-200 ml-1">
+            {bytesToString(memory)} / {limits?.memory ? bytesToString(limits.memory * 1024 * 1024) : '∞'}
+        </span>
+    );
+};
+
+const RamMonitorWrapper = () => {
+    const location = useLocation();
+    if (!location.pathname.startsWith('/server/')) {
+        return <span className="text-neutral-200 ml-1">N/A (Select Server)</span>;
+    }
+    return <ServerRamMonitor />;
+};
 
 export default () => {
     const name = useStoreState((state: ApplicationStore) => state.settings.data!.name);
@@ -87,7 +124,7 @@ export default () => {
                         [ Account ]
                     </NavLink>
                     <div className={'flex items-center px-6 text-neutral-400 font-mono text-sm whitespace-nowrap'}>
-                        [ RAM: <span className="text-neutral-200 ml-1">-- / -- GiB</span> ]
+                        [ RAM: <RamMonitorWrapper /> ]
                     </div>
                     <button onClick={toggleTheme}>
                         [ Theme ]
