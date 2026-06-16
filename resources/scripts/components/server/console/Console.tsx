@@ -226,7 +226,7 @@ export default () => {
                             styles.command_icon
                         )}
                     >
-                        <span className="font-mono border border-transparent">[+]</span>
+                        <span className="font-mono border border-transparent">&gt;</span>
                     </div>
                 </div>
             )}
