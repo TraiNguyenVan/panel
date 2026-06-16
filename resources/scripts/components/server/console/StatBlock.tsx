@@ -20,7 +20,7 @@ export default ({ title, copyOnClick, icon, color, className, children }: StatBl
 
     return (
         <CopyOnClick text={copyOnClick}>
-            <div className={classNames('flex items-center p-3 bg-neutral-900/50 border border-neutral-700 transition-all hover:bg-neutral-800/60 cursor-pointer', className)}>
+            <div className={classNames('col-span-3 md:col-span-2 lg:col-span-6 flex items-center p-3 bg-neutral-900/50 border border-neutral-700 transition-all hover:bg-neutral-800/60 cursor-pointer', className)}>
                 <div className={'flex items-center text-neutral-500 mr-3 font-mono text-sm'}>
                     <Icon icon={icon} className="w-5 h-5" />
                 </div>
