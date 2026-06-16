@@ -86,6 +86,9 @@ export default () => {
                     <NavLink to={'/account'}>
                         [ Account ]
                     </NavLink>
+                    <div className={'flex items-center px-6 text-neutral-400 font-mono text-sm'}>
+                        [ RAM: <span className="text-neutral-200 ml-1">-- / -- GiB</span> ]
+                    </div>
                     <button onClick={toggleTheme}>
                         [ Theme ]
                     </button>
