@@ -163,6 +163,12 @@
                 .text-muted, .help-block, small, .breadcrumb>li>a, .breadcrumb>li.active, .nav-tabs-custom>.nav-tabs>li>a {
                     color: var(--color-neutral-200) !important;
                 }
+                a:not(.btn) {
+                    color: var(--color-neutral-200) !important;
+                }
+                a:not(.btn):hover {
+                    color: var(--color-neutral-300) !important;
+                }
                 ::-webkit-input-placeholder { color: var(--color-neutral-300) !important; opacity: 1 !important; }
                 ::-moz-placeholder { color: var(--color-neutral-300) !important; opacity: 1 !important; }
                 :-ms-input-placeholder { color: var(--color-neutral-300) !important; opacity: 1 !important; }
