@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import {
     faClock,
     faCloudDownloadAlt,
@@ -16,8 +16,44 @@ import StatBlock from '@/components/server/console/StatBlock';
 import useWebsocketEvent from '@/plugins/useWebsocketEvent';
 import classNames from 'classnames';
 import { capitalize } from '@/lib/strings';
+import { staggerCards } from '@/lib/animations';
 
-type Stats = Record<'memory' | 'cpu' | 'disk' | 'uptime' | 'rx' | 'tx', number>;
+const useAnimatedValue = (value: number, duration = 2000) => {
+    const [current, setCurrent] = useState(value);
+    
+    useEffect(() => {
+        let startTimestamp: number;
+        const startValue = current;
+        const diff = value - startValue;
+
+        if (diff === 0) return;
+
+        let frameId: number;
+
+        const step = (timestamp: number) => {
+            if (!startTimestamp) startTimestamp = timestamp;
+            const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+            
+            // Linear easing for continuous rolling
+            const easeProgress = progress;
+
+            setCurrent(startValue + diff * easeProgress);
+
+            if (progress < 1) {
+                frameId = window.requestAnimationFrame(step);
+            } else {
+                setCurrent(value);
+            }
+        };
+
+        frameId = window.requestAnimationFrame(step);
+
+        return () => window.cancelAnimationFrame(frameId);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [value, duration]);
+
+    return current;
+};
 
 const getBackgroundColor = (value: number, max: number | null): string | undefined => {
     const delta = !max ? 0 : value / max;
@@ -41,6 +77,8 @@ const Limit = ({ limit, children }: { limit: string | null; children: React.Reac
 
 const ServerDetailsBlock = ({ className }: { className?: string }) => {
     const [stats, setStats] = useState<Stats>({ memory: 0, cpu: 0, disk: 0, uptime: 0, tx: 0, rx: 0 });
+    const [animated, setAnimated] = useState(false);
+    const gridRef = useRef<HTMLDivElement>(null);
 
     const status = ServerContext.useStoreState((state) => state.status.value);
     const connected = ServerContext.useStoreState((state) => state.socket.connected);
@@ -88,8 +126,24 @@ const ServerDetailsBlock = ({ className }: { className?: string }) => {
         });
     });
 
+    // Animate stat cards in on first mount
+    useEffect(() => {
+        if (!gridRef.current || animated) return;
+        const cards = gridRef.current.querySelectorAll('[class*="col-span"]');
+        if (cards.length) {
+            setAnimated(true);
+            staggerCards(cards, 150);
+        }
+    }, []);
+
+    const animatedCpu = useAnimatedValue(stats.cpu);
+    const animatedMemory = useAnimatedValue(stats.memory);
+    const animatedDisk = useAnimatedValue(stats.disk);
+    const animatedRx = useAnimatedValue(stats.rx);
+    const animatedTx = useAnimatedValue(stats.tx);
+
     return (
-        <div className={classNames('grid grid-cols-6 gap-2 md:gap-4', className)}>
+        <div ref={gridRef} className={classNames('grid grid-cols-6 gap-2 md:gap-4', className)}>
             <StatBlock icon={faWifi} title={'Address'} copyOnClick={allocation}>
                 {allocation}
             </StatBlock>
@@ -110,7 +164,7 @@ const ServerDetailsBlock = ({ className }: { className?: string }) => {
                 {status === 'offline' ? (
                     <span className={'text-gray-400'}>Offline</span>
                 ) : (
-                    <Limit limit={textLimits.cpu}>{stats.cpu.toFixed(2)}%</Limit>
+                    <Limit limit={textLimits.cpu}>{animatedCpu.toFixed(2)}%</Limit>
                 )}
             </StatBlock>
             <StatBlock
@@ -121,17 +175,17 @@ const ServerDetailsBlock = ({ className }: { className?: string }) => {
                 {status === 'offline' ? (
                     <span className={'text-gray-400'}>Offline</span>
                 ) : (
-                    <Limit limit={textLimits.memory}>{bytesToString(stats.memory)}</Limit>
+                    <Limit limit={textLimits.memory}>{bytesToString(animatedMemory)}</Limit>
                 )}
             </StatBlock>
             <StatBlock icon={faHdd} title={'Disk'} color={getBackgroundColor(stats.disk / 1024, limits.disk * 1024)}>
-                <Limit limit={textLimits.disk}>{bytesToString(stats.disk)}</Limit>
+                <Limit limit={textLimits.disk}>{bytesToString(animatedDisk)}</Limit>
             </StatBlock>
             <StatBlock icon={faCloudDownloadAlt} title={'Network (Inbound)'}>
-                {status === 'offline' ? <span className={'text-gray-400'}>Offline</span> : bytesToString(stats.rx)}
+                {status === 'offline' ? <span className={'text-gray-400'}>Offline</span> : bytesToString(animatedRx)}
             </StatBlock>
             <StatBlock icon={faCloudUploadAlt} title={'Network (Outbound)'}>
-                {status === 'offline' ? <span className={'text-gray-400'}>Offline</span> : bytesToString(stats.tx)}
+                {status === 'offline' ? <span className={'text-gray-400'}>Offline</span> : bytesToString(animatedTx)}
             </StatBlock>
         </div>
     );

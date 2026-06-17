@@ -83,9 +83,9 @@ const NewDirectoryDialog = asDialog({
                         </p>
                     </Form>
                     <Dialog.Footer>
-                        <Button.Text className={'w-full sm:w-auto'} onClick={close}>
+                        <Button className={'w-full sm:w-auto'} onClick={close}>
                             Cancel
-                        </Button.Text>
+                        </Button>
                         <Button className={'w-full sm:w-auto'} onClick={submitForm}>
                             Create
                         </Button>
@@ -102,9 +102,9 @@ export default ({ className }: WithClassname) => {
     return (
         <>
             <NewDirectoryDialog open={open} onClose={setOpen.bind(this, false)} />
-            <Button.Text onClick={setOpen.bind(this, true)} className={className}>
-                Create Directory
-            </Button.Text>
+            <button onClick={setOpen.bind(this, true)} className={className}>
+                [ Create Directory ]
+            </button>
         </>
     );
 };

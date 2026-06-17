@@ -72,8 +72,8 @@ export default ({
                         open={open}
                         onClose={onDialogClose}
                     >
-                        <div className={'fixed inset-0 bg-gray-900/50 z-40'} />
-                        <div className={'fixed inset-0 overflow-y-auto z-50'}>
+                        <div className={'fixed inset-0 bg-gray-900/50 z-[9998]'} />
+                        <div className={'fixed inset-0 overflow-y-auto z-[9999]'}>
                             <div
                                 ref={container}
                                 className={styles.container}
@@ -116,7 +116,7 @@ export default ({
                                                 onClick={onClose}
                                                 className={'group'}
                                             >
-                                                <span className="font-mono border border-transparent">[+]</span>
+                                                <span className="font-mono border border-transparent">[x]</span>
                                             </Button.Text>
                                         </div>
                                     )}

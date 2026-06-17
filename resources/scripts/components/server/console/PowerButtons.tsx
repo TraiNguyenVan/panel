@@ -51,38 +51,38 @@ export default ({ className }: PowerButtonProps) => {
             </Dialog.Confirm>
             <Can action={'control.start'}>
                 <button
-                    className={classNames('flex-1 px-3 py-2 bg-neutral-900 border border-neutral-700 bg-gradient-to-t from-transparent to-transparent text-neutral-300 transition-all font-mono text-xs uppercase text-center', {
+                    className={classNames('text-neutral-400 transition-all font-mono text-sm whitespace-nowrap', {
                         'opacity-50 cursor-not-allowed': status !== 'offline',
-                        'hover:from-green-900/40 hover:text-green-300 hover:border-green-600/50': status === 'offline'
+                        'hover:text-neutral-100': status === 'offline'
                     })}
                     disabled={status !== 'offline'}
                     onClick={onButtonClick.bind(this, 'start')}
                 >
-                    Start
+                    [ Start ]
                 </button>
             </Can>
             <Can action={'control.restart'}>
                 <button 
-                    className={classNames('flex-1 px-3 py-2 bg-neutral-900 border border-neutral-700 bg-gradient-to-t from-transparent to-transparent text-neutral-300 transition-all font-mono text-xs uppercase text-center', {
+                    className={classNames('text-neutral-400 transition-all font-mono text-sm whitespace-nowrap', {
                         'opacity-50 cursor-not-allowed': !status,
-                        'hover:from-blue-900/40 hover:text-blue-300 hover:border-blue-600/50': status
+                        'hover:text-neutral-100': status
                     })}
                     disabled={!status} 
                     onClick={onButtonClick.bind(this, 'restart')}
                 >
-                    Restart
+                    [ Restart ]
                 </button>
             </Can>
             <Can action={'control.stop'}>
                 <button
-                    className={classNames('flex-1 px-3 py-2 bg-neutral-900 border border-neutral-700 bg-gradient-to-t from-transparent to-transparent text-neutral-300 transition-all font-mono text-xs uppercase text-center', {
+                    className={classNames('text-neutral-400 transition-all font-mono text-sm whitespace-nowrap', {
                         'opacity-50 cursor-not-allowed': status === 'offline',
-                        'hover:from-red-900/40 hover:text-red-300 hover:border-red-600/50': status !== 'offline'
+                        'hover:text-neutral-100': status !== 'offline'
                     })}
                     disabled={status === 'offline'}
                     onClick={onButtonClick.bind(this, killable ? 'kill' : 'stop')}
                 >
-                    {killable ? 'Kill' : 'Stop'}
+                    [ {killable ? 'Kill' : 'Stop'} ]
                 </button>
             </Can>
         </div>

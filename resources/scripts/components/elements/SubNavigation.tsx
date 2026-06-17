@@ -10,20 +10,29 @@ const SubNavigation = styled.div`
 
         & > a,
         & > div {
-            ${tw`inline-block py-3 px-4 text-neutral-300 no-underline whitespace-nowrap transition-all duration-150`};
+            ${tw`relative inline-block py-3 px-4 text-neutral-400 dark:text-neutral-400 no-underline whitespace-nowrap transition-colors duration-150`};
 
             &:not(:first-of-type) {
                 ${tw`ml-2`};
             }
 
             &:hover {
-                ${tw`text-neutral-100`};
+                ${tw`text-neutral-900 dark:text-neutral-100`};
+            }
+
+            &::after {
+                content: '';
+                ${tw`absolute bottom-0 left-0 w-full h-[3px] bg-neutral-900 dark:bg-neutral-100 origin-center transition-transform duration-150 ease-out`};
+                transform: scaleX(0);
             }
 
             &:active,
             &.active {
-                ${tw`text-neutral-100`};
-                box-shadow: inset 0 -2px ${theme`colors.cyan.600`.toString()};
+                ${tw`text-neutral-900 dark:text-neutral-100`};
+
+                &::after {
+                    transform: scaleX(1);
+                }
             }
         }
     }

@@ -28,9 +28,10 @@ const Label = styled.label`
 
 interface Props {
     allocation: Allocation;
+    className?: string;
 }
 
-const AllocationRow = ({ allocation }: Props) => {
+const AllocationRow = ({ allocation, className }: Props) => {
     const [loading, setLoading] = useState(false);
     const { clearFlashes, clearAndAddHttpError } = useFlashKey('server:network');
     const uuid = ServerContext.useStoreState((state) => state.server.data!.uuid);
@@ -61,10 +62,10 @@ const AllocationRow = ({ allocation }: Props) => {
     };
 
     return (
-        <GreyRowBox $hoverable={false} className={'flex-wrap md:flex-nowrap mt-2'}>
+        <GreyRowBox $hoverable={false} className={`flex-wrap md:flex-nowrap ${className || ''}`} style={{ opacity: 0, willChange: 'transform, opacity' }}>
             <div className={'flex items-center w-full md:w-auto'}>
-                <div className={'pl-4 pr-6 text-neutral-400'}>
-                    <Icon icon={faNetworkWired} />
+                <div className={'pl-4 pr-6 text-neutral-400 font-mono text-sm'}>
+                    [-]
                 </div>
                 <div className={'mr-4 flex-1 md:w-40'}>
                     {allocation.alias ? (
@@ -95,20 +96,20 @@ const AllocationRow = ({ allocation }: Props) => {
                     />
                 </InputSpinner>
             </div>
-            <div className={'flex justify-end space-x-4 mt-4 w-full md:mt-0 md:w-48'}>
+            <div className={'flex items-center justify-end space-x-4 mt-4 w-full md:mt-0 md:w-48'}>
                 {allocation.isDefault ? (
-                    <Button size={Button.Sizes.Small} className={'!text-gray-50 !bg-blue-600'} disabled>
-                        Primary
-                    </Button>
+                    <span className={'text-sm font-mono text-blue-500'}>
+                        [ Primary ]
+                    </span>
                 ) : (
                     <>
                         <Can action={'allocation.delete'}>
                             <DeleteAllocationButton allocation={allocation.id} />
                         </Can>
                         <Can action={'allocation.update'}>
-                            <Button.Text size={Button.Sizes.Small} onClick={setPrimaryAllocation}>
-                                Make Primary
-                            </Button.Text>
+                            <button className={'text-sm font-mono transition-colors duration-100'} style={{ color: 'var(--color-neutral-400)' }} onMouseEnter={e => (e.currentTarget.style.color = 'var(--color-neutral-200)')} onMouseLeave={e => (e.currentTarget.style.color = 'var(--color-neutral-400)')} onClick={setPrimaryAllocation}>
+                                [ Make Primary ]
+                            </button>
                         </Can>
                     </>
                 )}

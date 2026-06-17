@@ -140,9 +140,9 @@ export default ({ database, className }: Props) => {
                     </Button>
                 </div>
             </Modal>
-            <GreyRowBox $hoverable={false} className={className} css={tw`mb-2`}>
+            <GreyRowBox $hoverable={false} className={className} style={{ opacity: 0, willChange: 'transform, opacity' }}>
                 <div css={tw`hidden md:block`}>
-                    <Icon icon={faDatabase} fixedWidth />
+                    <div className={'font-mono text-center text-sm w-8'}>[-]</div>
                 </div>
                 <div css={tw`flex-1 ml-4`}>
                     <CopyOnClick text={database.name}>
@@ -165,14 +165,10 @@ export default ({ database, className }: Props) => {
                     </CopyOnClick>
                     <p css={tw`mt-1 text-2xs text-neutral-500 uppercase select-none`}>Username</p>
                 </div>
-                <div css={tw`ml-8`}>
-                    <Button isSecondary css={tw`mr-2`} onClick={() => setConnectionVisible(true)}>
-                        <Icon icon={faEye} fixedWidth />
-                    </Button>
+                <div css={tw`ml-8 flex space-x-4`}>
+                    <button className={'text-sm font-mono transition-colors duration-100'} style={{ color: 'var(--color-neutral-400)' }} onMouseEnter={e => (e.currentTarget.style.color = 'var(--color-neutral-200)')} onMouseLeave={e => (e.currentTarget.style.color = 'var(--color-neutral-400)')} onClick={() => setConnectionVisible(true)}>[ View ]</button>
                     <Can action={'database.delete'}>
-                        <Button color={'red'} isSecondary onClick={() => setVisible(true)}>
-                            <Icon icon={faTrashAlt} fixedWidth />
-                        </Button>
+                        <button className={'text-sm font-mono transition-colors duration-100'} style={{ color: 'var(--color-neutral-500)' }} onMouseEnter={e => (e.currentTarget.style.color = '#ff3b30')} onMouseLeave={e => (e.currentTarget.style.color = 'var(--color-neutral-500)')} onClick={() => setVisible(true)}>[ Delete ]</button>
                     </Can>
                 </div>
             </GreyRowBox>

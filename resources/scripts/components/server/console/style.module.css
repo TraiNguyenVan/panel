@@ -31,7 +31,7 @@
     }
 
     & > .container {
-        @apply p-1 sm:p-2 bg-black min-h-[16rem] flex-1 font-mono text-sm border border-neutral-700 border-b-0;
+        @apply p-1 sm:p-2 bg-neutral-900 min-h-[16rem] flex-1 font-mono text-sm border border-neutral-700 border-b-0;
 
         & #terminal {
             @apply h-full;

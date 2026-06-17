@@ -95,12 +95,13 @@ const MassActionsBar = () => {
                 <Portal>
                     <div className={'pointer-events-none fixed bottom-0 mb-6 flex justify-center w-full z-50'}>
                         <Fade timeout={75} in={selectedFiles.length > 0} unmountOnExit>
-                            <div css={tw`flex items-center space-x-4 pointer-events-auto rounded p-4 bg-black/50`}>
-                                <Button onClick={() => setShowMove(true)}>Move</Button>
-                                <Button onClick={onClickCompress}>Archive</Button>
-                                <Button.Danger variant={Button.Variants.Secondary} onClick={() => setShowConfirm(true)}>
-                                    Delete
-                                </Button.Danger>
+                            <div
+                                css={tw`flex items-center space-x-6 pointer-events-auto px-6 py-3`}
+                                style={{ background: 'var(--color-neutral-900)', border: '1px solid var(--color-neutral-700)' }}
+                            >
+                                <button className={'text-sm font-mono transition-colors duration-100'} style={{ color: 'var(--color-neutral-400)' }} onMouseEnter={e => (e.currentTarget.style.color = 'var(--color-neutral-200)')} onMouseLeave={e => (e.currentTarget.style.color = 'var(--color-neutral-400)')} onClick={() => setShowMove(true)}>[ Move ]</button>
+                                <button className={'text-sm font-mono transition-colors duration-100'} style={{ color: 'var(--color-neutral-400)' }} onMouseEnter={e => (e.currentTarget.style.color = 'var(--color-neutral-200)')} onMouseLeave={e => (e.currentTarget.style.color = 'var(--color-neutral-400)')} onClick={onClickCompress}>[ Archive ]</button>
+                                <button className={'text-sm font-mono transition-colors duration-100'} style={{ color: 'var(--color-neutral-500)' }} onMouseEnter={e => (e.currentTarget.style.color = '#ff3b30')} onMouseLeave={e => (e.currentTarget.style.color = 'var(--color-neutral-500)')} onClick={() => setShowConfirm(true)}>[ Delete ]</button>
                             </div>
                         </Fade>
                     </div>

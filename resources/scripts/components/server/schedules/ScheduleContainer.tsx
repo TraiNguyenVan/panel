@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import getServerSchedules from '@/api/server/schedules/getServerSchedules';
 import { ServerContext } from '@/state/server';
 import Spinner from '@/components/elements/Spinner';
@@ -10,9 +10,9 @@ import EditScheduleModal from '@/components/server/schedules/EditScheduleModal';
 import Can from '@/components/elements/Can';
 import useFlash from '@/plugins/useFlash';
 import tw from 'twin.macro';
-import GreyRowBox from '@/components/elements/GreyRowBox';
 import { Button } from '@/components/elements/button/index';
 import ServerContentBlock from '@/components/elements/ServerContentBlock';
+import { staggerRows } from '@/lib/animations';
 
 export default () => {
     const match = useRouteMatch();
@@ -37,6 +37,13 @@ export default () => {
             .then(() => setLoading(false));
     }, []);
 
+    const listRef = useRef<HTMLDivElement>(null);
+    useEffect(() => {
+        if (!schedules.length || !listRef.current) return;
+        const rows = Array.from(listRef.current.children) as HTMLElement[];
+        if (rows.length) staggerRows(rows);
+    }, [schedules]);
+
     return (
         <ServerContentBlock title={'Schedules'}>
             <FlashMessageRender byKey={'schedules'} css={tw`mb-4`} />
@@ -49,20 +56,23 @@ export default () => {
                             There are no schedules configured for this server.
                         </p>
                     ) : (
-                        schedules.map((schedule) => (
-                            <GreyRowBox
-                                as={'a'}
-                                key={schedule.id}
-                                href={`${match.url}/${schedule.id}`}
-                                css={tw`cursor-pointer mb-2 flex-wrap`}
-                                onClick={(e: any) => {
-                                    e.preventDefault();
-                                    history.push(`${match.url}/${schedule.id}`);
-                                }}
-                            >
-                                <ScheduleRow schedule={schedule} />
-                            </GreyRowBox>
-                        ))
+                        <div ref={listRef} className="border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900">
+                            {schedules.map((schedule) => (
+                                <GreyRowBox
+                                    as={'a'}
+                                    key={schedule.id}
+                                    href={`${match.url}/${schedule.id}`}
+                                    className={'border-b border-neutral-200 dark:border-neutral-700 last:border-0 cursor-pointer flex-wrap'}
+                                    style={{ opacity: 0, willChange: 'transform, opacity' }}
+                                    onClick={(e: any) => {
+                                        e.preventDefault();
+                                        history.push(`${match.url}/${schedule.id}`);
+                                    }}
+                                >
+                                    <ScheduleRow schedule={schedule} />
+                                </GreyRowBox>
+                            ))}
+                        </div>
                     )}
                     <Can action={'schedule.create'}>
                         <div css={tw`mt-8 flex justify-end`}>

@@ -18,7 +18,10 @@ ChartJS.register(LineElement, PointElement, Filler, LinearScale);
 
 const options: ChartOptions<'line'> = {
     responsive: true,
-    animation: false,
+    animation: {
+        duration: 2000,
+        easing: 'linear',
+    },
     plugins: {
         legend: { display: false },
         title: { display: false },

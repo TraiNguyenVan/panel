@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { ActivityLogFilters, useActivityLogs } from '@/api/account/activity';
 import { useFlashKey } from '@/plugins/useFlash';
+import { staggerRows } from '@/lib/animations';
 import PageContentBlock from '@/components/elements/PageContentBlock';
 import FlashMessageRender from '@/components/FlashMessageRender';
 import { Link } from 'react-router-dom';
@@ -22,9 +23,17 @@ export default () => {
         revalidateOnFocus: false,
     });
 
+    const listRef = useRef<HTMLDivElement>(null);
+
     useEffect(() => {
         setFilters((value) => ({ ...value, filters: { ip: hash.ip, event: hash.event } }));
     }, [hash]);
+
+    useEffect(() => {
+        if (!data?.items.length || !listRef.current) return;
+        const rows = Array.from(listRef.current.children) as HTMLElement[];
+        if (rows.length) staggerRows(rows);
+    }, [data?.items]);
 
     useEffect(() => {
         clearAndAddHttpError(error);
@@ -47,7 +56,7 @@ export default () => {
             {!data && isValidating ? (
                 <Spinner centered />
             ) : (
-                <div className={'bg-gray-700'}>
+                <div ref={listRef} className={'border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900'}>
                     {data?.items.map((activity) => (
                         <ActivityLogEntry key={activity.id} activity={activity}>
                             {typeof activity.properties.useragent === 'string' && (

@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useActivityLogs } from '@/api/server/activity';
 import ServerContentBlock from '@/components/elements/ServerContentBlock';
 import { useFlashKey } from '@/plugins/useFlash';
+import { staggerRows } from '@/lib/animations';
 import FlashMessageRender from '@/components/FlashMessageRender';
 import Spinner from '@/components/elements/Spinner';
 import ActivityLogEntry from '@/components/elements/activity/ActivityLogEntry';
@@ -23,9 +24,17 @@ export default () => {
         revalidateOnFocus: false,
     });
 
+    const listRef = useRef<HTMLDivElement>(null);
+
     useEffect(() => {
         setFilters((value) => ({ ...value, filters: { ip: hash.ip, event: hash.event } }));
     }, [hash]);
+
+    useEffect(() => {
+        if (!data?.items.length || !listRef.current) return;
+        const rows = Array.from(listRef.current.children) as HTMLElement[];
+        if (rows.length) staggerRows(rows);
+    }, [data?.items]);
 
     useEffect(() => {
         clearAndAddHttpError(error);
@@ -50,7 +59,7 @@ export default () => {
             ) : !data?.items.length ? (
                 <p className={'text-sm text-center text-gray-400'}>No activity logs available for this server.</p>
             ) : (
-                <div className={'bg-gray-700'}>
+                <div ref={listRef} className={'border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900'}>
                     {data?.items.map((activity) => (
                         <ActivityLogEntry key={activity.id} activity={activity}>
                             <span />

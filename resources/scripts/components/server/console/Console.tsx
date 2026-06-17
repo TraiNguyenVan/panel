@@ -20,26 +20,52 @@ import { ChevronDoubleRightIcon } from '@heroicons/react/solid';
 import 'xterm/css/xterm.css';
 import styles from './style.module.css';
 
-const theme = {
-    background: th`colors.black`.toString(),
+const darkTheme = {
+    background: 'transparent',
+    foreground: '#fdfcfc',
     cursor: 'transparent',
-    black: th`colors.black`.toString(),
-    red: th`colors.neutral.400`.toString(),
-    green: th`colors.neutral.500`.toString(),
-    yellow: th`colors.neutral.300`.toString(),
-    blue: th`colors.neutral.400`.toString(),
-    magenta: th`colors.neutral.500`.toString(),
-    cyan: th`colors.neutral.300`.toString(),
-    white: th`colors.neutral.400`.toString(),
-    brightBlack: th`colors.neutral.600`.toString(),
-    brightRed: th`colors.neutral.300`.toString(),
-    brightGreen: th`colors.neutral.400`.toString(),
-    brightYellow: th`colors.neutral.200`.toString(),
-    brightBlue: th`colors.neutral.300`.toString(),
-    brightMagenta: th`colors.neutral.400`.toString(),
-    brightCyan: th`colors.neutral.200`.toString(),
-    brightWhite: th`colors.neutral.100`.toString(),
-    selection: th`colors.neutral.700`.toString(),
+    // "black" ANSI on dark bg would be invisible — map to a visible mid-gray instead
+    black: '#71717a',
+    red: '#b4b2b2',
+    green: '#a1a1aa',
+    yellow: '#e4e4e7',
+    blue: '#b4b2b2',
+    magenta: '#a1a1aa',
+    cyan: '#e4e4e7',
+    white: '#d4d4d8',
+    // brightBlack (dim text) was nearly invisible at #3f3f46 — bump it up
+    brightBlack: '#71717a',
+    brightRed: '#e4e4e7',
+    brightGreen: '#d4d4d8',
+    brightYellow: '#fdfcfc',
+    brightBlue: '#e4e4e7',
+    brightMagenta: '#d4d4d8',
+    brightCyan: '#fdfcfc',
+    brightWhite: '#ffffff',
+    selection: '#52525b',
+};
+
+const lightTheme = {
+    background: 'transparent',
+    foreground: '#201d1d',
+    cursor: 'transparent',
+    black: '#fdfcfc',
+    red: '#646262',
+    green: '#9a9898',
+    yellow: '#3f3f46',
+    blue: '#646262',
+    magenta: '#9a9898',
+    cyan: '#3f3f46',
+    white: '#52525b',
+    brightBlack: '#d4d4d8',
+    brightRed: '#3f3f46',
+    brightGreen: '#52525b',
+    brightYellow: '#201d1d',
+    brightBlue: '#3f3f46',
+    brightMagenta: '#52525b',
+    brightCyan: '#201d1d',
+    brightWhite: '#000000',
+    selection: '#d4d4d8',
 };
 
 const terminalProps: ITerminalOptions = {
@@ -49,7 +75,7 @@ const terminalProps: ITerminalOptions = {
     fontSize: 12,
     fontFamily: th('fontFamily.mono'),
     rows: 30,
-    theme: theme,
+    theme: document.body.classList.contains('dark') ? darkTheme : lightTheme,
 };
 
 export default () => {
@@ -154,6 +180,15 @@ export default () => {
                 }
                 return true;
             });
+            
+            const updateTheme = () => {
+                terminal.options.theme = document.body.classList.contains('dark') ? darkTheme : lightTheme;
+            };
+            
+            const observer = new MutationObserver(updateTheme);
+            observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+            
+            return () => observer.disconnect();
         }
     }, [terminal, connected]);
 

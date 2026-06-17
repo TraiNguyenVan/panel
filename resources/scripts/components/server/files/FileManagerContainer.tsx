@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { httpErrorToHuman } from '@/api/http';
 import { CSSTransition } from 'react-transition-group';
 import Spinner from '@/components/elements/Spinner';
@@ -22,6 +22,7 @@ import ErrorBoundary from '@/components/elements/ErrorBoundary';
 import { FileActionCheckbox } from '@/components/server/files/SelectFileCheckbox';
 import { hashToPath } from '@/helpers';
 import style from './style.module.css';
+import { staggerRows } from '@/lib/animations';
 
 const sortFiles = (files: FileObject[]): FileObject[] => {
     const sortedFiles: FileObject[] = files
@@ -37,6 +38,7 @@ export default () => {
     const directory = ServerContext.useStoreState((state) => state.files.directory);
     const clearFlashes = useStoreActions((actions) => actions.flashes.clearFlashes);
     const setDirectory = ServerContext.useStoreActions((actions) => actions.files.setDirectory);
+    const fileListRef = useRef<HTMLDivElement>(null);
 
     const setSelectedFiles = ServerContext.useStoreActions((actions) => actions.files.setSelectedFiles);
     const selectedFilesLength = ServerContext.useStoreState((state) => state.files.selectedFiles.length);
@@ -50,6 +52,13 @@ export default () => {
     useEffect(() => {
         mutate();
     }, [directory]);
+
+    // Stagger-animate file rows when directory contents change
+    useEffect(() => {
+        if (!files?.length || !fileListRef.current) return;
+        const rows = Array.from(fileListRef.current.querySelectorAll(':scope > div')) as HTMLElement[];
+        if (rows.length) staggerRows(rows);
+    }, [files]);
 
     const onSelectAllClick = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSelectedFiles(e.currentTarget.checked ? files?.map((file) => file.name) || [] : []);
@@ -76,10 +85,13 @@ export default () => {
                     <Can action={'file.create'}>
                         <div className={style.manager_actions}>
                             <FileManagerStatus />
-                            <NewDirectoryButton />
-                            <UploadButton />
-                            <NavLink to={`/server/${id}/files/new${window.location.hash}`}>
-                                <Button>New File</Button>
+                            <NewDirectoryButton className={'text-sm font-mono text-neutral-400 hover:text-neutral-100 transition-colors duration-100'} />
+                            <UploadButton className={'text-sm font-mono text-neutral-400 hover:text-neutral-100 transition-colors duration-100'} />
+                            <NavLink
+                                to={`/server/${id}/files/new${window.location.hash}`}
+                                className={'text-sm font-mono flex items-center text-neutral-400 hover:text-neutral-100 transition-colors duration-100 whitespace-nowrap'}
+                            >
+                                [ New File ]
                             </NavLink>
                         </div>
                     </Can>
@@ -93,17 +105,17 @@ export default () => {
                         <p css={tw`text-sm text-neutral-400 text-center`}>This directory seems to be empty.</p>
                     ) : (
                         <CSSTransition classNames={'fade'} timeout={150} appear in>
-                            <div>
+                            <div ref={fileListRef} className={'border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900'}>
                                 {files.length > 250 && (
-                                    <div css={tw`rounded bg-yellow-400 mb-px p-3`}>
-                                        <p css={tw`text-yellow-900 text-sm text-center`}>
+                                    <div css={tw`bg-yellow-100 dark:bg-yellow-900/40 border-l-2 border-yellow-500 mb-px p-3`}>
+                                        <p css={tw`text-yellow-800 dark:text-yellow-300 text-sm font-mono`}>
                                             This directory is too large to display in the browser, limiting the output
                                             to the first 250 files.
                                         </p>
                                     </div>
                                 )}
-                                {sortFiles(files.slice(0, 250)).map((file) => (
-                                    <FileObjectRow key={file.key} file={file} />
+                                {sortFiles(files.slice(0, 250)).map((file, index) => (
+                                    <FileObjectRow key={file.key} file={file} index={index} />
                                 ))}
                                 <MassActionsBar />
                             </div>

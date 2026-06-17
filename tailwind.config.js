@@ -14,16 +14,16 @@ const gray = {
 };
 
 const brand = {
-    50: '#fdfcfc',
-    100: '#fdfcfc',
-    200: '#fdfcfc',
-    300: '#fdfcfc',
-    400: '#0f0000',
-    500: '#201d1d',
-    600: '#201d1d',
-    700: '#201d1d',
-    800: '#201d1d',
-    900: '#201d1d',
+    50: 'var(--color-neutral-900)',
+    100: 'var(--color-neutral-800)',
+    200: 'var(--color-neutral-700)',
+    300: 'var(--color-neutral-600)',
+    400: 'var(--color-neutral-500)',
+    500: 'var(--color-neutral-50)',
+    600: 'var(--color-neutral-50)',
+    700: 'var(--color-neutral-50)',
+    800: 'var(--color-neutral-50)',
+    900: 'var(--color-neutral-50)',
 };
 
 const red = {
@@ -68,7 +68,7 @@ module.exports = {
                 xl: '0px',
                 '2xl': '0px',
                 '3xl': '0px',
-                full: '9999px',
+                full: '0px',
             },
             fontSize: {
                 '2xs': '0.625rem',

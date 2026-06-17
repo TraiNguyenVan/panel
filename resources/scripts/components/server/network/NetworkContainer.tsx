@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import Spinner from '@/components/elements/Spinner';
 import { useFlashKey } from '@/plugins/useFlash';
 import ServerContentBlock from '@/components/elements/ServerContentBlock';
@@ -12,6 +12,7 @@ import SpinnerOverlay from '@/components/elements/SpinnerOverlay';
 import getServerAllocations from '@/api/swr/getServerAllocations';
 import isEqual from 'react-fast-compare';
 import { useDeepCompareEffect } from '@/plugins/useDeepCompareEffect';
+import { staggerRows } from '@/lib/animations';
 
 const NetworkContainer = () => {
     const [loading, setLoading] = useState(false);
@@ -37,6 +38,14 @@ const NetworkContainer = () => {
         setServerFromState((state) => ({ ...state, allocations: data }));
     }, [data]);
 
+    const listRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        if (!data || !listRef.current) return;
+        const rows = Array.from(listRef.current.children) as HTMLElement[];
+        if (rows.length) staggerRows(rows);
+    }, [data]);
+
     const onCreateAllocation = () => {
         clearFlashes();
 
@@ -56,9 +65,11 @@ const NetworkContainer = () => {
                 <Spinner size={'large'} centered />
             ) : (
                 <>
-                    {data.map((allocation) => (
-                        <AllocationRow key={`${allocation.ip}:${allocation.port}`} allocation={allocation} />
-                    ))}
+                    <div ref={listRef} className="border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900">
+                        {data.map((allocation) => (
+                            <AllocationRow key={`${allocation.ip}:${allocation.port}`} allocation={allocation} className={'border-b border-neutral-200 dark:border-neutral-700 last:border-0'} />
+                        ))}
+                    </div>
                     {allocationLimit > 0 && (
                         <Can action={'allocation.create'}>
                             <SpinnerOverlay visible={loading} />

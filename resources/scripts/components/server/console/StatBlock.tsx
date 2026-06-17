@@ -20,16 +20,24 @@ export default ({ title, copyOnClick, icon, color, className, children }: StatBl
 
     return (
         <CopyOnClick text={copyOnClick}>
-            <div className={classNames('col-span-3 md:col-span-2 lg:col-span-6 flex items-center p-3 bg-neutral-900/50 border border-neutral-700 transition-all hover:bg-neutral-800/60 cursor-pointer', className)}>
-                <div className={'flex items-center text-neutral-500 mr-3 font-mono text-sm'}>
+            <div
+                className={classNames('col-span-3 md:col-span-2 lg:col-span-6 flex items-center p-3 border transition-all cursor-pointer', className)}
+                style={{
+                    background: 'var(--color-neutral-800)',
+                    borderColor: 'var(--color-neutral-700)',
+                }}
+                onMouseEnter={(e) => { (e.currentTarget as HTMLDivElement).style.background = 'var(--color-neutral-700)'; }}
+                onMouseLeave={(e) => { (e.currentTarget as HTMLDivElement).style.background = 'var(--color-neutral-800)'; }}
+            >
+                <div className={'flex items-center mr-3 font-mono text-sm'} style={{ color: 'var(--color-neutral-500)' }}>
                     <Icon icon={icon} className="w-5 h-5" />
                 </div>
                 <div className={'flex flex-col justify-center overflow-hidden w-full'}>
-                    <p className={'font-mono text-[10px] text-neutral-400 uppercase tracking-wider'}>{title}</p>
+                    <p className={'font-mono text-[10px] uppercase tracking-wider'} style={{ color: 'var(--color-neutral-400)' }}>{title}</p>
                     <div
                         ref={ref}
-                        className={'font-mono text-sm text-neutral-200 truncate mt-0.5'}
-                        style={{ fontSize }}
+                        className={'font-mono text-sm truncate mt-0.5'}
+                        style={{ fontSize, color: 'var(--color-neutral-200)' }}
                     >
                         {children}
                     </div>

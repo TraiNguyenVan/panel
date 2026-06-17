@@ -29,19 +29,20 @@ const StatusIndicatorBox = styled(GreyRowBox)<{ $status: ServerPowerState | unde
     ${tw`grid grid-cols-12 gap-4 relative`};
 
     & .status-bar {
-        ${tw`w-2 bg-red-500 absolute right-0 z-20 rounded-full m-1 opacity-50 transition-all duration-150`};
-        height: calc(100% - 0.5rem);
+        ${tw`w-[3px] bg-red-500 absolute left-0 z-20 opacity-60 transition-all duration-150`};
+        height: 100%;
+        top: 0;
 
         ${({ $status }) =>
             !$status || $status === 'offline'
-                ? tw`bg-red-500`
+                ? tw`bg-neutral-500`
                 : $status === 'running'
-                ? tw`bg-green-500`
-                : tw`bg-yellow-500`};
+                ? tw`bg-neutral-300`
+                : tw`bg-neutral-400`};
     }
 
     &:hover .status-bar {
-        ${tw`opacity-75`};
+        ${tw`opacity-100`};
     }
 `;
 
@@ -87,7 +88,7 @@ export default ({ server, className }: { server: Server; className?: string }) =
     const cpuLimit = server.limits.cpu !== 0 ? server.limits.cpu + ' %' : 'Unlimited';
 
     return (
-        <StatusIndicatorBox as={Link} to={`/server/${server.id}`} className={className} $status={stats?.status}>
+        <StatusIndicatorBox as={Link} to={`/server/${server.id}`} className={className} $status={stats?.status} style={{ opacity: 0, willChange: 'transform, opacity' }}>
             <div css={tw`flex items-center col-span-12 sm:col-span-5 lg:col-span-6`}>
                 <div className={'icon mr-4 font-mono'}>
                     [+]
@@ -117,20 +118,22 @@ export default ({ server, className }: { server: Server; className?: string }) =
                 {!stats || isSuspended ? (
                     isSuspended ? (
                         <div css={tw`flex-1 text-center`}>
-                            <span css={tw`bg-red-500 rounded px-2 py-1 text-red-100 text-xs`}>
-                                {server.status === 'suspended' ? 'Suspended' : 'Connection Error'}
+                            <span css={tw`font-mono text-xs text-neutral-400`}>
+                                [ {server.status === 'suspended' ? 'Suspended' : 'Error'} ]
                             </span>
                         </div>
                     ) : server.isTransferring || server.status ? (
                         <div css={tw`flex-1 text-center`}>
-                            <span css={tw`bg-neutral-500 rounded px-2 py-1 text-neutral-100 text-xs`}>
+                            <span css={tw`font-mono text-xs text-neutral-400`}>
+                                [{' '}
                                 {server.isTransferring
                                     ? 'Transferring'
                                     : server.status === 'installing'
                                     ? 'Installing'
                                     : server.status === 'restoring_backup'
-                                    ? 'Restoring Backup'
+                                    ? 'Restoring'
                                     : 'Unavailable'}
+                                {' '}]
                             </span>
                         </div>
                     ) : (
@@ -145,7 +148,7 @@ export default ({ server, className }: { server: Server; className?: string }) =
                                     {stats.cpuUsagePercent.toFixed(2)} %
                                 </IconDescription>
                             </div>
-                            <p css={tw`text-xs text-neutral-600 text-center mt-1`}>of {cpuLimit}</p>
+                            <p css={tw`text-xs text-neutral-500 text-center mt-1`}>of {cpuLimit}</p>
                         </div>
                         <div css={tw`flex-1 ml-4 sm:block hidden`}>
                             <div css={tw`flex justify-center font-mono`}>
@@ -154,7 +157,7 @@ export default ({ server, className }: { server: Server; className?: string }) =
                                     {bytesToString(stats.memoryUsageInBytes)}
                                 </IconDescription>
                             </div>
-                            <p css={tw`text-xs text-neutral-600 text-center mt-1`}>of {memoryLimit}</p>
+                            <p css={tw`text-xs text-neutral-500 text-center mt-1`}>of {memoryLimit}</p>
                         </div>
                         <div css={tw`flex-1 ml-4 sm:block hidden`}>
                             <div css={tw`flex justify-center font-mono`}>
@@ -163,7 +166,7 @@ export default ({ server, className }: { server: Server; className?: string }) =
                                     {bytesToString(stats.diskUsageInBytes)}
                                 </IconDescription>
                             </div>
-                            <p css={tw`text-xs text-neutral-600 text-center mt-1`}>of {diskLimit}</p>
+                            <p css={tw`text-xs text-neutral-500 text-center mt-1`}>of {diskLimit}</p>
                         </div>
                     </React.Fragment>
                 )}

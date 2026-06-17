@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import getServerDatabases from '@/api/server/databases/getServerDatabases';
 import { ServerContext } from '@/state/server';
 import { httpErrorToHuman } from '@/api/http';
@@ -12,6 +12,7 @@ import tw from 'twin.macro';
 import Fade from '@/components/elements/Fade';
 import ServerContentBlock from '@/components/elements/ServerContentBlock';
 import { useDeepMemoize } from '@/plugins/useDeepMemoize';
+import { staggerRows } from '@/lib/animations';
 
 export default () => {
     const uuid = ServerContext.useStoreState((state) => state.server.data!.uuid);
@@ -36,6 +37,14 @@ export default () => {
             .then(() => setLoading(false));
     }, []);
 
+    const listRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        if (!databases.length || !listRef.current) return;
+        const rows = Array.from(listRef.current.children) as HTMLElement[];
+        if (rows.length) staggerRows(rows);
+    }, [databases]);
+
     return (
         <ServerContentBlock title={'Databases'}>
             <FlashMessageRender byKey={'databases'} css={tw`mb-4`} />
@@ -45,13 +54,15 @@ export default () => {
                 <Fade timeout={150}>
                     <>
                         {databases.length > 0 ? (
-                            databases.map((database, index) => (
-                                <DatabaseRow
-                                    key={database.id}
-                                    database={database}
-                                    className={index > 0 ? 'mt-1' : undefined}
-                                />
-                            ))
+                            <div ref={listRef} className="border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900">
+                                {databases.map((database) => (
+                                    <DatabaseRow
+                                        key={database.id}
+                                        database={database}
+                                        className={'border-b border-neutral-200 dark:border-neutral-700 last:border-0'}
+                                    />
+                                ))}
+                            </div>
                         ) : (
                             <p css={tw`text-center text-sm text-neutral-300`}>
                                 {databaseLimit > 0

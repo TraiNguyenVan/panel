@@ -19,6 +19,21 @@ use Pterodactyl\Http\Middleware\Api\Client\Server\AuthenticateServerAccess;
 */
 Route::get('/', [Client\ClientController::class, 'index'])->name('api:client.index');
 Route::get('/permissions', [Client\ClientController::class, 'permissions']);
+Route::get('/host-ram', function() {
+    $hostRam = ['total' => 0, 'used' => 0];
+    if (is_readable('/proc/meminfo')) {
+        $meminfo = file_get_contents('/proc/meminfo');
+        preg_match('/MemTotal:\s+(\d+) kB/', $meminfo, $totalMatches);
+        preg_match('/MemAvailable:\s+(\d+) kB/', $meminfo, $availMatches);
+        
+        $total = isset($totalMatches[1]) ? (int)$totalMatches[1] * 1024 : 0;
+        $available = isset($availMatches[1]) ? (int)$availMatches[1] * 1024 : 0;
+        $used = $total - $available;
+        
+        $hostRam = ['total' => $total, 'used' => $used];
+    }
+    return response()->json($hostRam);
+});
 
 Route::prefix('/account')->middleware(AccountSubject::class)->group(function () {
     Route::prefix('/')->withoutMiddleware(RequireTwoFactorAuthentication::class)->group(function () {

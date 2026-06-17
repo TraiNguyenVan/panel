@@ -6,30 +6,28 @@ import Label from '@/components/elements/Label';
 import Input from '@/components/elements/Input';
 
 const ToggleContainer = styled.div`
-    ${tw`relative select-none w-12 leading-normal`};
+    ${tw`relative select-none w-12 leading-none`};
 
     & > input[type='checkbox'] {
         ${tw`hidden`};
 
         &:checked + label {
-            ${tw`bg-primary-500 border-primary-700 shadow-none`};
+            ${tw`bg-neutral-700 border-neutral-500 shadow-none`};
         }
 
         &:checked + label:before {
-            right: 0.125rem;
+            right: 1px;
         }
     }
 
     & > label {
-        ${tw`mb-0 block overflow-hidden cursor-pointer bg-neutral-400 border border-neutral-700 rounded-full h-6 shadow-inner`};
+        ${tw`relative mb-0 block overflow-hidden cursor-pointer bg-neutral-900 border border-neutral-700 h-6 shadow-none`};
         transition: all 75ms linear;
 
         &::before {
-            ${tw`absolute block bg-white border h-5 w-5 rounded-full`};
-            top: 0.125rem;
-            right: calc(50% + 0.125rem);
-            //width: 1.25rem;
-            //height: 1.25rem;
+            ${tw`absolute block bg-neutral-200 border border-neutral-400 h-5 w-5`};
+            top: 1px;
+            right: 25px;
             content: '';
             transition: all 75ms ease-in;
         }
