@@ -160,9 +160,13 @@
                 .btn-default:hover, .btn-primary:hover, .btn-success:hover, .btn-danger:hover, .btn-warning:hover, .btn-info:hover {
                     background: var(--color-neutral-300) !important;
                 }
-                .text-muted, .help-block {
-                    color: var(--color-neutral-300) !important;
+                .text-muted, .help-block, small, .breadcrumb>li>a, .breadcrumb>li.active, .nav-tabs-custom>.nav-tabs>li>a {
+                    color: var(--color-neutral-200) !important;
                 }
+                ::-webkit-input-placeholder { color: var(--color-neutral-300) !important; opacity: 1 !important; }
+                ::-moz-placeholder { color: var(--color-neutral-300) !important; opacity: 1 !important; }
+                :-ms-input-placeholder { color: var(--color-neutral-300) !important; opacity: 1 !important; }
+                ::placeholder { color: var(--color-neutral-300) !important; opacity: 1 !important; }
                 h1, h2, h3, h4, h5, h6, label {
                     color: var(--color-neutral-100) !important;
                     font-family: "Berkeley Mono", "JetBrains Mono", "IBM Plex Mono", monospace !important;
