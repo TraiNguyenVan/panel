@@ -186,6 +186,56 @@
                     border-top: none !important;
                     color: var(--color-neutral-200) !important;
                 }
+                
+                /* Select2 Overrides */
+                .select2-container--default .select2-selection--single,
+                .select2-container--default .select2-selection--multiple,
+                .select2-dropdown {
+                    background-color: var(--color-neutral-900) !important;
+                    border: 1px solid var(--color-neutral-300) !important;
+                    border-radius: 0 !important;
+                }
+                .select2-container--default .select2-selection--single .select2-selection__rendered,
+                .select2-results__option, .select2-search--dropdown .select2-search__field {
+                    color: var(--color-neutral-200) !important;
+                    background-color: var(--color-neutral-900) !important;
+                }
+                .select2-container--default .select2-results__option--highlighted[aria-selected] {
+                    background-color: var(--color-neutral-700) !important;
+                    color: var(--color-neutral-50) !important;
+                }
+
+                /* Input Addons */
+                .input-group-addon {
+                    background-color: var(--color-neutral-800) !important;
+                    color: var(--color-neutral-200) !important;
+                    border: 1px solid var(--color-neutral-300) !important;
+                    border-radius: 0 !important;
+                }
+
+                /* Pagination */
+                .pagination>li>a, .pagination>li>span {
+                    background-color: var(--color-neutral-900) !important;
+                    color: var(--color-neutral-200) !important;
+                    border-color: var(--color-neutral-300) !important;
+                    border-radius: 0 !important;
+                }
+                .pagination>.active>a, .pagination>.active>span,
+                .pagination>.active>a:hover, .pagination>.active>span:hover {
+                    background-color: var(--color-neutral-50) !important;
+                    color: var(--color-neutral-900) !important;
+                    border-color: var(--color-neutral-300) !important;
+                }
+
+                /* Tables & Code */
+                .table-hover>tbody>tr:hover {
+                    background-color: var(--color-neutral-700) !important;
+                }
+                code {
+                    background-color: var(--color-neutral-800) !important;
+                    color: var(--color-neutral-200) !important;
+                    border-radius: 0 !important;
+                }
             </style>
             <script>
                 function applyAdminTheme() {
