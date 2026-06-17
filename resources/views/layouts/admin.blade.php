@@ -94,9 +94,29 @@
                 }
                 .main-header .navbar .sidebar-toggle, .main-header .navbar .nav>li>a {
                     color: var(--color-neutral-200) !important;
+                    position: relative;
+                    transition: background-color 250ms ease, color 250ms ease;
                 }
-                .main-header .navbar .nav>li>a:hover, .main-header .navbar .sidebar-toggle:hover {
+                .main-header .navbar .nav>li>a:hover, .main-header .navbar .sidebar-toggle:hover,
+                .main-header .navbar .nav>li>a:active, .main-header .navbar .sidebar-toggle:active {
                     background: var(--color-neutral-800) !important;
+                    color: var(--color-neutral-50) !important;
+                }
+                .main-header .navbar .sidebar-toggle::after, .main-header .navbar .nav>li>a::after {
+                    content: '';
+                    position: absolute;
+                    bottom: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 4px;
+                    background-color: var(--color-neutral-100);
+                    transform-origin: center;
+                    transition: transform 250ms ease-out;
+                    transform: scaleX(0);
+                }
+                .main-header .navbar .nav>li>a:hover::after, .main-header .navbar .sidebar-toggle:hover::after,
+                .main-header .navbar .nav>li>a:active::after, .main-header .navbar .sidebar-toggle:active::after {
+                    transform: scaleX(1);
                 }
                 .sidebar-menu>li.header {
                     background: transparent !important;
