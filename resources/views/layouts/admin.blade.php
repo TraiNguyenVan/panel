@@ -79,7 +79,6 @@
                     height: 50px !important;
                     min-height: 50px !important;
                     max-height: 50px !important;
-                    line-height: 50px !important;
                     background: transparent !important;
                     border: none !important;
                     box-shadow: none !important;
@@ -109,6 +108,9 @@
                 .sidebar-menu>li {
                     border: none !important;
                     margin: 0 !important;
+                }
+                .sidebar-menu>li>.treeview-menu {
+                    background: transparent !important;
                 }
                 .sidebar-menu>li>a, .sidebar-menu .treeview-menu>li>a, .sidebar a, .sidebar span, .sidebar i {
                     color: var(--color-neutral-100) !important;
@@ -140,8 +142,8 @@
                 .form-control {
                     background: var(--color-neutral-900) !important;
                     color: var(--color-neutral-200) !important;
-                    border: 1px solid var(--color-neutral-700) !important;
-                    border-radius: 4px !important;
+                    border: 1px solid var(--color-neutral-300) !important;
+                    border-radius: 0 !important;
                     box-shadow: none !important;
                 }
                 .form-control:focus {
@@ -151,7 +153,7 @@
                     background: var(--color-neutral-50) !important;
                     color: var(--color-neutral-900) !important;
                     border: 1px solid transparent !important;
-                    border-radius: 4px !important;
+                    border-radius: 0 !important;
                     box-shadow: none !important;
                     font-weight: 700 !important;
                 }
@@ -159,7 +161,7 @@
                     background: var(--color-neutral-300) !important;
                 }
                 .text-muted, .help-block {
-                    color: var(--color-neutral-400) !important;
+                    color: var(--color-neutral-300) !important;
                 }
                 h1, h2, h3, h4, h5, h6, label {
                     color: var(--color-neutral-100) !important;
