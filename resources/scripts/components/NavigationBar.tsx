@@ -251,8 +251,12 @@ export default () => {
 
     const toggleTheme = () => {
         const isDark = document.body.classList.contains('dark');
-        localStorage.setItem('theme', !isDark ? 'dark' : 'light');
-        applyTheme(!isDark, true);
+        setActiveAction('theme');
+        setTimeout(() => {
+            localStorage.setItem('theme', !isDark ? 'dark' : 'light');
+            applyTheme(!isDark, true);
+            setActiveAction(null);
+        }, 250);
     };
 
     const navigateToAdmin = (e: React.MouseEvent<HTMLAnchorElement>) => {
