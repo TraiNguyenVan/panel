@@ -55,8 +55,10 @@ const StatusIndicatorBox = styled(GreyRowBox)<{ $status: ServerPowerState | unde
                 : tw`bg-neutral-400 opacity-80`};
     }
 
-    &:hover .status-bar {
-        ${tw`opacity-100`};
+    transition: box-shadow 150ms ease;
+
+    &:hover {
+        box-shadow: inset 0 0 0 1px var(--color-neutral-400);
     }
 `;
 
