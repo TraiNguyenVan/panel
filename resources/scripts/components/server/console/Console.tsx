@@ -81,16 +81,21 @@ const terminalProps: ITerminalOptions = {
 export default () => {
     const TERMINAL_PRELUDE = '\u001b[1m\u001b[37mcontainer@pterodactyl~ \u001b[0m';
     const ref = useRef<HTMLDivElement>(null);
+    const [fontSize, setFontSize] = usePersistedState<number>('console_font_size', 12);
+    const currentFontSize = fontSize || 12;
+
     const terminal = useMemo(() => new Terminal({
         ...terminalProps,
+        fontSize: currentFontSize,
         theme: document.body.classList.contains('dark') ? darkTheme : lightTheme,
     }), []);
-    const fitAddon = new FitAddon();
-    const searchAddon = new SearchAddon();
-    const searchBar = new SearchBarAddon({ searchAddon });
-    const webLinksAddon = new WebLinksAddon();
-    const unicode11Addon = new Unicode11Addon();
-    const scrollDownHelperAddon = new ScrollDownHelperAddon();
+
+    const fitAddon = useMemo(() => new FitAddon(), []);
+    const searchAddon = useMemo(() => new SearchAddon(), []);
+    const searchBar = useMemo(() => new SearchBarAddon({ searchAddon }), [searchAddon]);
+    const webLinksAddon = useMemo(() => new WebLinksAddon(), []);
+    const unicode11Addon = useMemo(() => new Unicode11Addon(), []);
+    const scrollDownHelperAddon = useMemo(() => new ScrollDownHelperAddon(), []);
     const { connected, instance } = ServerContext.useStoreState((state) => state.socket);
     const [canSendCommands] = usePermissions(['control.console']);
     const serverId = ServerContext.useStoreState((state) => state.server.data!.id);
@@ -102,6 +107,31 @@ export default () => {
     .xterm-search-bar__addon {
         z-index: 10;
     }`;
+
+    const handleDecreaseFontSize = () => {
+        setFontSize((prev) => Math.max(10, (prev || 12) - 1));
+    };
+
+    const handleIncreaseFontSize = () => {
+        setFontSize((prev) => Math.min(20, (prev || 12) + 1));
+    };
+
+    const handleResetFontSize = () => {
+        setFontSize(12);
+    };
+
+    useEffect(() => {
+        if (terminal) {
+            terminal.options.fontSize = currentFontSize;
+            if (terminal.element) {
+                try {
+                    fitAddon.fit();
+                } catch (e) {
+                    // Ignore fit errors if element not fully ready/visible
+                }
+            }
+        }
+    }, [currentFontSize, terminal, fitAddon]);
 
     const handleConsoleOutput = (line: string, prelude = false) =>
         terminal.writeln((prelude ? TERMINAL_PRELUDE : '') + line.replace(/(?:\r\n|\r|\n)$/im, '') + '\u001b[0m');
@@ -193,6 +223,7 @@ export default () => {
             
             return () => observer.disconnect();
         }
+        return;
     }, [terminal, connected]);
 
     useEventListener(
@@ -240,8 +271,31 @@ export default () => {
         <div className={classNames(styles.terminal, 'relative')}>
             <SpinnerOverlay visible={!connected} size={'large'} />
             <div
-                className={classNames(styles.container, styles.overflows_container, { 'rounded-b': !canSendCommands })}
+                className={classNames(styles.container, styles.overflows_container, 'relative', { 'rounded-b': !canSendCommands })}
             >
+                <div className={'absolute top-2 right-4 z-10 flex items-center space-x-1 select-none font-mono text-xs'}>
+                    <button
+                        onClick={handleDecreaseFontSize}
+                        className={'px-1.5 py-0.5 bg-neutral-900 border border-neutral-600 hover:border-neutral-500 text-neutral-300 hover:text-neutral-50 rounded-sm transition-colors duration-100'}
+                        title={'Decrease font size'}
+                    >
+                        A-
+                    </button>
+                    <button
+                        onClick={handleResetFontSize}
+                        className={'px-1.5 py-0.5 bg-neutral-900 border border-neutral-600 hover:border-neutral-500 text-neutral-300 hover:text-neutral-50 rounded-sm transition-colors duration-100'}
+                        title={'Reset font size'}
+                    >
+                        {currentFontSize}px
+                    </button>
+                    <button
+                        onClick={handleIncreaseFontSize}
+                        className={'px-1.5 py-0.5 bg-neutral-900 border border-neutral-600 hover:border-neutral-500 text-neutral-300 hover:text-neutral-50 rounded-sm transition-colors duration-100'}
+                        title={'Increase font size'}
+                    >
+                        A+
+                    </button>
+                </div>
                 <div className={'h-full'}>
                     <div id={styles.terminal} ref={ref} />
                 </div>
