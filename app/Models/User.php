@@ -296,4 +296,14 @@ class User extends Model implements
             })
             ->groupBy('servers.id');
     }
+
+    /**
+     * Returns all the chat messages sent by this user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\Pterodactyl\Models\ChatMessage, $this>
+     */
+    public function chatMessages(): HasMany
+    {
+        return $this->hasMany(ChatMessage::class);
+    }
 }

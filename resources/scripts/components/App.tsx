@@ -14,6 +14,7 @@ import AuthenticatedRoute from '@/components/elements/AuthenticatedRoute';
 import { ServerContext } from '@/state/server';
 import '@/assets/tailwind.css';
 import Spinner from '@/components/elements/Spinner';
+import ChatWidget from '@/components/dashboard/ChatWidget';
 
 const DashboardRouter = lazy(() => import(/* webpackChunkName: "dashboard" */ '@/routers/DashboardRouter'));
 const ServerRouter = lazy(() => import(/* webpackChunkName: "server" */ '@/routers/ServerRouter'));
@@ -85,6 +86,7 @@ const App = () => {
                             </Route>
                         </Switch>
                     </Router>
+                    <ChatWidget />
                 </div>
             </StoreProvider>
         </>

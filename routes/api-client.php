@@ -54,6 +54,32 @@ Route::get('/host-ram', function() {
     return response()->json($hostRam);
 });
 
+Route::get('/chat', function() {
+    return response()->json(
+        \Pterodactyl\Models\ChatMessage::with('user:id,username')
+            ->orderBy('created_at', 'desc')
+            ->limit(50)
+            ->get()
+            ->reverse()
+            ->values()
+    );
+});
+
+Route::post('/chat', function(\Illuminate\Http\Request $request) {
+    $request->validate([
+        'message' => 'required|string|max:1000',
+    ]);
+    
+    $chatMessage = \Pterodactyl\Models\ChatMessage::create([
+        'user_id' => $request->user()->id,
+        'message' => $request->input('message'),
+    ]);
+    
+    $chatMessage->load('user:id,username');
+    
+    return response()->json($chatMessage, 201);
+});
+
 Route::prefix('/account')->middleware(AccountSubject::class)->group(function () {
     Route::prefix('/')->withoutMiddleware(RequireTwoFactorAuthentication::class)->group(function () {
         Route::get('/', [Client\AccountController::class, 'index'])->name('api:client.account');
