@@ -85,11 +85,11 @@ export default () => {
                     <Can action={'file.create'}>
                         <div className={style.manager_actions}>
                             <FileManagerStatus />
-                            <NewDirectoryButton className={'text-sm font-mono text-neutral-400 hover:text-neutral-100 transition-colors duration-100'} />
-                            <UploadButton className={'text-sm font-mono text-neutral-400 hover:text-neutral-100 transition-colors duration-100'} />
+                            <NewDirectoryButton className={'text-sm font-mono text-neutral-400 hover:text-neutral-300 transition-colors duration-100'} />
+                            <UploadButton className={'text-sm font-mono text-neutral-400 hover:text-neutral-300 transition-colors duration-100'} />
                             <NavLink
                                 to={`/server/${id}/files/new${window.location.hash}`}
-                                className={'text-sm font-mono flex items-center text-neutral-400 hover:text-neutral-100 transition-colors duration-100 whitespace-nowrap'}
+                                className={'text-sm font-mono flex items-center text-neutral-400 hover:text-neutral-300 transition-colors duration-100 whitespace-nowrap'}
                             >
                                 [ New File ]
                             </NavLink>
