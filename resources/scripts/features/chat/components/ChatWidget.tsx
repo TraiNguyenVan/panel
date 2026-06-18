@@ -3,6 +3,22 @@ import { useStoreState } from 'easy-peasy';
 import { ApplicationStore } from '@/state';
 import { getChatMessages, sendChatMessage, ChatMessage } from '../api/chat';
 
+const formatTimestamp = (dateStr: string) => {
+    const date = new Date(dateStr);
+    const now = new Date();
+    const isToday = date.getDate() === now.getDate() &&
+        date.getMonth() === now.getMonth() &&
+        date.getFullYear() === now.getFullYear();
+
+    const timeStr = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    if (isToday) {
+        return timeStr;
+    }
+    
+    const dateStrFormatted = date.toLocaleDateString([], { month: 'short', day: 'numeric' });
+    return `${dateStrFormatted}, ${timeStr}`;
+};
+
 export default () => {
     const currentUser = useStoreState((state: ApplicationStore) => state.user.data);
     const [isOpen, setIsOpen] = useState(false);
@@ -121,10 +137,7 @@ export default () => {
                                     <div className='flex justify-between items-baseline mb-0.5'>
                                         <span className='font-bold text-neutral-200'>{msg.user.username}</span>
                                         <span className='text-[10px] text-neutral-400'>
-                                            {new Date(msg.created_at).toLocaleTimeString([], {
-                                                hour: '2-digit',
-                                                minute: '2-digit',
-                                            })}
+                                            {formatTimestamp(msg.created_at)}
                                         </span>
                                     </div>
                                     <p className='text-neutral-300 leading-snug font-sans pl-1 border-l border-neutral-600'>
