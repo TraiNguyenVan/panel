@@ -154,6 +154,12 @@ export const HostRamMonitor = () => {
                         Top Host Memory Processes
                     </div>
                     <div className='flex flex-col py-2'>
+                        <div className='flex justify-between items-center px-4 py-2 border-b border-neutral-600 mb-1 pb-2'>
+                            <span className='font-mono text-sm font-bold text-neutral-200'>Free RAM</span>
+                            <span className='font-mono text-sm font-bold text-neutral-200'>
+                                {bytesToString(Math.max(0, displayRam.total - displayRam.used))}
+                            </span>
+                        </div>
                         {displayRam.top_processes.map((proc, i) => (
                             <div
                                 key={i}
