@@ -217,46 +217,46 @@ const HostRamMonitor = () => {
     );
 };
 
-const renderMarkdown = (text: string): React.ReactNode[] => {
-    if (!text) return [];
+const parseInlineElements = (str: string): React.ReactNode[] => {
+    if (!str) return [];
 
     const linkRegex = /\[([^\]]+)\]\(([^)]+)\)/g;
     const parts: any[] = [];
     let lastIndex = 0;
     let match;
 
-    while ((match = linkRegex.exec(text)) !== null) {
+    while ((match = linkRegex.exec(str)) !== null) {
         if (match.index > lastIndex) {
-            parts.push({ type: 'text', content: text.substring(lastIndex, match.index) });
+            parts.push({ type: 'text', content: str.substring(lastIndex, match.index) });
         }
         parts.push({ type: 'link', content: match[1], url: match[2] });
         lastIndex = linkRegex.lastIndex;
     }
-    if (lastIndex < text.length) {
-        parts.push({ type: 'text', content: text.substring(lastIndex) });
+    if (lastIndex < str.length) {
+        parts.push({ type: 'text', content: str.substring(lastIndex) });
     }
     if (parts.length === 0) {
-        parts.push({ type: 'text', content: text });
+        parts.push({ type: 'text', content: str });
     }
 
-    const parseInline = (str: string): React.ReactNode[] => {
+    const parseInline = (s: string): React.ReactNode[] => {
         const codeRegex = /`([^`]+)`/g;
         const subParts: any[] = [];
         let index = 0;
         let subMatch;
 
-        while ((subMatch = codeRegex.exec(str)) !== null) {
+        while ((subMatch = codeRegex.exec(s)) !== null) {
             if (subMatch.index > index) {
-                subParts.push({ type: 'plain', content: str.substring(index, subMatch.index) });
+                subParts.push({ type: 'plain', content: s.substring(index, subMatch.index) });
             }
             subParts.push({ type: 'code', content: subMatch[1] });
             index = codeRegex.lastIndex;
         }
-        if (index < str.length) {
-            subParts.push({ type: 'plain', content: str.substring(index) });
+        if (index < s.length) {
+            subParts.push({ type: 'plain', content: s.substring(index) });
         }
         if (subParts.length === 0) {
-            subParts.push({ type: 'plain', content: str });
+            subParts.push({ type: 'plain', content: s });
         }
 
         const boldParts: any[] = [];
@@ -349,6 +349,54 @@ const renderMarkdown = (text: string): React.ReactNode[] => {
     });
 };
 
+const renderMarkdown = (text: string): React.ReactNode[] => {
+    if (!text) return [];
+
+    const lines = text.split('\n');
+
+    return lines.map((line, lineIdx) => {
+        const trimmed = line.trim();
+
+        if (trimmed.startsWith('# ')) {
+            return (
+                <h1 key={lineIdx} className="text-lg font-bold text-neutral-100 mt-2 mb-1 block">
+                    {parseInlineElements(trimmed.substring(2))}
+                </h1>
+            );
+        }
+        if (trimmed.startsWith('## ')) {
+            return (
+                <h2 key={lineIdx} className="text-base font-bold text-neutral-100 mt-2 mb-1 block">
+                    {parseInlineElements(trimmed.substring(3))}
+                </h2>
+            );
+        }
+        if (trimmed.startsWith('### ')) {
+            return (
+                <h3 key={lineIdx} className="text-sm font-bold text-neutral-100 mt-1 mb-0.5 block">
+                    {parseInlineElements(trimmed.substring(4))}
+                </h3>
+            );
+        }
+        if (trimmed.startsWith('- ') || trimmed.startsWith('* ')) {
+            return (
+                <div key={lineIdx} className="pl-4 py-0.5 flex items-start space-x-2">
+                    <span className="text-neutral-400 mr-1.5">•</span>
+                    <span className="text-neutral-200">
+                        {parseInlineElements(trimmed.substring(2))}
+                    </span>
+                </div>
+            );
+        }
+
+        return (
+            <p key={lineIdx} className="min-h-[1rem] text-neutral-200 py-0.5">
+                {parseInlineElements(line)}
+            </p>
+        );
+    });
+};
+
 const AnnouncementBanner = () => {
     const announcement = useStoreState((state: ApplicationStore) => state.settings.data?.announcement);
     const [visible, setVisible] = useState(true);
@@ -358,17 +406,17 @@ const AnnouncementBanner = () => {
     }
 
     return (
-        <div className="w-full bg-neutral-700 border-b border-neutral-600 font-mono text-sm py-2 px-4">
-            <div className="mx-auto w-full max-w-[1200px] flex items-center justify-between">
-                <div className="flex items-center space-x-2 flex-wrap gap-x-1">
-                    <span className="text-yellow-500 font-bold mr-1">[!]</span>
-                    <span className="text-neutral-200 flex items-center flex-wrap gap-x-1">
+        <div className="w-full bg-neutral-700 border-b border-neutral-600 font-mono text-sm py-3 px-4">
+            <div className="mx-auto w-full max-w-[1200px] flex items-start justify-between">
+                <div className="flex items-start space-x-3 flex-1">
+                    <span className="text-yellow-500 font-bold mt-1.5">[!]</span>
+                    <div className="text-neutral-200 flex-1 whitespace-pre-wrap leading-relaxed">
                         {renderMarkdown(announcement)}
-                    </span>
+                    </div>
                 </div>
                 <button
                     onClick={() => setVisible(false)}
-                    className="text-neutral-400 hover:text-neutral-200 transition-colors ml-4 cursor-pointer focus:outline-none"
+                    className="text-neutral-400 hover:text-neutral-200 transition-colors ml-4 mt-1 cursor-pointer focus:outline-none"
                     aria-label="Dismiss announcement"
                 >
                     [ x ]
