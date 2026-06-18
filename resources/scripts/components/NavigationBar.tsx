@@ -41,12 +41,12 @@ const RightNavigation = styled.div`
 const doubleFlashLight = keyframes`
   0%, 100% { 
     opacity: 1; 
-    box-shadow: 0 0 16px 4px rgba(0, 0, 0, 0.8); 
+    box-shadow: 0 -4px 12px 2px rgba(0, 0, 0, 0.4); 
     background-color: #000000; 
   }
   50% { 
     opacity: 0.1; 
-    box-shadow: 0 0 2px 0px rgba(0, 0, 0, 0.1); 
+    box-shadow: 0 -2px 4px 0px rgba(0, 0, 0, 0.05); 
     background-color: #a1a1aa; 
   }
 `;
@@ -54,12 +54,12 @@ const doubleFlashLight = keyframes`
 const doubleFlashDark = keyframes`
   0%, 100% { 
     opacity: 1; 
-    box-shadow: 0 0 16px 4px rgba(255, 255, 255, 0.9); 
+    box-shadow: 0 -6px 16px 2px rgba(255, 255, 255, 0.7); 
     background-color: #ffffff; 
   }
   50% { 
     opacity: 0.2; 
-    box-shadow: 0 0 4px 0px rgba(255, 255, 255, 0.2); 
+    box-shadow: 0 -2px 4px 0px rgba(255, 255, 255, 0.1); 
     background-color: #a1a1aa; 
   }
 `;
