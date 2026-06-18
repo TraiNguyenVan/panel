@@ -85,11 +85,11 @@ export default () => {
                     <Can action={'file.create'}>
                         <div className={style.manager_actions}>
                             <FileManagerStatus />
-                            <NewDirectoryButton className={'text-sm font-mono text-neutral-300 hover:text-neutral-100 transition-colors duration-100'} />
-                            <UploadButton className={'text-sm font-mono text-neutral-300 hover:text-neutral-100 transition-colors duration-100'} />
+                            <NewDirectoryButton className={'text-base font-mono text-neutral-300 hover:text-neutral-100 transition-colors duration-100'} />
+                            <UploadButton className={'text-base font-mono text-neutral-300 hover:text-neutral-100 transition-colors duration-100'} />
                             <NavLink
                                 to={`/server/${id}/files/new${window.location.hash}`}
-                                className={'text-sm font-mono flex items-center text-neutral-300 hover:text-neutral-100 transition-colors duration-100 whitespace-nowrap'}
+                                className={'text-base font-mono flex items-center text-neutral-300 hover:text-neutral-100 transition-colors duration-100 whitespace-nowrap'}
                             >
                                 [ New File ]
                             </NavLink>
@@ -102,13 +102,13 @@ export default () => {
             ) : (
                 <>
                     {!files.length ? (
-                        <p css={tw`text-sm text-neutral-400 text-center`}>This directory seems to be empty.</p>
+                        <p css={tw`text-base text-neutral-400 text-center`}>This directory seems to be empty.</p>
                     ) : (
                         <CSSTransition classNames={'fade'} timeout={150} appear in>
                             <div ref={fileListRef} className={'border border-neutral-700 bg-neutral-900'}>
                                 {files.length > 250 && (
                                     <div css={tw`bg-yellow-100 dark:bg-yellow-900/40 border-l-4 border-yellow-500 mb-px p-3`}>
-                                        <p css={tw`text-yellow-800 dark:text-yellow-300 text-sm font-mono`}>
+                                        <p css={tw`text-yellow-800 dark:text-yellow-300 text-base font-mono`}>
                                             This directory is too large to display in the browser, limiting the output
                                             to the first 250 files.
                                         </p>

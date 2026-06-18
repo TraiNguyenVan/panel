@@ -99,9 +99,9 @@ const MassActionsBar = () => {
                                 css={tw`flex items-center space-x-6 pointer-events-auto px-6 py-3`}
                                 style={{ background: 'var(--color-neutral-900)', border: '1px solid var(--color-neutral-700)' }}
                             >
-                                <button className={'text-sm font-mono transition-colors duration-100'} style={{ color: 'var(--color-neutral-400)' }} onMouseEnter={e => (e.currentTarget.style.color = 'var(--color-neutral-200)')} onMouseLeave={e => (e.currentTarget.style.color = 'var(--color-neutral-400)')} onClick={() => setShowMove(true)}>[ Move ]</button>
-                                <button className={'text-sm font-mono transition-colors duration-100'} style={{ color: 'var(--color-neutral-400)' }} onMouseEnter={e => (e.currentTarget.style.color = 'var(--color-neutral-200)')} onMouseLeave={e => (e.currentTarget.style.color = 'var(--color-neutral-400)')} onClick={onClickCompress}>[ Archive ]</button>
-                                <button className={'text-sm font-mono transition-colors duration-100'} style={{ color: 'var(--color-neutral-500)' }} onMouseEnter={e => (e.currentTarget.style.color = '#ff3b30')} onMouseLeave={e => (e.currentTarget.style.color = 'var(--color-neutral-500)')} onClick={() => setShowConfirm(true)}>[ Delete ]</button>
+                                <button className={'text-base font-mono transition-colors duration-100'} style={{ color: 'var(--color-neutral-400)' }} onMouseEnter={e => (e.currentTarget.style.color = 'var(--color-neutral-200)')} onMouseLeave={e => (e.currentTarget.style.color = 'var(--color-neutral-400)')} onClick={() => setShowMove(true)}>[ Move ]</button>
+                                <button className={'text-base font-mono transition-colors duration-100'} style={{ color: 'var(--color-neutral-400)' }} onMouseEnter={e => (e.currentTarget.style.color = 'var(--color-neutral-200)')} onMouseLeave={e => (e.currentTarget.style.color = 'var(--color-neutral-400)')} onClick={onClickCompress}>[ Archive ]</button>
+                                <button className={'text-base font-mono transition-colors duration-100'} style={{ color: 'var(--color-neutral-500)' }} onMouseEnter={e => (e.currentTarget.style.color = '#ff3b30')} onMouseLeave={e => (e.currentTarget.style.color = 'var(--color-neutral-500)')} onClick={() => setShowConfirm(true)}>[ Delete ]</button>
                             </div>
                         </Fade>
                     </div>

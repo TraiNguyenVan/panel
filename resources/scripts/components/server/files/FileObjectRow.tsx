@@ -47,7 +47,7 @@ const FileObjectRow = ({ file, index }: { file: FileObject; index?: number }) =>
     >
         <SelectFileCheckbox name={file.name} />
         <Clickable file={file}>
-            <div css={tw`flex-none text-neutral-400 ml-6 mr-4 text-sm font-mono text-center w-8`}>
+            <div css={tw`flex-none text-neutral-400 ml-6 mr-4 text-base font-mono text-center w-8`}>
                 {file.isFile ? (
                     file.isSymlink ? '[@]' : file.isArchiveType() ? '[Z]' : '[-]'
                 ) : (
