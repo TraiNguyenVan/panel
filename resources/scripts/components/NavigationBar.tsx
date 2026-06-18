@@ -5,14 +5,14 @@ import { useStoreState } from 'easy-peasy';
 import { ApplicationStore } from '@/state';
 import SearchContainer from '@/components/dashboard/search/SearchContainer';
 import tw from 'twin.macro';
-import styled, { keyframes, css } from 'styled-components/macro';
+import styled, { css } from 'styled-components/macro';
 import http from '@/api/http';
 import SpinnerOverlay from '@/components/elements/SpinnerOverlay';
 import { ServerContext } from '@/state/server';
 import { SocketEvent } from '@/components/server/events';
-import { bytesToString } from '@/lib/formatters';
 import { slideDown, staggerRows } from '@/lib/animations';
 import { applyTheme } from '@/lib/theme';
+import { HostRamMonitor } from '@/features/host-monitor/components/HostRamMonitor';
 
 const RightNavigation = styled.div`
     & > a,
@@ -32,190 +32,12 @@ const RightNavigation = styled.div`
         }
 
         &:active::after,
-        &.active::after {
+        &.active::after,
+        &:hover::after {
             transform: scaleX(1);
         }
     }
 `;
-
-const doubleFlashLight = keyframes`
-  0%, 100% { 
-    opacity: 1; 
-    box-shadow: 0 -4px 12px 2px rgba(0, 0, 0, 0.4); 
-    background-color: #000000; 
-  }
-  50% { 
-    opacity: 0.1; 
-    box-shadow: 0 -2px 4px 0px rgba(0, 0, 0, 0.05); 
-    background-color: #a1a1aa; 
-  }
-`;
-
-const doubleFlashDark = keyframes`
-  0%, 100% { 
-    opacity: 1; 
-    box-shadow: 0 -6px 16px 2px rgba(255, 255, 255, 0.7); 
-    background-color: #ffffff; 
-  }
-  50% { 
-    opacity: 0.2; 
-    box-shadow: 0 -2px 4px 0px rgba(255, 255, 255, 0.1); 
-    background-color: #a1a1aa; 
-  }
-`;
-
-const dimRetractLight = keyframes`
-  0%, 100% { opacity: 1; }
-  50% { 
-    opacity: 0.1; 
-    background-color: #e4e4e7; 
-  }
-`;
-
-const dimRetractDark = keyframes`
-  0%, 100% { opacity: 1; }
-  50% { 
-    opacity: 0.1; 
-    background-color: #3f3f46; 
-  }
-`;
-
-const RamLine = styled.div<{ $state: 'idle' | 'increasing' | 'decreasing' }>`
-  ${tw`absolute bottom-0 left-0 h-[4px] bg-neutral-50 transition-all duration-1000 ease-out`}
-  
-  ${props => props.$state === 'increasing' && css`
-    animation: ${doubleFlashLight} 0.6s ease-in-out 2;
-    .dark & {
-      animation: ${doubleFlashDark} 0.6s ease-in-out 2;
-    }
-  `}
-  ${props => props.$state === 'decreasing' && css`
-    animation: ${dimRetractLight} 0.6s ease-in-out 2;
-    .dark & {
-      animation: ${dimRetractDark} 0.6s ease-in-out 2;
-    }
-  `}
-`;
-
-const useAnimatedValue = (value: number, duration = 2500) => {
-    const [current, setCurrent] = useState(value);
-    
-    useEffect(() => {
-        let startTimestamp: number;
-        const startValue = current;
-        const diff = value - startValue;
-
-        if (diff === 0) return;
-
-        let frameId: number;
-
-        const step = (timestamp: number) => {
-            if (!startTimestamp) startTimestamp = timestamp;
-            const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-            
-            // Linear easing for continuous rolling
-            const easeProgress = progress;
-
-            setCurrent(startValue + diff * easeProgress);
-
-            if (progress < 1) {
-                frameId = window.requestAnimationFrame(step);
-            } else {
-                setCurrent(value);
-            }
-        };
-
-        frameId = window.requestAnimationFrame(step);
-
-        return () => window.cancelAnimationFrame(frameId);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [value, duration]);
-
-    return current;
-};
-
-const HostRamMonitor = () => {
-    const [percentage, setPercentage] = useState(0);
-    const [flashState, setFlashState] = useState<'idle' | 'increasing' | 'decreasing'>('idle');
-    const [displayRam, setDisplayRam] = useState<{ used: number, total: number, top_processes?: { name: string, ram_bytes: number }[] }>({ used: 0, total: 0 });
-
-    useEffect(() => {
-        const fetchRam = async () => {
-            try {
-                const { data } = await http.get('/api/client/host-ram');
-                if (data && data.total) {
-                    setDisplayRam({ used: data.used, total: data.total, top_processes: data.top_processes });
-                }
-            } catch (err) {
-                // Ignore
-            }
-        };
-
-        const interval = setInterval(fetchRam, 2500);
-        
-        const initRam = (window as any).SiteConfiguration?.host_ram;
-        if (initRam && initRam.total) {
-            setDisplayRam({ used: initRam.used, total: initRam.total, top_processes: initRam.top_processes });
-        }
-        return () => clearInterval(interval);
-    }, []);
-
-    useEffect(() => {
-        if (displayRam.total > 0) {
-            const targetPercentage = Math.min(100, Math.max(0, (displayRam.used / displayRam.total) * 100));
-            const delta = targetPercentage - percentage;
-            
-            if (percentage > 0 && Math.abs(delta) >= 1.5) { 
-                if (delta > 0) {
-                    setFlashState('increasing');
-                } else {
-                    setFlashState('decreasing');
-                }
-                setTimeout(() => setFlashState('idle'), 1200);
-            }
-            
-            if (percentage === 0) {
-                setTimeout(() => setPercentage(targetPercentage), 100);
-            } else {
-                setPercentage(targetPercentage);
-            }
-        }
-    }, [displayRam.used, displayRam.total]);
-
-    const animatedUsed = useAnimatedValue(displayRam.used);
-
-    if (!displayRam.total) {
-        return <span className="text-neutral-200 ml-1">N/A</span>;
-    }
-    
-    return (
-        <div className="group h-full flex items-center cursor-default">
-            <span className="text-neutral-200 ml-1 inline-block text-left relative z-10" style={{ width: '180px', fontVariantNumeric: 'tabular-nums' }}>
-                {bytesToString(animatedUsed)} / {bytesToString(displayRam.total)}
-            </span>
-            <div className="absolute bottom-0 left-0 w-full h-[4px] bg-neutral-700" />
-            <RamLine 
-                $state={flashState}
-                style={{ width: `${percentage}%` }}
-            />
-            {displayRam.top_processes && displayRam.top_processes.length > 0 && (
-                <div className="absolute top-[calc(100%+0px)] right-0 w-72 bg-neutral-800 shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-                    <div className="px-4 py-3 bg-neutral-700 text-xs font-bold text-neutral-500 uppercase tracking-wider">
-                        Top Host Memory Processes
-                    </div>
-                    <div className="flex flex-col py-2">
-                        {displayRam.top_processes.map((proc, i) => (
-                            <div key={i} className="flex justify-between items-center px-4 py-2 hover:bg-neutral-600 transition-colors">
-                                <span className="font-mono text-sm text-neutral-200 truncate pr-4">{proc.name}</span>
-                                <span className="font-mono text-sm text-neutral-300 whitespace-nowrap">{bytesToString(proc.ram_bytes)}</span>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            )}
-        </div>
-    );
-};
 
 const parseInlineElements = (str: string): React.ReactNode[] => {
     if (!str) return [];
@@ -309,19 +131,22 @@ const parseInlineElements = (str: string): React.ReactNode[] => {
             switch (part.type) {
                 case 'code':
                     return (
-                        <code key={i} className="bg-neutral-800 text-yellow-500 px-1 py-0.5 rounded-sm text-xs font-mono border border-neutral-600">
+                        <code
+                            key={i}
+                            className='bg-neutral-800 text-yellow-500 px-1 py-0.5 rounded-sm text-xs font-mono border border-neutral-600'
+                        >
                             {part.content}
                         </code>
                     );
                 case 'bold':
                     return (
-                        <strong key={i} className="font-bold text-neutral-100">
+                        <strong key={i} className='font-bold text-neutral-100'>
                             {part.content}
                         </strong>
                     );
                 case 'italic':
                     return (
-                        <em key={i} className="italic text-neutral-300">
+                        <em key={i} className='italic text-neutral-300'>
                             {part.content}
                         </em>
                     );
@@ -337,9 +162,9 @@ const parseInlineElements = (str: string): React.ReactNode[] => {
                 <a
                     key={i}
                     href={part.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="underline text-neutral-100 hover:text-neutral-50 transition-colors font-bold"
+                    target='_blank'
+                    rel='noopener noreferrer'
+                    className='underline text-neutral-100 hover:text-neutral-50 transition-colors font-bold'
                 >
                     {part.content}
                 </a>
@@ -359,38 +184,36 @@ const renderMarkdown = (text: string): React.ReactNode[] => {
 
         if (trimmed.startsWith('# ')) {
             return (
-                <h1 key={lineIdx} className="text-lg font-bold text-neutral-100 mt-2 mb-1 block">
+                <h1 key={lineIdx} className='text-lg font-bold text-neutral-100 mt-2 mb-1 block'>
                     {parseInlineElements(trimmed.substring(2))}
                 </h1>
             );
         }
         if (trimmed.startsWith('## ')) {
             return (
-                <h2 key={lineIdx} className="text-base font-bold text-neutral-100 mt-2 mb-1 block">
+                <h2 key={lineIdx} className='text-base font-bold text-neutral-100 mt-2 mb-1 block'>
                     {parseInlineElements(trimmed.substring(3))}
                 </h2>
             );
         }
         if (trimmed.startsWith('### ')) {
             return (
-                <h3 key={lineIdx} className="text-sm font-bold text-neutral-100 mt-1 mb-0.5 block">
+                <h3 key={lineIdx} className='text-sm font-bold text-neutral-100 mt-1 mb-0.5 block'>
                     {parseInlineElements(trimmed.substring(4))}
                 </h3>
             );
         }
         if (trimmed.startsWith('- ') || trimmed.startsWith('* ')) {
             return (
-                <div key={lineIdx} className="pl-4 py-0.5 flex items-start space-x-2">
-                    <span className="text-neutral-400 mr-1.5">•</span>
-                    <span className="text-neutral-200">
-                        {parseInlineElements(trimmed.substring(2))}
-                    </span>
+                <div key={lineIdx} className='pl-4 py-0.5 flex items-start space-x-2'>
+                    <span className='text-neutral-400 mr-1.5'>•</span>
+                    <span className='text-neutral-200'>{parseInlineElements(trimmed.substring(2))}</span>
                 </div>
             );
         }
 
         return (
-            <p key={lineIdx} className="min-h-[1rem] text-neutral-200 py-0.5">
+            <p key={lineIdx} className='min-h-[1rem] text-neutral-200 py-0.5'>
                 {parseInlineElements(line)}
             </p>
         );
@@ -406,18 +229,18 @@ const AnnouncementBanner = () => {
     }
 
     return (
-        <div className="w-full bg-neutral-700 border-b border-neutral-600 font-mono text-sm py-3 px-4">
-            <div className="mx-auto w-full max-w-[1200px] flex items-start justify-between">
-                <div className="flex items-start space-x-3 flex-1">
-                    <span className="text-yellow-500 font-bold mt-1.5">[!]</span>
-                    <div className="text-neutral-200 flex-1 whitespace-pre-wrap leading-relaxed">
+        <div className='w-full bg-neutral-700 border-b border-neutral-600 font-mono text-sm py-3 px-4'>
+            <div className='mx-auto w-full max-w-[1200px] flex items-start justify-between'>
+                <div className='flex items-start space-x-3 flex-1'>
+                    <span className='text-yellow-500 font-bold mt-1.5'>[!]</span>
+                    <div className='text-neutral-200 flex-1 whitespace-pre-wrap leading-relaxed'>
                         {renderMarkdown(announcement)}
                     </div>
                 </div>
                 <button
                     onClick={() => setVisible(false)}
-                    className="text-neutral-400 hover:text-neutral-200 transition-colors ml-4 mt-1 cursor-pointer focus:outline-none"
-                    aria-label="Dismiss announcement"
+                    className='text-neutral-400 hover:text-neutral-200 transition-colors ml-4 mt-1 cursor-pointer focus:outline-none'
+                    aria-label='Dismiss announcement'
                 >
                     [ x ]
                 </button>
@@ -495,7 +318,9 @@ export default () => {
                     </div>
                     {/* Hamburger — mobile only */}
                     <button
-                        className={'md:hidden flex items-center px-4 h-full text-neutral-400 hover:text-neutral-200 transition-colors'}
+                        className={
+                            'md:hidden flex items-center px-4 h-full text-neutral-400 hover:text-neutral-200 transition-colors'
+                        }
                         onClick={() => setMobileOpen((o) => !o)}
                         aria-label={'Toggle menu'}
                     >
@@ -507,18 +332,28 @@ export default () => {
                         <NavLink to={'/'} exact>
                             [ Dashboard ]
                         </NavLink>
-                        <NavLink to={'/account'}>
-                            [ Account ]
-                        </NavLink>
-                        <div className={'relative flex items-center h-full px-2 mx-1 text-neutral-300 font-mono text-sm whitespace-nowrap'}>
+                        <NavLink to={'/account'}>[ Account ]</NavLink>
+                        <div
+                            className={
+                                'relative flex items-center h-full px-2 mx-1 text-neutral-300 font-mono text-sm whitespace-nowrap'
+                            }
+                        >
                             [ RAM: <HostRamMonitor /> ]
                         </div>
                         {rootAdmin && (
-                            <a href={'/admin'} rel={'noreferrer'} onClick={navigateToAdmin} className={activeAction === 'admin' ? 'active' : ''}>
+                            <a
+                                href={'/admin'}
+                                rel={'noreferrer'}
+                                onClick={navigateToAdmin}
+                                className={activeAction === 'admin' ? 'active' : ''}
+                            >
                                 [ Admin ]
                             </a>
                         )}
-                        <button onClick={toggleTheme} className={`theme-toggle-btn ${activeAction === 'theme' ? 'active' : ''}`}>
+                        <button
+                            onClick={toggleTheme}
+                            className={`theme-toggle-btn ${activeAction === 'theme' ? 'active' : ''}`}
+                        >
                             [ Theme ]
                         </button>
                         <button onClick={onTriggerLogout} className={activeAction === 'logout' ? 'active' : ''}>
@@ -528,20 +363,32 @@ export default () => {
                 </div>
                 {/* Mobile dropdown menu */}
                 {mobileOpen && (
-                    <div ref={mobileMenuRef} className={'md:hidden border-t w-full'} style={{ background: 'var(--color-neutral-900)', borderColor: 'var(--color-neutral-700)', willChange: 'transform, opacity' }}>
+                    <div
+                        ref={mobileMenuRef}
+                        className={'md:hidden border-t w-full'}
+                        style={{
+                            background: 'var(--color-neutral-900)',
+                            borderColor: 'var(--color-neutral-700)',
+                            willChange: 'transform, opacity',
+                        }}
+                    >
                         <div className={'flex flex-col px-4 py-2 space-y-1'}>
                             <SearchContainer />
                             <NavLink
                                 exact
                                 to={'/'}
-                                className={'py-3 font-mono text-sm text-neutral-400 hover:text-neutral-100 border-b border-neutral-700 transition-colors'}
+                                className={
+                                    'py-3 font-mono text-sm text-neutral-400 hover:text-neutral-100 border-b border-neutral-700 transition-colors'
+                                }
                                 activeClassName={'text-neutral-100'}
                             >
                                 [ Dashboard ]
                             </NavLink>
                             <NavLink
                                 to={'/account'}
-                                className={'py-3 font-mono text-sm text-neutral-400 hover:text-neutral-100 border-b border-neutral-700 transition-colors'}
+                                className={
+                                    'py-3 font-mono text-sm text-neutral-400 hover:text-neutral-100 border-b border-neutral-700 transition-colors'
+                                }
                                 activeClassName={'text-neutral-100'}
                             >
                                 [ Account ]
@@ -554,20 +401,26 @@ export default () => {
                                     href={'/admin'}
                                     rel={'noreferrer'}
                                     onClick={navigateToAdmin}
-                                    className={'py-3 font-mono text-sm text-neutral-400 hover:text-neutral-100 border-b border-neutral-700 transition-colors'}
+                                    className={
+                                        'py-3 font-mono text-sm text-neutral-400 hover:text-neutral-100 border-b border-neutral-700 transition-colors'
+                                    }
                                 >
                                     [ Admin ]
                                 </a>
                             )}
                             <button
                                 onClick={toggleTheme}
-                                className={'theme-toggle-btn py-3 text-left font-mono text-sm text-neutral-400 hover:text-neutral-100 border-b border-neutral-700 transition-colors'}
+                                className={
+                                    'theme-toggle-btn py-3 text-left font-mono text-sm text-neutral-400 hover:text-neutral-100 border-b border-neutral-700 transition-colors'
+                                }
                             >
                                 [ Theme ]
                             </button>
                             <button
                                 onClick={onTriggerLogout}
-                                className={'py-3 text-left font-mono text-sm text-neutral-400 hover:text-neutral-100 transition-colors'}
+                                className={
+                                    'py-3 text-left font-mono text-sm text-neutral-400 hover:text-neutral-100 transition-colors'
+                                }
                             >
                                 [ Logout ]
                             </button>

@@ -62,11 +62,20 @@
                     --color-neutral-900: #0f0000;
                 }
 
+                /* Typography & Inherited Monospace Style */
+                body, .wrapper, .content-wrapper, .right-side, .main-footer, .main-sidebar, .left-side, .sidebar,
+                h1, h2, h3, h4, h5, h6, label,
+                input, select, textarea, button, .form-control,
+                .select2-container, .select2-selection, .select2-results__option, .select2-search--dropdown .select2-search__field,
+                .input-group-addon, .pagination>li>a, .pagination>li>span,
+                .btn, .main-header .logo, .main-header .logo:hover, .main-header .logo * {
+                    font-family: "Berkeley Mono", "JetBrains Mono", "IBM Plex Mono", monospace !important;
+                }
+
                 body, .wrapper, .content-wrapper, .right-side, .main-footer, .main-sidebar, .left-side, .sidebar {
                     background: var(--bg-gradient) !important;
                     background-attachment: fixed !important;
                     color: var(--color-neutral-200) !important;
-                    font-family: "Berkeley Mono", "JetBrains Mono", "IBM Plex Mono", monospace !important;
                 }
                 .main-header {
                     height: 50px !important;
@@ -86,7 +95,6 @@
                 .main-header .logo, .main-header .logo:hover, .main-header .logo * {
                     color: var(--color-neutral-100) !important;
                     font-weight: 700 !important;
-                    font-family: "Berkeley Mono", "JetBrains Mono", "IBM Plex Mono", monospace !important;
                 }
                 .main-sidebar {
                     border-right: 1px solid var(--color-neutral-600) !important;
@@ -142,13 +150,16 @@
                     color: var(--color-neutral-50) !important;
                     border-left-color: var(--color-neutral-200) !important;
                 }
-                .box, .info-box, .callout, .small-box, .panel, .modal-content {
+
+                /* Standard Containers - rounded.none = 0px */
+                .box, .info-box, .callout, .small-box, .panel, .modal-content, .nav-tabs-custom>.tab-content, .alert {
                     background: var(--color-neutral-900) !important;
                     border: 1px solid var(--color-neutral-600) !important;
                     color: var(--color-neutral-200) !important;
                     box-shadow: none !important;
-                    border-radius: 0 !important;
+                    border-radius: 0px !important;
                 }
+
                 .box-header, .box-body, .box-footer, .panel-heading, .panel-footer {
                     background: transparent !important;
                     color: var(--color-neutral-200) !important;
@@ -159,27 +170,34 @@
                     color: var(--color-neutral-200) !important;
                     background: transparent !important;
                 }
-                .form-control {
+
+                /* Interactive Components - rounded.sm = 4px & Correct Colors */
+                .form-control,
+                input[type="text"], input[type="search"], input[type="number"], input[type="email"], input[type="password"], select, textarea {
                     background: var(--color-neutral-900) !important;
                     color: var(--color-neutral-200) !important;
                     border: 1px solid var(--color-neutral-300) !important;
-                    border-radius: 0 !important;
+                    border-radius: 4px !important;
                     box-shadow: none !important;
                 }
-                .form-control:focus {
+                .form-control:focus,
+                input[type="text"]:focus, input[type="search"]:focus, input[type="number"]:focus, input[type="email"]:focus, input[type="password"]:focus, select:focus, textarea:focus {
                     border-color: var(--color-neutral-400) !important;
                 }
-                .btn-default, .btn-primary, .btn-success, .btn-danger, .btn-warning, .btn-info {
+
+                .btn, .btn-default, .btn-primary, .btn-success, .btn-danger, .btn-warning, .btn-info {
                     background: var(--color-neutral-50) !important;
                     color: var(--color-neutral-900) !important;
                     border: 1px solid transparent !important;
-                    border-radius: 0 !important;
+                    border-radius: 4px !important;
                     box-shadow: none !important;
                     font-weight: 700 !important;
                 }
-                .btn-default:hover, .btn-primary:hover, .btn-success:hover, .btn-danger:hover, .btn-warning:hover, .btn-info:hover {
+                .btn:hover, .btn-default:hover, .btn-primary:hover, .btn-success:hover, .btn-danger:hover, .btn-warning:hover, .btn-info:hover {
                     background: var(--color-neutral-300) !important;
+                    color: var(--color-neutral-900) !important;
                 }
+
                 .text-muted, .help-block, small, .breadcrumb>li>a, .breadcrumb>li.active, .nav-tabs-custom>.nav-tabs>li>a {
                     color: var(--color-neutral-200) !important;
                 }
@@ -195,7 +213,6 @@
                 ::placeholder { color: var(--color-neutral-300) !important; opacity: 1 !important; }
                 h1, h2, h3, h4, h5, h6, label {
                     color: var(--color-neutral-100) !important;
-                    font-family: "Berkeley Mono", "JetBrains Mono", "IBM Plex Mono", monospace !important;
                 }
                 .nav-tabs-custom {
                     background: transparent !important;
@@ -210,20 +227,14 @@
                     border-color: var(--color-neutral-600) !important;
                     border-bottom-color: transparent !important;
                 }
-                .nav-tabs-custom>.tab-content {
-                    background: var(--color-neutral-900) !important;
-                    border: 1px solid var(--color-neutral-600) !important;
-                    border-top: none !important;
-                    color: var(--color-neutral-200) !important;
-                }
                 
-                /* Select2 Overrides */
+                /* Select2 Overrides - rounded.sm = 4px */
                 .select2-container--default .select2-selection--single,
                 .select2-container--default .select2-selection--multiple,
                 .select2-dropdown {
                     background-color: var(--color-neutral-900) !important;
                     border: 1px solid var(--color-neutral-300) !important;
-                    border-radius: 0 !important;
+                    border-radius: 4px !important;
                 }
                 .select2-container--default .select2-selection--single .select2-selection__rendered,
                 .select2-results__option, .select2-search--dropdown .select2-search__field {
@@ -235,20 +246,20 @@
                     color: var(--color-neutral-50) !important;
                 }
 
-                /* Input Addons */
+                /* Input Addons - rounded.sm = 4px */
                 .input-group-addon {
                     background-color: var(--color-neutral-800) !important;
                     color: var(--color-neutral-200) !important;
                     border: 1px solid var(--color-neutral-300) !important;
-                    border-radius: 0 !important;
+                    border-radius: 4px !important;
                 }
 
-                /* Pagination */
+                /* Pagination - rounded.sm = 4px */
                 .pagination>li>a, .pagination>li>span {
                     background-color: var(--color-neutral-900) !important;
                     color: var(--color-neutral-200) !important;
                     border-color: var(--color-neutral-300) !important;
-                    border-radius: 0 !important;
+                    border-radius: 4px !important;
                 }
                 .pagination>.active>a, .pagination>.active>span,
                 .pagination>.active>a:hover, .pagination>.active>span:hover {
@@ -264,7 +275,7 @@
                 code {
                     background-color: var(--color-neutral-800) !important;
                     color: var(--color-neutral-200) !important;
-                    border-radius: 0 !important;
+                    border-radius: 4px !important;
                 }
             </style>
             <script>
