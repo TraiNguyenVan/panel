@@ -299,7 +299,7 @@ export default () => {
                     <NavLink to={'/account'}>
                         [ Account ]
                     </NavLink>
-                    <div className={'relative flex items-center h-full px-2 mx-1 text-neutral-400 font-mono text-sm whitespace-nowrap'}>
+                    <div className={'relative flex items-center h-full px-2 mx-1 text-neutral-300 font-mono text-sm whitespace-nowrap'}>
                         [ RAM: <HostRamMonitor /> ]
                     </div>
                     {rootAdmin && (
@@ -335,7 +335,7 @@ export default () => {
                         >
                             [ Account ]
                         </NavLink>
-                        <div className={'py-3 font-mono text-sm text-neutral-400 border-b border-neutral-700'}>
+                        <div className={'py-3 font-mono text-sm text-neutral-300 border-b border-neutral-700'}>
                             [ RAM: <HostRamMonitor /> ]
                         </div>
                         {rootAdmin && (
