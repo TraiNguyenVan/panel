@@ -6,7 +6,7 @@ import { bytesToString, ip, mbToBytes } from '@/lib/formatters';
 import tw from 'twin.macro';
 import GreyRowBox from '@/components/elements/GreyRowBox';
 import Spinner from '@/components/elements/Spinner';
-import styled from 'styled-components/macro';
+import styled, { keyframes, css } from 'styled-components/macro';
 import isEqual from 'react-fast-compare';
 
 // Determines if the current value is in an alarm threshold so we can show it in red rather
@@ -25,20 +25,28 @@ const IconDescription = styled.p<{ $alarm: boolean }>`
     ${(props) => (props.$alarm ? tw`text-white` : tw`text-neutral-400`)};
 `;
 
+const pulse = keyframes`
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
+`;
+
 const StatusIndicatorBox = styled(GreyRowBox)<{ $status: ServerPowerState | undefined }>`
     ${tw`grid grid-cols-12 gap-4 relative`};
 
     & .status-bar {
-        ${tw`w-[3px] bg-red-500 absolute left-0 z-20 opacity-60 transition-all duration-150`};
+        ${tw`w-[3px] absolute left-0 z-20 transition-all duration-150`};
         height: 100%;
         top: 0;
 
         ${({ $status }) =>
             !$status || $status === 'offline'
-                ? tw`bg-neutral-500`
+                ? tw`bg-neutral-500 opacity-60`
                 : $status === 'running'
-                ? tw`bg-neutral-300`
-                : tw`bg-neutral-400`};
+                ? css`
+                      ${tw`bg-neutral-50 w-[4px]`}
+                      animation: ${pulse} 2s infinite ease-in-out;
+                  `
+                : tw`bg-neutral-400 opacity-80`};
     }
 
     &:hover .status-bar {
