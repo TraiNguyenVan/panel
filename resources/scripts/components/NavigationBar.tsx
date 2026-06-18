@@ -280,7 +280,7 @@ export default () => {
                     <Link
                         to={'/'}
                         className={
-                            'text-2xl font-header font-medium px-4 no-underline text-neutral-200 hover:text-neutral-100 transition-colors duration-150 whitespace-nowrap overflow-hidden text-ellipsis block'
+                            'text-2xl font-header font-medium px-4 no-underline text-neutral-800 dark:text-neutral-200 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors duration-150 whitespace-nowrap overflow-hidden text-ellipsis block'
                         }
                     >
                         {name}
@@ -288,7 +288,7 @@ export default () => {
                 </div>
                 {/* Hamburger — mobile only */}
                 <button
-                    className={'md:hidden flex items-center px-4 h-full text-neutral-400 hover:text-neutral-100 transition-colors'}
+                    className={'md:hidden flex items-center px-4 h-full text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors'}
                     onClick={() => setMobileOpen((o) => !o)}
                     aria-label={'Toggle menu'}
                 >
