@@ -217,6 +217,138 @@ const HostRamMonitor = () => {
     );
 };
 
+const renderMarkdown = (text: string): React.ReactNode[] => {
+    if (!text) return [];
+
+    const linkRegex = /\[([^\]]+)\]\(([^)]+)\)/g;
+    const parts: any[] = [];
+    let lastIndex = 0;
+    let match;
+
+    while ((match = linkRegex.exec(text)) !== null) {
+        if (match.index > lastIndex) {
+            parts.push({ type: 'text', content: text.substring(lastIndex, match.index) });
+        }
+        parts.push({ type: 'link', content: match[1], url: match[2] });
+        lastIndex = linkRegex.lastIndex;
+    }
+    if (lastIndex < text.length) {
+        parts.push({ type: 'text', content: text.substring(lastIndex) });
+    }
+    if (parts.length === 0) {
+        parts.push({ type: 'text', content: text });
+    }
+
+    const parseInline = (str: string): React.ReactNode[] => {
+        const codeRegex = /`([^`]+)`/g;
+        const subParts: any[] = [];
+        let index = 0;
+        let subMatch;
+
+        while ((subMatch = codeRegex.exec(str)) !== null) {
+            if (subMatch.index > index) {
+                subParts.push({ type: 'plain', content: str.substring(index, subMatch.index) });
+            }
+            subParts.push({ type: 'code', content: subMatch[1] });
+            index = codeRegex.lastIndex;
+        }
+        if (index < str.length) {
+            subParts.push({ type: 'plain', content: str.substring(index) });
+        }
+        if (subParts.length === 0) {
+            subParts.push({ type: 'plain', content: str });
+        }
+
+        const boldParts: any[] = [];
+        for (const part of subParts) {
+            if (part.type === 'code') {
+                boldParts.push(part);
+                continue;
+            }
+
+            const boldRegex = /\*\*([^*]+)\*\*|__([^_]+)__/g;
+            let boldIndex = 0;
+            let boldMatch;
+            while ((boldMatch = boldRegex.exec(part.content)) !== null) {
+                if (boldMatch.index > boldIndex) {
+                    boldParts.push({ type: 'plain', content: part.content.substring(boldIndex, boldMatch.index) });
+                }
+                const content = boldMatch[1] || boldMatch[2];
+                boldParts.push({ type: 'bold', content });
+                boldIndex = boldRegex.lastIndex;
+            }
+            if (boldIndex < part.content.length) {
+                boldParts.push({ type: 'plain', content: part.content.substring(boldIndex) });
+            }
+        }
+
+        const finalParts: any[] = [];
+        for (const part of boldParts) {
+            if (part.type === 'code' || part.type === 'bold') {
+                finalParts.push(part);
+                continue;
+            }
+
+            const italicRegex = /\*([^*]+)\*|_([^_]+)_/g;
+            let italicIndex = 0;
+            let italicMatch;
+            while ((italicMatch = italicRegex.exec(part.content)) !== null) {
+                if (italicMatch.index > italicIndex) {
+                    finalParts.push({ type: 'plain', content: part.content.substring(italicIndex, italicMatch.index) });
+                }
+                const content = italicMatch[1] || italicMatch[2];
+                finalParts.push({ type: 'italic', content });
+                italicIndex = italicRegex.lastIndex;
+            }
+            if (italicIndex < part.content.length) {
+                finalParts.push({ type: 'plain', content: part.content.substring(italicIndex) });
+            }
+        }
+
+        return finalParts.map((part, i) => {
+            switch (part.type) {
+                case 'code':
+                    return (
+                        <code key={i} className="bg-neutral-800 text-yellow-500 px-1 py-0.5 rounded-sm text-xs font-mono border border-neutral-600">
+                            {part.content}
+                        </code>
+                    );
+                case 'bold':
+                    return (
+                        <strong key={i} className="font-bold text-neutral-100">
+                            {part.content}
+                        </strong>
+                    );
+                case 'italic':
+                    return (
+                        <em key={i} className="italic text-neutral-300">
+                            {part.content}
+                        </em>
+                    );
+                default:
+                    return part.content;
+            }
+        });
+    };
+
+    return parts.map((part, i) => {
+        if (part.type === 'link') {
+            return (
+                <a
+                    key={i}
+                    href={part.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline text-neutral-100 hover:text-neutral-50 transition-colors font-bold"
+                >
+                    {part.content}
+                </a>
+            );
+        }
+        return <React.Fragment key={i}>{parseInline(part.content)}</React.Fragment>;
+    });
+};
+
 const AnnouncementBanner = () => {
     const announcement = useStoreState((state: ApplicationStore) => state.settings.data?.announcement);
     const [visible, setVisible] = useState(true);
@@ -228,9 +360,11 @@ const AnnouncementBanner = () => {
     return (
         <div className="w-full bg-neutral-700 border-b border-neutral-600 font-mono text-sm py-2 px-4">
             <div className="mx-auto w-full max-w-[1200px] flex items-center justify-between">
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-2 flex-wrap gap-x-1">
                     <span className="text-yellow-500 font-bold mr-1">[!]</span>
-                    <span className="text-neutral-200">{announcement}</span>
+                    <span className="text-neutral-200 flex items-center flex-wrap gap-x-1">
+                        {renderMarkdown(announcement)}
+                    </span>
                 </div>
                 <button
                     onClick={() => setVisible(false)}
