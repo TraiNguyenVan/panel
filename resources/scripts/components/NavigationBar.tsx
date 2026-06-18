@@ -217,6 +217,33 @@ const HostRamMonitor = () => {
     );
 };
 
+const AnnouncementBanner = () => {
+    const announcement = useStoreState((state: ApplicationStore) => state.settings.data?.announcement);
+    const [visible, setVisible] = useState(true);
+
+    if (!visible || !announcement) {
+        return null;
+    }
+
+    return (
+        <div className="w-full bg-neutral-700 border-b border-neutral-600 font-mono text-sm py-2 px-4">
+            <div className="mx-auto w-full max-w-[1200px] flex items-center justify-between">
+                <div className="flex items-center space-x-2">
+                    <span className="text-yellow-500 font-bold mr-1">[!]</span>
+                    <span className="text-neutral-200">{announcement}</span>
+                </div>
+                <button
+                    onClick={() => setVisible(false)}
+                    className="text-neutral-400 hover:text-neutral-200 transition-colors ml-4 cursor-pointer focus:outline-none"
+                    aria-label="Dismiss announcement"
+                >
+                    [ x ]
+                </button>
+            </div>
+        </div>
+    );
+};
+
 export default () => {
     const name = useStoreState((state: ApplicationStore) => state.settings.data!.name);
     const rootAdmin = useStoreState((state: ApplicationStore) => state.user.data!.rootAdmin);
@@ -268,101 +295,104 @@ export default () => {
     };
 
     return (
-        <div className={'relative w-full bg-transparent border-b border-neutral-600'}>
-            <SpinnerOverlay visible={isLoggingOut} />
-            {/* Desktop nav */}
-            <div css={tw`mx-auto w-full flex items-center h-[3.5rem] max-w-[1200px]`}>
-                <div id={'logo'} className={'flex-1 min-w-0'}>
-                    <Link
-                        to={'/'}
-                        className={
-                            'text-2xl font-header font-medium px-4 no-underline text-neutral-200 hover:text-neutral-100 transition-colors duration-150 whitespace-nowrap overflow-hidden text-ellipsis block'
-                        }
-                    >
-                        {name}
-                    </Link>
-                </div>
-                {/* Hamburger — mobile only */}
-                <button
-                    className={'md:hidden flex items-center px-4 h-full text-neutral-400 hover:text-neutral-200 transition-colors'}
-                    onClick={() => setMobileOpen((o) => !o)}
-                    aria-label={'Toggle menu'}
-                >
-                    <span className={'font-mono text-sm'}>{mobileOpen ? '[ x ]' : '[ ≡ ]'}</span>
-                </button>
-                {/* Desktop links */}
-                <RightNavigation className={'hidden md:flex h-full items-center justify-center'}>
-                    <SearchContainer />
-                    <NavLink to={'/'} exact>
-                        [ Dashboard ]
-                    </NavLink>
-                    <NavLink to={'/account'}>
-                        [ Account ]
-                    </NavLink>
-                    <div className={'relative flex items-center h-full px-2 mx-1 text-neutral-300 font-mono text-sm whitespace-nowrap'}>
-                        [ RAM: <HostRamMonitor /> ]
-                    </div>
-                    {rootAdmin && (
-                        <a href={'/admin'} rel={'noreferrer'} onClick={navigateToAdmin} className={activeAction === 'admin' ? 'active' : ''}>
-                            [ Admin ]
-                        </a>
-                    )}
-                    <button onClick={toggleTheme} className={`theme-toggle-btn ${activeAction === 'theme' ? 'active' : ''}`}>
-                        [ Theme ]
-                    </button>
-                    <button onClick={onTriggerLogout} className={activeAction === 'logout' ? 'active' : ''}>
-                        [ Logout ]
-                    </button>
-                </RightNavigation>
-            </div>
-            {/* Mobile dropdown menu */}
-            {mobileOpen && (
-                <div ref={mobileMenuRef} className={'md:hidden border-t w-full'} style={{ background: 'var(--color-neutral-900)', borderColor: 'var(--color-neutral-700)', willChange: 'transform, opacity' }}>
-                    <div className={'flex flex-col px-4 py-2 space-y-1'}>
-                        <SearchContainer />
-                        <NavLink
-                            exact
+        <div className={'relative w-full bg-transparent'}>
+            <AnnouncementBanner />
+            <div className={'w-full border-b border-neutral-600 bg-transparent'}>
+                <SpinnerOverlay visible={isLoggingOut} />
+                {/* Desktop nav */}
+                <div css={tw`mx-auto w-full flex items-center h-[3.5rem] max-w-[1200px]`}>
+                    <div id={'logo'} className={'flex-1 min-w-0'}>
+                        <Link
                             to={'/'}
-                            className={'py-3 font-mono text-sm text-neutral-400 hover:text-neutral-100 border-b border-neutral-700 transition-colors'}
-                            activeClassName={'text-neutral-100'}
+                            className={
+                                'text-2xl font-header font-medium px-4 no-underline text-neutral-200 hover:text-neutral-100 transition-colors duration-150 whitespace-nowrap overflow-hidden text-ellipsis block'
+                            }
                         >
+                            {name}
+                        </Link>
+                    </div>
+                    {/* Hamburger — mobile only */}
+                    <button
+                        className={'md:hidden flex items-center px-4 h-full text-neutral-400 hover:text-neutral-200 transition-colors'}
+                        onClick={() => setMobileOpen((o) => !o)}
+                        aria-label={'Toggle menu'}
+                    >
+                        <span className={'font-mono text-sm'}>{mobileOpen ? '[ x ]' : '[ ≡ ]'}</span>
+                    </button>
+                    {/* Desktop links */}
+                    <RightNavigation className={'hidden md:flex h-full items-center justify-center'}>
+                        <SearchContainer />
+                        <NavLink to={'/'} exact>
                             [ Dashboard ]
                         </NavLink>
-                        <NavLink
-                            to={'/account'}
-                            className={'py-3 font-mono text-sm text-neutral-400 hover:text-neutral-100 border-b border-neutral-700 transition-colors'}
-                            activeClassName={'text-neutral-100'}
-                        >
+                        <NavLink to={'/account'}>
                             [ Account ]
                         </NavLink>
-                        <div className={'py-3 font-mono text-sm text-neutral-300 border-b border-neutral-700'}>
+                        <div className={'relative flex items-center h-full px-2 mx-1 text-neutral-300 font-mono text-sm whitespace-nowrap'}>
                             [ RAM: <HostRamMonitor /> ]
                         </div>
                         {rootAdmin && (
-                            <a
-                                href={'/admin'}
-                                rel={'noreferrer'}
-                                onClick={navigateToAdmin}
-                                className={'py-3 font-mono text-sm text-neutral-400 hover:text-neutral-100 border-b border-neutral-700 transition-colors'}
-                            >
+                            <a href={'/admin'} rel={'noreferrer'} onClick={navigateToAdmin} className={activeAction === 'admin' ? 'active' : ''}>
                                 [ Admin ]
                             </a>
                         )}
-                        <button
-                            onClick={toggleTheme}
-                            className={'theme-toggle-btn py-3 text-left font-mono text-sm text-neutral-400 hover:text-neutral-100 border-b border-neutral-700 transition-colors'}
-                        >
+                        <button onClick={toggleTheme} className={`theme-toggle-btn ${activeAction === 'theme' ? 'active' : ''}`}>
                             [ Theme ]
                         </button>
-                        <button
-                            onClick={onTriggerLogout}
-                            className={'py-3 text-left font-mono text-sm text-neutral-400 hover:text-neutral-100 transition-colors'}
-                        >
+                        <button onClick={onTriggerLogout} className={activeAction === 'logout' ? 'active' : ''}>
                             [ Logout ]
                         </button>
-                    </div>
+                    </RightNavigation>
                 </div>
-            )}
+                {/* Mobile dropdown menu */}
+                {mobileOpen && (
+                    <div ref={mobileMenuRef} className={'md:hidden border-t w-full'} style={{ background: 'var(--color-neutral-900)', borderColor: 'var(--color-neutral-700)', willChange: 'transform, opacity' }}>
+                        <div className={'flex flex-col px-4 py-2 space-y-1'}>
+                            <SearchContainer />
+                            <NavLink
+                                exact
+                                to={'/'}
+                                className={'py-3 font-mono text-sm text-neutral-400 hover:text-neutral-100 border-b border-neutral-700 transition-colors'}
+                                activeClassName={'text-neutral-100'}
+                            >
+                                [ Dashboard ]
+                            </NavLink>
+                            <NavLink
+                                to={'/account'}
+                                className={'py-3 font-mono text-sm text-neutral-400 hover:text-neutral-100 border-b border-neutral-700 transition-colors'}
+                                activeClassName={'text-neutral-100'}
+                            >
+                                [ Account ]
+                            </NavLink>
+                            <div className={'py-3 font-mono text-sm text-neutral-300 border-b border-neutral-700'}>
+                                [ RAM: <HostRamMonitor /> ]
+                            </div>
+                            {rootAdmin && (
+                                <a
+                                    href={'/admin'}
+                                    rel={'noreferrer'}
+                                    onClick={navigateToAdmin}
+                                    className={'py-3 font-mono text-sm text-neutral-400 hover:text-neutral-100 border-b border-neutral-700 transition-colors'}
+                                >
+                                    [ Admin ]
+                                </a>
+                            )}
+                            <button
+                                onClick={toggleTheme}
+                                className={'theme-toggle-btn py-3 text-left font-mono text-sm text-neutral-400 hover:text-neutral-100 border-b border-neutral-700 transition-colors'}
+                            >
+                                [ Theme ]
+                            </button>
+                            <button
+                                onClick={onTriggerLogout}
+                                className={'py-3 text-left font-mono text-sm text-neutral-400 hover:text-neutral-100 transition-colors'}
+                            >
+                                [ Logout ]
+                            </button>
+                        </div>
+                    </div>
+                )}
+            </div>
         </div>
     );
 };

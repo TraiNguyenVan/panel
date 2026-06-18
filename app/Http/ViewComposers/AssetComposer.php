@@ -41,6 +41,7 @@ class AssetComposer
                 'siteKey' => config('recaptcha.website_key') ?? '',
             ],
             'host_ram' => $hostRam,
+            'announcement' => config('pterodactyl.announcement'),
         ]);
     }
 }

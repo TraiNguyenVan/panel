@@ -190,6 +190,8 @@ return [
         'enabled' => env('PTERODACTYL_TELEMETRY_ENABLED', true),
     ],
 
+    'announcement' => env('APP_ANNOUNCEMENT', ''),
+
     'features' => [
         'new_server_identifiers' => (bool) env('PTERODACTYL_USE_SERVER_IDENTIFIERS', false),
     ],
