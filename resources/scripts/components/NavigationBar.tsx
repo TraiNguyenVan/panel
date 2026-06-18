@@ -136,14 +136,14 @@ const useAnimatedValue = (value: number, duration = 2500) => {
 const HostRamMonitor = () => {
     const [percentage, setPercentage] = useState(0);
     const [flashState, setFlashState] = useState<'idle' | 'increasing' | 'decreasing'>('idle');
-    const [displayRam, setDisplayRam] = useState({ used: 0, total: 0 });
+    const [displayRam, setDisplayRam] = useState<{ used: number, total: number, top_processes?: { name: string, ram_bytes: number }[] }>({ used: 0, total: 0 });
 
     useEffect(() => {
         const fetchRam = async () => {
             try {
                 const { data } = await http.get('/api/client/host-ram');
                 if (data && data.total) {
-                    setDisplayRam({ used: data.used, total: data.total });
+                    setDisplayRam({ used: data.used, total: data.total, top_processes: data.top_processes });
                 }
             } catch (err) {
                 // Ignore
@@ -154,7 +154,7 @@ const HostRamMonitor = () => {
         
         const initRam = (window as any).SiteConfiguration?.host_ram;
         if (initRam && initRam.total) {
-            setDisplayRam({ used: initRam.used, total: initRam.total });
+            setDisplayRam({ used: initRam.used, total: initRam.total, top_processes: initRam.top_processes });
         }
         return () => clearInterval(interval);
     }, []);
@@ -188,8 +188,8 @@ const HostRamMonitor = () => {
     }
     
     return (
-        <>
-            <span className="text-neutral-200 ml-1 inline-block text-left" style={{ width: '180px', fontVariantNumeric: 'tabular-nums' }}>
+        <div className="group h-full flex items-center cursor-default">
+            <span className="text-neutral-200 ml-1 inline-block text-left relative z-10" style={{ width: '180px', fontVariantNumeric: 'tabular-nums' }}>
                 {bytesToString(animatedUsed)} / {bytesToString(displayRam.total)}
             </span>
             <div className="absolute bottom-0 left-0 w-full h-[4px] bg-neutral-300 dark:bg-neutral-700" />
@@ -197,7 +197,22 @@ const HostRamMonitor = () => {
                 $state={flashState}
                 style={{ width: `${percentage}%` }}
             />
-        </>
+            {displayRam.top_processes && displayRam.top_processes.length > 0 && (
+                <div className="absolute top-[calc(100%+0px)] right-0 w-72 bg-white dark:bg-neutral-700 shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                    <div className="px-4 py-3 bg-neutral-100 dark:bg-neutral-800 text-xs font-bold text-neutral-500 uppercase tracking-wider">
+                        Top Host Memory Processes
+                    </div>
+                    <div className="flex flex-col py-2">
+                        {displayRam.top_processes.map((proc, i) => (
+                            <div key={i} className="flex justify-between items-center px-4 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-600 transition-colors">
+                                <span className="font-mono text-sm text-neutral-800 dark:text-neutral-200 truncate pr-4">{proc.name}</span>
+                                <span className="font-mono text-sm text-neutral-600 dark:text-neutral-300 whitespace-nowrap">{bytesToString(proc.ram_bytes)}</span>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
+        </div>
     );
 };
 

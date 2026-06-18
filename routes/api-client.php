@@ -20,7 +20,7 @@ use Pterodactyl\Http\Middleware\Api\Client\Server\AuthenticateServerAccess;
 Route::get('/', [Client\ClientController::class, 'index'])->name('api:client.index');
 Route::get('/permissions', [Client\ClientController::class, 'permissions']);
 Route::get('/host-ram', function() {
-    $hostRam = ['total' => 0, 'used' => 0];
+    $hostRam = ['total' => 0, 'used' => 0, 'top_processes' => []];
     if (is_readable('/proc/meminfo')) {
         $meminfo = file_get_contents('/proc/meminfo');
         preg_match('/MemTotal:\s+(\d+) kB/', $meminfo, $totalMatches);
@@ -30,8 +30,27 @@ Route::get('/host-ram', function() {
         $available = isset($availMatches[1]) ? (int)$availMatches[1] * 1024 : 0;
         $used = $total - $available;
         
-        $hostRam = ['total' => $total, 'used' => $used];
+        $hostRam['total'] = $total;
+        $hostRam['used'] = $used;
     }
+    
+    $procFile = storage_path('app/host_top_ram.txt');
+    if (file_exists($procFile) && is_readable($procFile)) {
+        $lines = file($procFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+        foreach ($lines as $line) {
+            $parts = preg_split('/\s+/', trim($line));
+            if (count($parts) >= 2) {
+                // The last element is the size in KB, everything before is the command name
+                $sizeKb = array_pop($parts);
+                $name = implode(' ', $parts);
+                $hostRam['top_processes'][] = [
+                    'name' => $name,
+                    'ram_bytes' => ((int) $sizeKb) * 1024
+                ];
+            }
+        }
+    }
+    
     return response()->json($hostRam);
 });
 
