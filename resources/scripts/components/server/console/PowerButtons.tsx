@@ -51,9 +51,9 @@ export default ({ className }: PowerButtonProps) => {
             </Dialog.Confirm>
             <Can action={'control.start'}>
                 <button
-                    className={classNames('text-neutral-400 transition-all font-mono text-sm whitespace-nowrap', {
+                    className={classNames('text-neutral-300 transition-all font-mono text-sm whitespace-nowrap', {
                         'opacity-50 cursor-not-allowed': status !== 'offline',
-                        'hover:text-neutral-300': status === 'offline'
+                        'hover:text-neutral-100': status === 'offline'
                     })}
                     disabled={status !== 'offline'}
                     onClick={onButtonClick.bind(this, 'start')}
@@ -63,9 +63,9 @@ export default ({ className }: PowerButtonProps) => {
             </Can>
             <Can action={'control.restart'}>
                 <button 
-                    className={classNames('text-neutral-400 transition-all font-mono text-sm whitespace-nowrap', {
+                    className={classNames('text-neutral-300 transition-all font-mono text-sm whitespace-nowrap', {
                         'opacity-50 cursor-not-allowed': !status,
-                        'hover:text-neutral-300': status
+                        'hover:text-neutral-100': status
                     })}
                     disabled={!status} 
                     onClick={onButtonClick.bind(this, 'restart')}
@@ -75,9 +75,9 @@ export default ({ className }: PowerButtonProps) => {
             </Can>
             <Can action={'control.stop'}>
                 <button
-                    className={classNames('text-neutral-400 transition-all font-mono text-sm whitespace-nowrap', {
+                    className={classNames('text-neutral-300 transition-all font-mono text-sm whitespace-nowrap', {
                         'opacity-50 cursor-not-allowed': status === 'offline',
-                        'hover:text-neutral-300': status !== 'offline'
+                        'hover:text-neutral-100': status !== 'offline'
                     })}
                     disabled={status === 'offline'}
                     onClick={onButtonClick.bind(this, killable ? 'kill' : 'stop')}

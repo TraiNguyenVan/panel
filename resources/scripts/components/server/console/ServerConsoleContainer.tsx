@@ -34,7 +34,7 @@ const ServerConsoleContainer = () => {
             )}
             <div className={'grid grid-cols-4 gap-4 mb-4'}>
                 <div className={'hidden sm:block sm:col-span-2 lg:col-span-3 pr-4'}>
-                    <h1 className={'font-header font-medium text-2xl text-gray-50 leading-relaxed line-clamp-1'}>
+                    <h1 className={'font-header font-medium text-2xl text-neutral-100 leading-relaxed line-clamp-1'}>
                         {name}
                     </h1>
                     <p className={'text-sm line-clamp-2'}>{description}</p>
