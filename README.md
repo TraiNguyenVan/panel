@@ -1,72 +1,105 @@
-[![Logo Image](https://cdn.pterodactyl.io/logos/new/pterodactyl_logo.png)](https://pterodactyl.io)
+# Pterodactyl Theme Installation & Setup Guide (OpenCode Theme)
 
-![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/pterodactyl/panel/ci.yaml?label=Tests&style=for-the-badge&branch=1.0-develop)
-![Discord](https://img.shields.io/discord/122900397965705216?label=Discord&logo=Discord&logoColor=white&style=for-the-badge)
-![GitHub Releases](https://img.shields.io/github/downloads/pterodactyl/panel/latest/total?style=for-the-badge)
-![GitHub contributors](https://img.shields.io/github/contributors/pterodactyl/panel?style=for-the-badge)
+> [!NOTE]
+> This is a customized Pterodactyl Panel theme. For the original Pterodactyl Panel documentation and README, please refer to [README-ORIGINAL.md](README-ORIGINAL.md).
 
-# Pterodactyl Panel
+This guide explains how to install and configure the custom **OpenCode Theme** on your local Pterodactyl Panel (compatible with version `v1.12.3`).
 
-Pterodactyl® is a free, open-source game server management panel built with PHP, React, and Go. Designed with security
-in mind, Pterodactyl runs all game servers in isolated Docker containers while exposing a beautiful and intuitive
-UI to end users.
+---
 
-Stop settling for less. Make game servers a first class citizen on your platform.
+## 1. Features Included
 
-![Image](https://cdn.pterodactyl.io/site-assets/pterodactyl_v1_demo.gif)
+1. **Terminal-Native Theme**: Replaces standard fonts with monospace options (`Berkeley Mono`, `JetBrains Mono`, or `IBM Plex Mono`) and adds a polished terminal-like visual aesthetic (with unified Light & Dark modes).
+2. **Terminal Text Resizing**: Adds dynamic, persistent font size adjustments directly in the server console window.
+3. **Host RAM Monitoring**: Displays a live dashboard RAM utilization bar and a process list inspector showing the top memory-using processes on the host.
 
-## Documentation
+---
 
-* [Panel Documentation](https://pterodactyl.io/panel/1.0/getting_started.html)
-* [Wings Documentation](https://pterodactyl.io/wings/1.0/installing.html)
-* [Community Guides](https://pterodactyl.io/community/about.html)
-* Or, get additional help [via Discord](https://discord.gg/pterodactyl)
+## 2. Installation Methods
 
-## Sponsors
+Choose one of the two methods below to install the theme on your panel.
 
-I would like to extend my sincere thanks to the following sponsors for helping fund Pterodactyl's development.
-[Interested in becoming a sponsor?](https://github.com/sponsors/pterodactyl)
+### Method A: Git Integration (For Developers/Administrators)
 
-| Company                                                                           | About                                                                                                                                                                                                                                           |
-|-----------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [**Aussie Server Hosts**](https://aussieserverhosts.com/)                         | No frills Australian Owned and operated High Performance Server hosting for some of the most demanding games serving Australia and New Zealand.                                                                                                 |
-| [**BisectHosting**](https://www.bisecthosting.com/)                               | BisectHosting provides Minecraft, Valheim and other server hosting services with the highest reliability and lightning fast support since 2012.                                                                                                 |
-| [**MineStrator**](https://minestrator.com/)                                       | Looking for the most highend French hosting company for your minecraft server? More than 24,000 members on our discord trust us. Give us a try!                                                                                                 |
-| [**HostEZ**](https://hostez.io)                                                   | US & EU Rust & Minecraft Hosting. DDoS Protected bare metal, VPS and colocation with low latency, high uptime and maximum availability. EZ!                                                                                                     |
-| [**Blueprint**](https://blueprint.zip/?utm_source=pterodactyl&utm_medium=sponsor) | Create and install Pterodactyl addons and themes with the growing Blueprint framework - the package-manager for Pterodactyl. Use multiple modifications at once without worrying about conflicts and make use of the large extension ecosystem. |
-| [**indifferent broccoli**](https://indifferentbroccoli.com/)                      | indifferent broccoli is a game server hosting and rental company. With us, you get top-notch computer power for your gaming sessions. We destroy lag, latency, and complexity--letting you focus on the fun stuff.                              |
+1. Add this repository as a remote and fetch the branch:
+   ```bash
+   git remote add opencode-theme https://github.com/TraiNguyenVan/panel.git
+   git fetch opencode-theme
+   ```
+2. Merge the theme branch into your existing installation (or check it out directly):
+   ```bash
+   git checkout -b theme-merge v1.12.3
+   git merge opencode-theme/feature/opencode-theme
+   ```
+3. Install dependencies and compile the production assets:
+   ```bash
+   yarn install --frozen-lockfile
+   yarn build:production
+   ```
+4. Clear the Laravel caches:
+   ```bash
+   php artisan view:clear
+   php artisan config:clear
+   php artisan route:clear
+   ```
 
-### Supported Games
+---
 
-Pterodactyl supports a wide variety of games by utilizing Docker containers to isolate each instance. This gives
-you the power to run game servers without bloating machines with a host of additional dependencies.
+### Method B: Pre-built Production Zip (Easiest)
 
-Some of our core supported games include:
+If you don't have Node/Yarn installed on your panel host:
 
-* Minecraft — including Paper, Sponge, Bungeecord, Waterfall, and more
-* Rust
-* Terraria
-* Teamspeak
-* Mumble
-* Team Fortress 2
-* Counter Strike: Global Offensive
-* Garry's Mod
-* ARK: Survival Evolved
+1. **Back up** your existing panel files:
+   ```bash
+   tar -czf panel-backup.tar.gz /var/www/pterodactyl
+   ```
+2. **Download the pre-compiled theme zip** containing all code modifications and Webpack assets.
+3. **Unpack the zip archive** on top of your installation folder:
+   ```bash
+   unzip -o opencode-theme.zip -d /var/www/pterodactyl
+   ```
+4. **Set correct ownership** on the files:
+   ```bash
+   chown -R www-data:www-data /var/www/pterodactyl/*
+   ```
+5. **Flush Laravel Caches**:
+   ```bash
+   php artisan view:clear
+   php artisan config:clear
+   php artisan route:clear
+   ```
 
-In addition to our standard nest of supported games, our community is constantly pushing the limits of this software
-and there are plenty more games available provided by the community. Some of these games include:
+---
 
-* Factorio
-* San Andreas: MP
-* Pocketmine MP
-* Squad
-* Xonotic
-* Starmade
-* Discord ATLBot, and most other Node.js/Python discord bots
-* [and many more...](https://pterodactyleggs.com)
+## 3. Configuring the Host RAM Monitor
 
-## License
+The live Host RAM monitor requires a script running on the host machine to extract RAM statistics and pipe them to the panel.
 
-Pterodactyl® Copyright © 2015 - 2022 Dane Everitt and contributors.
+### Step 1: Deploy the Monitoring Script
+Create a script named `monitor_ram.sh` on the host machine where your panel runs:
+```bash
+#!/bin/bash
+# Extract the top 5 RAM consuming processes (RSS in KB) and write to panel storage
+# Update the path to point to your panel's storage directory
+ps -eo comm,rss --no-headers --sort=-rss | head -n 5 > /var/www/pterodactyl/storage/app/host_top_ram.txt
+```
 
-Code released under the [MIT License](./LICENSE.md).
+### Step 2: Configure Cron
+Configure a cron task to update the RAM stats every minute:
+1. Open crontab as root:
+   ```bash
+   crontab -e
+   ```
+2. Add the following line:
+   ```cron
+   * * * * * /path/to/monitor_ram.sh > /dev/null 2>&1
+   ```
+
+### Step 3: Docker Layouts (If applicable)
+If you run the panel inside a Docker container (like Docker Compose), ensure the host storage directory is mounted inside the container under `/app/storage/` so the panel container can read `host_top_ram.txt`:
+```yaml
+    volumes:
+      - "/srv/pterodactyl/logs/:/app/storage/logs"
+      - "/var/www/pterodactyl/:/app/"
+```
+Also check that permissions allow the container web worker user (`nginx` or `www-data`) to read the generated text file.
