@@ -26,8 +26,14 @@ const IconDescription = styled.p<{ $alarm: boolean }>`
 `;
 
 const pulse = keyframes`
-    0%, 100% { opacity: 0.6; }
-    50% { opacity: 1; }
+    0%, 100% { 
+        opacity: 0.6; 
+        box-shadow: 0 0 2px 0px var(--color-neutral-50); 
+    }
+    50% { 
+        opacity: 1; 
+        box-shadow: 0 0 10px 2px var(--color-neutral-50); 
+    }
 `;
 
 const StatusIndicatorBox = styled(GreyRowBox)<{ $status: ServerPowerState | undefined }>`
