@@ -275,7 +275,7 @@ export default () => {
         <div className={'relative w-full bg-transparent border-b border-neutral-600'}>
             <SpinnerOverlay visible={isLoggingOut} />
             {/* Desktop nav */}
-            <div css={tw`mx-auto w-full flex items-center h-[3.5rem] max-w-[1200px] overflow-x-auto`}>
+            <div css={tw`mx-auto w-full flex items-center h-[3.5rem] max-w-[1200px]`}>
                 <div id={'logo'} className={'flex-1 min-w-0'}>
                     <Link
                         to={'/'}
