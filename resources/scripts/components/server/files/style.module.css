@@ -16,7 +16,7 @@
 
 .file_row {
     @apply flex items-center py-2 px-4 cursor-pointer bg-transparent text-sm no-underline transition-colors duration-100;
-    @apply border-b border-neutral-200 dark:border-neutral-700 last:border-0;
+    @apply border-b border-neutral-700 last:border-0;
     @apply hover:text-neutral-100 hover:bg-neutral-600;
     opacity: 0;
     will-change: transform, opacity;

@@ -32,11 +32,16 @@ export default () => {
             },
         },
         callback(opts, index) {
+            const isDark = document.body.classList.contains('dark');
             return {
                 ...opts,
                 label: !index ? 'Network In' : 'Network Out',
-                borderColor: !index ? 'rgba(209, 213, 219, 1)' : 'rgba(107, 114, 128, 1)',
-                backgroundColor: !index ? 'rgba(209, 213, 219, 0.2)' : 'rgba(107, 114, 128, 0.2)',
+                borderColor: !index
+                    ? (isDark ? 'rgba(229, 231, 235, 1)' : 'rgba(55, 65, 81, 1)')
+                    : (isDark ? 'rgba(156, 163, 175, 1)' : 'rgba(107, 114, 128, 1)'),
+                backgroundColor: !index
+                    ? (isDark ? 'rgba(229, 231, 235, 0.15)' : 'rgba(55, 65, 81, 0.15)')
+                    : (isDark ? 'rgba(156, 163, 175, 0.15)' : 'rgba(107, 114, 128, 0.15)'),
             };
         },
     });

@@ -44,7 +44,7 @@ export default ({ activity, children }: Props) => {
     const properties = wrapProperties(activity.properties);
 
     return (
-        <div className={'grid grid-cols-10 py-2 px-4 border-b border-neutral-200 dark:border-neutral-700 last:border-0 group'} style={{ opacity: 0, willChange: 'transform, opacity' }}>
+        <div className={'grid grid-cols-10 py-2 px-4 border-b border-neutral-700 last:border-0 group'} style={{ opacity: 0, willChange: 'transform, opacity' }}>
             <div className={'hidden sm:flex sm:col-span-1 items-center justify-center select-none'}>
                 <div className={'flex items-center w-8 h-8 border border-neutral-300 dark:border-neutral-600 bg-neutral-100 dark:bg-neutral-800 overflow-hidden'}>
                     <Avatar name={actor?.uuid || 'system'} />

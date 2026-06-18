@@ -93,4 +93,29 @@ export default createGlobalStyle`
     ::-webkit-scrollbar-corner {
         background: transparent;
     }
+
+    /* View Transition circle expansion theme change effect */
+    ::view-transition-old(root),
+    ::view-transition-new(root) {
+        animation: none;
+        mix-blend-mode: normal;
+    }
+
+    ::view-transition-old(root) {
+        z-index: 1;
+    }
+
+    ::view-transition-new(root) {
+        z-index: 9999;
+        animation: 700ms cubic-bezier(0.4, 0, 0.2, 1) both theme-transition-expand;
+    }
+
+    @keyframes theme-transition-expand {
+        from {
+            clip-path: circle(0px at var(--theme-toggle-x) var(--theme-toggle-y));
+        }
+        to {
+            clip-path: circle(var(--theme-toggle-r) at var(--theme-toggle-x) var(--theme-toggle-y));
+        }
+    }
 `;

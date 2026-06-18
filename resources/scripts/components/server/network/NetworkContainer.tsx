@@ -65,9 +65,9 @@ const NetworkContainer = () => {
                 <Spinner size={'large'} centered />
             ) : (
                 <>
-                    <div ref={listRef} className="border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900">
+                    <div ref={listRef} className="border border-neutral-700 bg-neutral-900">
                         {data.map((allocation) => (
-                            <AllocationRow key={`${allocation.ip}:${allocation.port}`} allocation={allocation} className={'border-b border-neutral-200 dark:border-neutral-700 last:border-0'} />
+                            <AllocationRow key={`${allocation.ip}:${allocation.port}`} allocation={allocation} className={'border-b border-neutral-700 last:border-0'} />
                         ))}
                     </div>
                     {allocationLimit > 0 && (

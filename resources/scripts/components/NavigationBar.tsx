@@ -12,21 +12,22 @@ import { ServerContext } from '@/state/server';
 import { SocketEvent } from '@/components/server/events';
 import { bytesToString } from '@/lib/formatters';
 import { slideDown, staggerRows } from '@/lib/animations';
+import { applyTheme } from '@/lib/theme';
 
 const RightNavigation = styled.div`
     & > a,
     & > button,
     & > .navigation-link {
-        ${tw`relative flex items-center h-full no-underline text-neutral-900 dark:text-neutral-300 px-3 mx-1 cursor-pointer transition-colors duration-250 whitespace-nowrap`};
+        ${tw`relative flex items-center h-full no-underline text-neutral-300 px-3 mx-1 cursor-pointer transition-colors duration-250 whitespace-nowrap`};
 
         &:active,
         &:hover {
-            ${tw`text-neutral-100 dark:text-neutral-50 bg-neutral-800 dark:bg-neutral-700`};
+            ${tw`text-neutral-100 bg-neutral-800`};
         }
 
         &::after {
             content: '';
-            ${tw`absolute bottom-0 left-0 w-full h-[4px] bg-neutral-900 dark:bg-neutral-50 origin-center transition-transform duration-250 ease-out`};
+            ${tw`absolute bottom-0 left-0 w-full h-[4px] bg-neutral-50 origin-center transition-transform duration-250 ease-out`};
             transform: scaleX(0);
         }
 
@@ -80,7 +81,7 @@ const dimRetractDark = keyframes`
 `;
 
 const RamLine = styled.div<{ $state: 'idle' | 'increasing' | 'decreasing' }>`
-  ${tw`absolute bottom-0 left-0 h-[4px] bg-neutral-900 dark:bg-neutral-50 transition-all duration-1000 ease-out`}
+  ${tw`absolute bottom-0 left-0 h-[4px] bg-neutral-50 transition-all duration-1000 ease-out`}
   
   ${props => props.$state === 'increasing' && css`
     animation: ${doubleFlashLight} 0.6s ease-in-out 2;
@@ -192,21 +193,21 @@ const HostRamMonitor = () => {
             <span className="text-neutral-200 ml-1 inline-block text-left relative z-10" style={{ width: '180px', fontVariantNumeric: 'tabular-nums' }}>
                 {bytesToString(animatedUsed)} / {bytesToString(displayRam.total)}
             </span>
-            <div className="absolute bottom-0 left-0 w-full h-[4px] bg-neutral-300 dark:bg-neutral-700" />
+            <div className="absolute bottom-0 left-0 w-full h-[4px] bg-neutral-700" />
             <RamLine 
                 $state={flashState}
                 style={{ width: `${percentage}%` }}
             />
             {displayRam.top_processes && displayRam.top_processes.length > 0 && (
-                <div className="absolute top-[calc(100%+0px)] right-0 w-72 bg-white dark:bg-neutral-700 shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-                    <div className="px-4 py-3 bg-neutral-100 dark:bg-neutral-800 text-xs font-bold text-neutral-500 uppercase tracking-wider">
+                <div className="absolute top-[calc(100%+0px)] right-0 w-72 bg-neutral-800 shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                    <div className="px-4 py-3 bg-neutral-700 text-xs font-bold text-neutral-500 uppercase tracking-wider">
                         Top Host Memory Processes
                     </div>
                     <div className="flex flex-col py-2">
                         {displayRam.top_processes.map((proc, i) => (
-                            <div key={i} className="flex justify-between items-center px-4 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-600 transition-colors">
-                                <span className="font-mono text-sm text-neutral-800 dark:text-neutral-200 truncate pr-4">{proc.name}</span>
-                                <span className="font-mono text-sm text-neutral-600 dark:text-neutral-300 whitespace-nowrap">{bytesToString(proc.ram_bytes)}</span>
+                            <div key={i} className="flex justify-between items-center px-4 py-2 hover:bg-neutral-600 transition-colors">
+                                <span className="font-mono text-sm text-neutral-200 truncate pr-4">{proc.name}</span>
+                                <span className="font-mono text-sm text-neutral-300 whitespace-nowrap">{bytesToString(proc.ram_bytes)}</span>
                             </div>
                         ))}
                     </div>
@@ -249,18 +250,9 @@ export default () => {
     };
 
     const toggleTheme = () => {
-        setActiveAction('theme');
-        setTimeout(() => {
-            const isDark = document.body.classList.contains('dark');
-            if (isDark) {
-                document.body.classList.remove('dark');
-                localStorage.setItem('theme', 'light');
-            } else {
-                document.body.classList.add('dark');
-                localStorage.setItem('theme', 'dark');
-            }
-            setActiveAction(null);
-        }, 250);
+        const isDark = document.body.classList.contains('dark');
+        localStorage.setItem('theme', !isDark ? 'dark' : 'light');
+        applyTheme(!isDark, true);
     };
 
     const navigateToAdmin = (e: React.MouseEvent<HTMLAnchorElement>) => {
@@ -280,7 +272,7 @@ export default () => {
                     <Link
                         to={'/'}
                         className={
-                            'text-2xl font-header font-medium px-4 no-underline text-neutral-800 dark:text-neutral-200 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors duration-150 whitespace-nowrap overflow-hidden text-ellipsis block'
+                            'text-2xl font-header font-medium px-4 no-underline text-neutral-200 hover:text-neutral-100 transition-colors duration-150 whitespace-nowrap overflow-hidden text-ellipsis block'
                         }
                     >
                         {name}
@@ -288,7 +280,7 @@ export default () => {
                 </div>
                 {/* Hamburger — mobile only */}
                 <button
-                    className={'md:hidden flex items-center px-4 h-full text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors'}
+                    className={'md:hidden flex items-center px-4 h-full text-neutral-400 hover:text-neutral-200 transition-colors'}
                     onClick={() => setMobileOpen((o) => !o)}
                     aria-label={'Toggle menu'}
                 >
@@ -303,7 +295,7 @@ export default () => {
                     <NavLink to={'/account'}>
                         [ Account ]
                     </NavLink>
-                    <div className={'relative flex items-center h-full px-2 mx-1 text-neutral-500 dark:text-neutral-400 font-mono text-sm whitespace-nowrap'}>
+                    <div className={'relative flex items-center h-full px-2 mx-1 text-neutral-400 font-mono text-sm whitespace-nowrap'}>
                         [ RAM: <HostRamMonitor /> ]
                     </div>
                     {rootAdmin && (
@@ -311,7 +303,7 @@ export default () => {
                             [ Admin ]
                         </a>
                     )}
-                    <button onClick={toggleTheme} className={activeAction === 'theme' ? 'active' : ''}>
+                    <button onClick={toggleTheme} className={`theme-toggle-btn ${activeAction === 'theme' ? 'active' : ''}`}>
                         [ Theme ]
                     </button>
                     <button onClick={onTriggerLogout} className={activeAction === 'logout' ? 'active' : ''}>
@@ -327,19 +319,19 @@ export default () => {
                         <NavLink
                             exact
                             to={'/'}
-                            className={'py-3 font-mono text-sm text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 border-b border-neutral-100 dark:border-neutral-800 transition-colors'}
-                            activeClassName={'text-neutral-900 dark:text-neutral-100'}
+                            className={'py-3 font-mono text-sm text-neutral-400 hover:text-neutral-100 border-b border-neutral-700 transition-colors'}
+                            activeClassName={'text-neutral-100'}
                         >
                             [ Dashboard ]
                         </NavLink>
                         <NavLink
                             to={'/account'}
-                            className={'py-3 font-mono text-sm text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 border-b border-neutral-100 dark:border-neutral-800 transition-colors'}
-                            activeClassName={'text-neutral-900 dark:text-neutral-100'}
+                            className={'py-3 font-mono text-sm text-neutral-400 hover:text-neutral-100 border-b border-neutral-700 transition-colors'}
+                            activeClassName={'text-neutral-100'}
                         >
                             [ Account ]
                         </NavLink>
-                        <div className={'py-3 font-mono text-sm text-neutral-500 dark:text-neutral-400 border-b border-neutral-100 dark:border-neutral-800'}>
+                        <div className={'py-3 font-mono text-sm text-neutral-400 border-b border-neutral-700'}>
                             [ RAM: <HostRamMonitor /> ]
                         </div>
                         {rootAdmin && (
@@ -347,20 +339,20 @@ export default () => {
                                 href={'/admin'}
                                 rel={'noreferrer'}
                                 onClick={navigateToAdmin}
-                                className={'py-3 font-mono text-sm text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 border-b border-neutral-100 dark:border-neutral-800 transition-colors'}
+                                className={'py-3 font-mono text-sm text-neutral-400 hover:text-neutral-100 border-b border-neutral-700 transition-colors'}
                             >
                                 [ Admin ]
                             </a>
                         )}
                         <button
                             onClick={toggleTheme}
-                            className={'py-3 text-left font-mono text-sm text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 border-b border-neutral-100 dark:border-neutral-800 transition-colors'}
+                            className={'theme-toggle-btn py-3 text-left font-mono text-sm text-neutral-400 hover:text-neutral-100 border-b border-neutral-700 transition-colors'}
                         >
                             [ Theme ]
                         </button>
                         <button
                             onClick={onTriggerLogout}
-                            className={'py-3 text-left font-mono text-sm text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors'}
+                            className={'py-3 text-left font-mono text-sm text-neutral-400 hover:text-neutral-100 transition-colors'}
                         >
                             [ Logout ]
                         </button>

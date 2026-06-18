@@ -13,15 +13,29 @@ import './i18n';
 // @see https://github.com/gaearon/react-hot-loader#hook-support
 setConfig({ reloadHooks: false });
 
-const applyTheme = () => {
-    if (localStorage.getItem('theme') === 'dark') {
-        document.body.classList.add('dark');
-    } else {
-        document.body.classList.remove('dark');
-    }
+import { applyTheme } from '@/lib/theme';
+
+const initTheme = () => {
+    const storedTheme = localStorage.getItem('theme');
+    const isOsDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const shouldBeDark = storedTheme === 'dark' || (!storedTheme && isOsDark);
+    applyTheme(shouldBeDark, false);
 };
 
-applyTheme();
-window.addEventListener('storage', applyTheme);
+initTheme();
+
+window.addEventListener('storage', () => {
+    const storedTheme = localStorage.getItem('theme');
+    const isOsDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const shouldBeDark = storedTheme === 'dark' || (!storedTheme && isOsDark);
+    applyTheme(shouldBeDark, true);
+});
+
+if (window.matchMedia) {
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+        localStorage.setItem('theme', e.matches ? 'dark' : 'light');
+        applyTheme(e.matches, true);
+    });
+}
 
 ReactDOM.render(<App />, document.getElementById('app'));

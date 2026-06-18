@@ -112,14 +112,14 @@ export default ({ server, className }: { server: Server; className?: string }) =
                 <div>
                     <p css={tw`text-lg break-words`}>{server.name}</p>
                     {!!server.description && (
-                        <p css={tw`text-sm text-neutral-300 break-words line-clamp-2`}>{server.description}</p>
+                        <p css={tw`text-sm text-neutral-500 dark:text-neutral-300 break-words line-clamp-2`}>{server.description}</p>
                     )}
                 </div>
             </div>
             <div css={tw`flex-1 ml-4 lg:block lg:col-span-2 hidden`}>
                 <div css={tw`flex justify-center`}>
-                    <span css={tw`text-neutral-500 font-mono`}>[NET]</span>
-                    <p css={tw`text-sm text-neutral-400 ml-2`}>
+                    <span css={tw`text-neutral-600 dark:text-neutral-500 font-mono`}>[NET]</span>
+                    <p css={tw`text-sm text-neutral-700 dark:text-neutral-400 ml-2`}>
                         {server.allocations
                             .filter((alloc) => alloc.isDefault)
                             .map((allocation) => (
@@ -134,13 +134,13 @@ export default ({ server, className }: { server: Server; className?: string }) =
                 {!stats || isSuspended ? (
                     isSuspended ? (
                         <div css={tw`flex-1 text-center`}>
-                            <span css={tw`font-mono text-xs text-neutral-400`}>
+                            <span css={tw`font-mono text-xs text-neutral-500 dark:text-neutral-400`}>
                                 [ {server.status === 'suspended' ? 'Suspended' : 'Error'} ]
                             </span>
                         </div>
                     ) : server.isTransferring || server.status ? (
                         <div css={tw`flex-1 text-center`}>
-                            <span css={tw`font-mono text-xs text-neutral-400`}>
+                            <span css={tw`font-mono text-xs text-neutral-500 dark:text-neutral-400`}>
                                 [{' '}
                                 {server.isTransferring
                                     ? 'Transferring'
@@ -164,7 +164,7 @@ export default ({ server, className }: { server: Server; className?: string }) =
                                     {stats.cpuUsagePercent.toFixed(2)} %
                                 </IconDescription>
                             </div>
-                            <p css={tw`text-xs text-neutral-500 text-center mt-1`}>of {cpuLimit}</p>
+                            <p css={tw`text-xs text-neutral-600 dark:text-neutral-500 text-center mt-1`}>of {cpuLimit}</p>
                         </div>
                         <div css={tw`flex-1 ml-4 sm:block hidden`}>
                             <div css={tw`flex justify-center font-mono`}>
@@ -173,7 +173,7 @@ export default ({ server, className }: { server: Server; className?: string }) =
                                     {bytesToString(stats.memoryUsageInBytes)}
                                 </IconDescription>
                             </div>
-                            <p css={tw`text-xs text-neutral-500 text-center mt-1`}>of {memoryLimit}</p>
+                            <p css={tw`text-xs text-neutral-600 dark:text-neutral-500 text-center mt-1`}>of {memoryLimit}</p>
                         </div>
                         <div css={tw`flex-1 ml-4 sm:block hidden`}>
                             <div css={tw`flex justify-center font-mono`}>
@@ -182,7 +182,7 @@ export default ({ server, className }: { server: Server; className?: string }) =
                                     {bytesToString(stats.diskUsageInBytes)}
                                 </IconDescription>
                             </div>
-                            <p css={tw`text-xs text-neutral-500 text-center mt-1`}>of {diskLimit}</p>
+                            <p css={tw`text-xs text-neutral-600 dark:text-neutral-500 text-center mt-1`}>of {diskLimit}</p>
                         </div>
                     </React.Fragment>
                 )}

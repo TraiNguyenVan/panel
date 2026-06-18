@@ -56,13 +56,13 @@ export default () => {
                             There are no schedules configured for this server.
                         </p>
                     ) : (
-                        <div ref={listRef} className="border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900">
+                        <div ref={listRef} className="border border-neutral-700 bg-neutral-900">
                             {schedules.map((schedule) => (
                                 <GreyRowBox
                                     as={'a'}
                                     key={schedule.id}
                                     href={`${match.url}/${schedule.id}`}
-                                    className={'border-b border-neutral-200 dark:border-neutral-700 last:border-0 cursor-pointer flex-wrap'}
+                                    className={'border-b border-neutral-700 last:border-0 cursor-pointer flex-wrap'}
                                     style={{ opacity: 0, willChange: 'transform, opacity' }}
                                     onClick={(e: any) => {
                                         e.preventDefault();

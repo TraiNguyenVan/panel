@@ -52,7 +52,7 @@ const FileUploadList = () => {
                         onClick={cancelFileUpload.bind(this, name)}
                         className={'text-gray-500 hover:text-gray-200 transition-colors duration-75'}
                     >
-                        <span className="font-mono border border-transparent">[+]</span>
+                        <span className="font-mono border border-transparent">[-]</span>
                     </button>
                 </div>
             ))}
@@ -95,7 +95,6 @@ export default () => {
                         onClick={() => (open.value = true)}
                     >
                         <Spinner progress={(progress.uploaded / progress.total) * 100} className={'w-8 h-8'} />
-                        <span className="font-mono border border-transparent">[+]</span>
                     </button>
                 </Tooltip>
             )}

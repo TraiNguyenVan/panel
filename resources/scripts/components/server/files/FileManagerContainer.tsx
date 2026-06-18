@@ -105,9 +105,9 @@ export default () => {
                         <p css={tw`text-sm text-neutral-400 text-center`}>This directory seems to be empty.</p>
                     ) : (
                         <CSSTransition classNames={'fade'} timeout={150} appear in>
-                            <div ref={fileListRef} className={'border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900'}>
+                            <div ref={fileListRef} className={'border border-neutral-700 bg-neutral-900'}>
                                 {files.length > 250 && (
-                                    <div css={tw`bg-yellow-100 dark:bg-yellow-900/40 border-l-2 border-yellow-500 mb-px p-3`}>
+                                    <div css={tw`bg-yellow-100 dark:bg-yellow-900/40 border-l-4 border-yellow-500 mb-px p-3`}>
                                         <p css={tw`text-yellow-800 dark:text-yellow-300 text-sm font-mono`}>
                                             This directory is too large to display in the browser, limiting the output
                                             to the first 250 files.

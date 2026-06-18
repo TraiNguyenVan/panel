@@ -40,6 +40,7 @@ const red = {
 };
 
 module.exports = {
+    darkMode: 'class',
     content: [
         './resources/scripts/**/*.{js,ts,tsx}',
     ],

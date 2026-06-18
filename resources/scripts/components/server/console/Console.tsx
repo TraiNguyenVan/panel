@@ -81,7 +81,10 @@ const terminalProps: ITerminalOptions = {
 export default () => {
     const TERMINAL_PRELUDE = '\u001b[1m\u001b[37mcontainer@pterodactyl~ \u001b[0m';
     const ref = useRef<HTMLDivElement>(null);
-    const terminal = useMemo(() => new Terminal({ ...terminalProps }), []);
+    const terminal = useMemo(() => new Terminal({
+        ...terminalProps,
+        theme: document.body.classList.contains('dark') ? darkTheme : lightTheme,
+    }), []);
     const fitAddon = new FitAddon();
     const searchAddon = new SearchAddon();
     const searchBar = new SearchBarAddon({ searchAddon });
@@ -257,7 +260,7 @@ export default () => {
                     />
                     <div
                         className={classNames(
-                            'text-gray-100 peer-focus:text-gray-50 peer-focus:animate-pulse',
+                            'text-neutral-400 peer-focus:text-neutral-100 peer-focus:animate-pulse',
                             styles.command_icon
                         )}
                     >

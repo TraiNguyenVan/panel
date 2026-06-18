@@ -54,12 +54,12 @@ export default () => {
                 <Fade timeout={150}>
                     <>
                         {databases.length > 0 ? (
-                            <div ref={listRef} className="border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900">
+                            <div ref={listRef} className="border border-neutral-700 bg-neutral-900">
                                 {databases.map((database) => (
                                     <DatabaseRow
                                         key={database.id}
                                         database={database}
-                                        className={'border-b border-neutral-200 dark:border-neutral-700 last:border-0'}
+                                        className={'border-b border-neutral-700 last:border-0'}
                                     />
                                 ))}
                             </div>
