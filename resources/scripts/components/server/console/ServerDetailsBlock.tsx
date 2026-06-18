@@ -71,7 +71,7 @@ const getBackgroundColor = (value: number, max: number | null): string | undefin
 const Limit = ({ limit, children }: { limit: string | null; children: React.ReactNode }) => (
     <>
         {children}
-        <span className={'ml-1 text-gray-300 text-[70%] select-none'}>/ {limit || <>&infin;</>}</span>
+        <span className={'ml-1 text-[70%] select-none'} style={{ color: 'var(--color-neutral-400)' }}>/ {limit || <>&infin;</>}</span>
     </>
 );
 
@@ -162,7 +162,7 @@ const ServerDetailsBlock = ({ className }: { className?: string }) => {
             </StatBlock>
             <StatBlock icon={faMicrochip} title={'CPU Load'} color={getBackgroundColor(stats.cpu, limits.cpu)}>
                 {status === 'offline' ? (
-                    <span className={'text-gray-400'}>Offline</span>
+                    <span style={{ color: 'var(--color-neutral-400)' }}>Offline</span>
                 ) : (
                     <Limit limit={textLimits.cpu}>{animatedCpu.toFixed(2)}%</Limit>
                 )}
@@ -173,7 +173,7 @@ const ServerDetailsBlock = ({ className }: { className?: string }) => {
                 color={getBackgroundColor(stats.memory / 1024, limits.memory * 1024)}
             >
                 {status === 'offline' ? (
-                    <span className={'text-gray-400'}>Offline</span>
+                    <span style={{ color: 'var(--color-neutral-400)' }}>Offline</span>
                 ) : (
                     <Limit limit={textLimits.memory}>{bytesToString(animatedMemory)}</Limit>
                 )}
@@ -182,10 +182,10 @@ const ServerDetailsBlock = ({ className }: { className?: string }) => {
                 <Limit limit={textLimits.disk}>{bytesToString(animatedDisk)}</Limit>
             </StatBlock>
             <StatBlock icon={faCloudDownloadAlt} title={'Network (Inbound)'}>
-                {status === 'offline' ? <span className={'text-gray-400'}>Offline</span> : bytesToString(animatedRx)}
+                {status === 'offline' ? <span style={{ color: 'var(--color-neutral-400)' }}>Offline</span> : bytesToString(animatedRx)}
             </StatBlock>
             <StatBlock icon={faCloudUploadAlt} title={'Network (Outbound)'}>
-                {status === 'offline' ? <span className={'text-gray-400'}>Offline</span> : bytesToString(animatedTx)}
+                {status === 'offline' ? <span style={{ color: 'var(--color-neutral-400)' }}>Offline</span> : bytesToString(animatedTx)}
             </StatBlock>
         </div>
     );
