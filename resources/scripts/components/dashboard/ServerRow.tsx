@@ -15,14 +15,14 @@ const isAlarmState = (current: number, limit: number): boolean => limit > 0 && c
 
 const Icon = memo(
     styled.span<{ $alarm: boolean }>`
-        ${(props) => (props.$alarm ? tw`text-red-400` : tw`text-neutral-500`)};
+        ${(props) => (props.$alarm ? tw`text-red-500 dark:text-red-400` : tw`text-neutral-500`)};
     `,
     isEqual
 );
 
 const IconDescription = styled.p<{ $alarm: boolean }>`
     ${tw`text-sm ml-2`};
-    ${(props) => (props.$alarm ? tw`text-white` : tw`text-neutral-400`)};
+    ${(props) => (props.$alarm ? tw`text-red-600 dark:text-red-400 font-semibold` : tw`text-neutral-400`)};
 `;
 
 const pulse = keyframes`
