@@ -4,7 +4,6 @@ import { Route, Router, Switch } from 'react-router-dom';
 import { StoreProvider } from 'easy-peasy';
 import { store } from '@/state';
 import { SiteSettings } from '@/state/settings';
-import ProgressBar from '@/components/elements/ProgressBar';
 import { NotFound } from '@/components/elements/ScreenBlock';
 import tw from 'twin.macro';
 import GlobalStylesheet from '@/assets/css/GlobalStylesheet';
@@ -14,7 +13,7 @@ import AuthenticatedRoute from '@/components/elements/AuthenticatedRoute';
 import { ServerContext } from '@/state/server';
 import '@/assets/tailwind.css';
 import Spinner from '@/components/elements/Spinner';
-import ChatWidget from '@/components/dashboard/ChatWidget';
+import ChatWidget from '@/features/chat/components/ChatWidget';
 
 const DashboardRouter = lazy(() => import(/* webpackChunkName: "dashboard" */ '@/routers/DashboardRouter'));
 const ServerRouter = lazy(() => import(/* webpackChunkName: "server" */ '@/routers/ServerRouter'));

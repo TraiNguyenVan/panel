@@ -5,12 +5,10 @@ import { useStoreState } from 'easy-peasy';
 import { ApplicationStore } from '@/state';
 import SearchContainer from '@/components/dashboard/search/SearchContainer';
 import tw from 'twin.macro';
-import styled, { css } from 'styled-components/macro';
+import styled from 'styled-components/macro';
 import http from '@/api/http';
 import SpinnerOverlay from '@/components/elements/SpinnerOverlay';
-import { ServerContext } from '@/state/server';
-import { SocketEvent } from '@/components/server/events';
-import { slideDown, staggerRows } from '@/lib/animations';
+import { slideDown } from '@/lib/animations';
 import { applyTheme } from '@/lib/theme';
 import { HostRamMonitor } from '@/features/host-monitor/components/HostRamMonitor';
 
