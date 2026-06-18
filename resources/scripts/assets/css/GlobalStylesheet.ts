@@ -10,8 +10,8 @@ export default createGlobalStyle`
         --color-neutral-300: #302c2c;
         --color-neutral-400: #646262;
         --color-neutral-500: #9a9898;
-        --color-neutral-600: #e5e2dd;
-        --color-neutral-700: #dedad6;
+        --color-neutral-600: #dedad6;
+        --color-neutral-700: #e5e2dd;
         --color-neutral-800: #f1eeee;
         --color-neutral-900: #fdfcfc;
     }

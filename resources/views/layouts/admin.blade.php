@@ -36,16 +36,16 @@
 
             <style>
                 :root {
-                    --bg-gradient: radial-gradient(circle at 50% -20%, #ffffff 0%, #e5e3e3 100%);
+                    --bg-gradient: radial-gradient(circle at 50% -20%, #fdfcfc 0%, #edeae4 50%, #dfdbd2 100%);
                     --color-neutral-50: #201d1d;
                     --color-neutral-100: #201d1d;
                     --color-neutral-200: #201d1d;
-                    --color-neutral-300: #424245;
-                    --color-neutral-400: #9a9898;
-                    --color-neutral-500: #646262;
-                    --color-neutral-600: #f1eeee;
-                    --color-neutral-700: #f8f7f7;
-                    --color-neutral-800: #fdfcfc;
+                    --color-neutral-300: #302c2c;
+                    --color-neutral-400: #646262;
+                    --color-neutral-500: #9a9898;
+                    --color-neutral-600: #dedad6;
+                    --color-neutral-700: #e5e2dd;
+                    --color-neutral-800: #f1eeee;
                     --color-neutral-900: #fdfcfc;
                 }
                 html.dark-theme {
